@@ -3,10 +3,12 @@ import {Paper, Typography} from "@material-ui/core";
 import "./Application.scss"
 import {connect, ConnectedProps} from "react-redux";
 import {Dispatch} from "redux";
-import {RootState} from "../data/reducer";
-import {toggleTheme} from "../data/module/theme/action";
-import Appbar from "./Appbar/Appbar";
+import {RootState} from "../store/reducer";
+import {toggleTheme} from "../store/module/theme/action";
+import Appbar from "./AppBar/Appbar";
 import {Interactor} from "../api/Interactor";
+import Drawer from "@bit/elyspio.test.drawer/dist/Drawer";
+import Brightness5Icon from '@material-ui/icons/Brightness5';
 
 const mapStateToProps = (state: RootState) => ({theme: state.theme.current})
 
@@ -19,29 +21,39 @@ export interface Props {
 }
 
 interface State {
-	something: object
+    something: object
 }
 
 class Application extends React.Component<Props & ReduxTypes, State> {
 
-	state = {something: {}}
+    state = {something: {}}
 
-	async componentDidMount() {
-		this.setState({
-			something: await Interactor.instance.test
-		})
-	}
+    async componentDidMount() {
+        this.setState({
+            something: await Interactor.instance.test
+        })
+    }
 
-	render() {
-		return (
-			<Paper square={true} className={"Application"}>
-				<Appbar appName={"TEMPLATE"}/>
-				<Paper square className={"content"} >
-					<Typography variant={"subtitle1"}> Server is running on  {JSON.stringify(this.state.something)}</Typography>
-				</Paper>
-			</Paper>
-		);
-	}
+    render() {
+
+        const {toggleTheme} = this.props;
+
+        return (
+            <Paper square={true} className={"Application"}>
+                <Drawer position={"right"} actions={[{onClick: toggleTheme, text: "hello", icon: <Brightness5Icon/>}]}>
+                    <div className="content">
+                        <Appbar appName={"TEMPLATE"}/>
+                        <Paper square>
+                            <Typography variant={"subtitle1"}> Server is running on {JSON.stringify(this.state.something)}</Typography>
+                        </Paper>
+                    </div>
+
+
+                </Drawer>
+
+            </Paper>
+        );
+    }
 }
 
 export default connector(Application)
