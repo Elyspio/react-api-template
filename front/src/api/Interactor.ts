@@ -22,10 +22,13 @@ export class Interactor {
 
         let urlSearchParams = ""
         let body: string | undefined;
-        if (method === "GET" && args) urlSearchParams = `?${new URLSearchParams(Object.entries(args)).toString()}`
-        if (method !== "GET" && args) {
-            body = JSON.stringify(args);
+        if(args) {
+            if (method === "GET" && args) urlSearchParams = `?${new URLSearchParams(Object.entries(args)).toString()}`
+            if (method !== "GET" && args) {
+                body = JSON.stringify(args);
+            }
         }
+
 
         const data = await fetch(`${base}/${url}${urlSearchParams}`, {
             method,

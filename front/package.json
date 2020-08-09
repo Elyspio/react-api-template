@@ -6,7 +6,8 @@
 		"start": "react-scripts start",
 		"build": "react-scripts build",
 		"test": "react-scripts test",
-		"eject": "react-scripts eject"
+		"eject": "react-scripts eject",
+		"docker": "wsl ../docker/docker.sh"
 	},
 	"dependencies": {
 		"@bit/elyspio.test.drawer": "^0.0.3",

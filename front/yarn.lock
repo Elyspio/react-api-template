@@ -1155,10 +1155,10 @@
   resolved "https://node.bit.dev/elyspio.test.common.drawer/-/elyspio.test.common.drawer-0.0.1.tgz#149f91d2eb5969b01f0bd86ff8657b8f68dc9b5c"
   integrity sha1-FJ+R0utZabAfC9hv+GV7j2jcm1w=
 
-"@bit/elyspio.test.drawer@^0.0.2":
-  version "0.0.2"
-  resolved "https://node.bit.dev/elyspio.test.drawer/-/elyspio.test.drawer-0.0.2.tgz#866c84888b0a1760ee08603d698fd864e338efaa"
-  integrity sha1-hmyEiIsKF2DuCGA9aY/YZOM476o=
+"@bit/elyspio.test.drawer@^0.0.3":
+  version "0.0.3"
+  resolved "https://node.bit.dev/elyspio.test.drawer/-/elyspio.test.drawer-0.0.3.tgz#ab05e55ea3debc9a2e69b8393cd32397c7209fb3"
+  integrity sha1-qwXlXqPevJouabg5PNMjl8cgn7M=
   dependencies:
     "@bit/elyspio.test.common.drawer" "0.0.1"
     "@material-ui/core" "^4.9.13"

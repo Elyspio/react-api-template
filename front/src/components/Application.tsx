@@ -5,7 +5,7 @@ import {connect, ConnectedProps} from "react-redux";
 import {Dispatch} from "redux";
 import {RootState} from "../store/reducer";
 import {toggleTheme} from "../store/module/theme/action";
-import Appbar from "./AppBar/Appbar";
+import Appbar from "./Appbar/Appbar";
 import {Interactor} from "../api/Interactor";
 import Drawer from "@bit/elyspio.test.drawer/dist/Drawer";
 import Brightness5Icon from '@material-ui/icons/Brightness5';
@@ -40,7 +40,7 @@ class Application extends React.Component<Props & ReduxTypes, State> {
 
         return (
             <Paper square={true} className={"Application"}>
-                <Drawer position={"right"} actions={[{onClick: toggleTheme, text: "hello", icon: <Brightness5Icon/>}]}>
+                <Drawer position={"right"} actions={[{onClick: toggleTheme, text: "Switch lights", icon: <Brightness5Icon/>}]}>
                     <div className="content">
                         <Appbar appName={"TEMPLATE"}/>
                         <Paper square>
