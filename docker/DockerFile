@@ -9,7 +9,7 @@ COPY front/build ./front/build
 
 # Server
 RUN mkdir -p /app/back
-COPY back/build ./back/build
+COPY back/build ./back
 COPY back/package.json ./back/package.json
 RUN cd back && npm i --only=production
 
@@ -22,5 +22,5 @@ EXPOSE 4000
 
 WORKDIR /app/back
 
-CMD ["node", "build/app.js"]
+CMD ["node", "app.js"]
 

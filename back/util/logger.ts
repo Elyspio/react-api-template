@@ -27,6 +27,8 @@ const getFileNameAndLineNumber = () => {
             break;
     }
 
+    if(!line) return undefined;
+
     const regex = /at (.*) .*\\(.*\.[jt]s):(.*):/g
     const regexWithoutFuncName = /at [A-Z]:\\.*\\([a-zA-Z]+.[jt]s):([0-9]+)/
     const matchWithFunctionName = Array.from(line!.matchAll(regex))[0];

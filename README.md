@@ -1,2 +1,2 @@
-# express-react-ts
+# External front
 Express / ReactJS in Typescript

@@ -5,7 +5,8 @@
 	"scripts": {
 		"start": "nodemon app.ts",
 		"build": "tsc",
-		"docker": "wsl ../docker/docker.sh"
+		"docker": "wsl ../docker/docker.sh",
+		"push": "wsl ../docker/arm/compose.sh"
 	},
 	"dependencies": {
 		"@types/express": "^4.17.7",
