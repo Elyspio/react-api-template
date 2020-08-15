@@ -27,7 +27,7 @@ const getFileNameAndLineNumber = () => {
             break;
     }
 
-    if(!line) return undefined;
+    if (!line) return undefined;
 
     const regex = /at (.*) .*\\(.*\.[jt]s):(.*):/g
     const regexWithoutFuncName = /at [A-Z]:\\.*\\([a-zA-Z]+.[jt]s):([0-9]+)/
@@ -67,7 +67,7 @@ const getFormat = () => {
         winston.format.printf((info) => {
 
             let callInfos = ""
-            if (info.level !== "request") {
+            if (!["send", "request"].includes(info.level)) {
                 callInfos = getFileNameAndLineNumber()
             }
 
@@ -92,7 +92,7 @@ const getFormat = () => {
                 end += `${objsStr}`
             }
 
-            return `${timestamp} | ${info.level.toLocaleUpperCase()} |${end} ${callInfos ? ` | ${callInfos}`: ""}`
+            return `${timestamp} | ${info.level.toLocaleUpperCase()} |${end} ${callInfos ? ` | ${callInfos}` : ""}`
         }))
 };
 
@@ -129,6 +129,7 @@ function getTransports(service: string): transport[] {
 
 export const loggerConfig = {
     levels: {
+        send: 5,
         request: 4,
         debug: 3,
         info: 2,
@@ -136,6 +137,6 @@ export const loggerConfig = {
         error: 0,
     },
     transports: getTransports("server"),
-    level: "request"
+    level: "send"
 }
 export const logger = createLogger(loggerConfig)
