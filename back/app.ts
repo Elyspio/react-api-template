@@ -1,6 +1,6 @@
 import E, {Express} from "express"
-import {router as torrents} from "./routes/example";
-import {middlewares} from "./middleware/middleware";
+import {router} from "./routes/example";
+import {handleError, middlewares} from "./middleware/middleware";
 import {ArgumentParser} from 'argparse'
 import path from "path";
 import {logger} from "./util/logger";
@@ -9,7 +9,7 @@ const express = require('express');
 export const app: Express = express();
 
 app.use(...middlewares);
-app.use('/example', torrents);
+app.use('/example', router);
 
 let frontPath = path.resolve(__dirname, "..", "front", "build");
 logger.info("frontPath", {frontPath});
@@ -26,7 +26,4 @@ if (require.main === module) {
     })
 }
 
-
-
-
-
+app.use(handleError);
