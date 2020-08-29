@@ -1,44 +1,44 @@
-import {base} from "../config/api";
-
-
 type Method = "GET" | "POST" | "PUT" | "DELETE"
 
 
 export class Interactor {
 
-    private static _instance: Interactor = new Interactor();
+    private base: string
 
-    public static get instance() {
-        return Interactor._instance;
+
+    constructor(endpoint: string) {
+        this.base = endpoint
     }
 
-    public get test(): Promise<object> {
-        return new Promise(async resolve => {
-            resolve(this.call("example/test", "GET"))
-        })
+
+    protected async get(url: string, urlParameters?: object, bodyParameters?: object) {
+        return this.call(url, "GET", urlParameters, bodyParameters);
     }
 
-    private async call(url: string, method: Method, args?: object) {
+    protected async post(url: string, urlParameters?: object, bodyParameters?: object) {
+        return this.call(url, "POST", urlParameters, bodyParameters);
+    }
+
+    protected async put(url: string, urlParameters?: object, bodyParameters?: object) {
+        return this.call(url, "PUT", urlParameters, bodyParameters);
+    }
+
+    private async call(url: string, method: Method, urlParameters?: object, bodyParameters?: object) {
 
         let urlSearchParams = ""
         let body: string | undefined;
-        if(args) {
-            if (method === "GET" && args) urlSearchParams = `?${new URLSearchParams(Object.entries(args)).toString()}`
-            if (method !== "GET" && args) {
-                body = JSON.stringify(args);
-            }
+        if (urlParameters) {
+            urlSearchParams = `?${new URLSearchParams(Object.entries(urlParameters).map(([key, val]) => ([key, JSON.stringify(val)]))).toString()}`
         }
+        if (bodyParameters) body = JSON.stringify(bodyParameters);
 
-
-        const data = await fetch(`${base}/${url}${urlSearchParams}`, {
+        return await fetch(`${this.base}${url}${urlSearchParams}`, {
             method,
             body,
             headers: {
-                'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-        }).then(raw => raw.json());
-        return data;
+        });
     }
 
 }

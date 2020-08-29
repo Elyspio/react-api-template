@@ -10,15 +10,15 @@
 	},
 	"dependencies": {
 		"@types/express": "^4.17.7",
-		"argparse": "^1.0.10",
+		"argparse": "^2.0.1",
 		"body-parser": "~1.19.0",
 		"cors": "^2.8.5",
-		"dayjs": "^1.8.32",
+		"dayjs": "^1.8.34",
 		"express": "^4.17.1",
 		"winston": "^3.3.3"
 	},
 	"devDependencies": {
-		"@types/argparse": "^1.0.38",
+		"@types/argparse": "^2.0.0",
 		"@types/node": "^12",
 		"nodemon": "latest",
 		"ts-node": "latest",

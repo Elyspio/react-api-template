@@ -1,17 +1,15 @@
 #!/bin/bash
 
 origin=$(pwd)
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-echo $DIR
-cd $DIR
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 
 rm -rdf "$DIR/../back/build"
 rm -rdf "$DIR/../front/build"
 
 
-
+# Check if we are running on WSL (use Powershell increases performances a lot)
 if [ "$(uname -r | sed -n 's/.*\( *Microsoft *\).*/\1/ip')" = 'microsoft' ]; then
   powershell.exe "cd ../front ; yarn build"
   powershell.exe "cd ../back ; yarn build"
@@ -21,7 +19,7 @@ else
 fi
 
 echo "Building for amd64"
-"$DIR/amd64.sh"
+"$DIR/amd/amd64.sh"
 
 echo "Building for arm64"
 "$DIR/arm/arm64.sh"
