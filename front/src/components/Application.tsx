@@ -7,7 +7,7 @@ import {RootState} from "../store/reducer";
 import {toggleTheme} from "../store/module/theme/action";
 import Appbar from "./Appbar/Appbar";
 import Brightness5Icon from '@material-ui/icons/Brightness5';
-import Haproxy from "./example/Example";
+import Haproxy from "./test/Test";
 import Drawer from "@bit/elyspio.test.drawer";
 
 const mapStateToProps = (state: RootState) => ({theme: state.theme.current})

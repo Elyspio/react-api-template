@@ -1,10 +1,10 @@
 const isDev = process.env.NODE_ENV === "development"
 
 
-export function getApiPath(api: string) {
+export function getApiPath(api: string, useProduction?: boolean) {
     let base = `http://localhost:4000/${api}`
 
-    if (!isDev) {
+    if (!isDev || useProduction) {
 
         base = `${window.location.origin}${window.location.pathname}`
 

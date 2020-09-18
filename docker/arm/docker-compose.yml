@@ -1,12 +1,12 @@
 version: "3"
 services:
   server:
-    image: elyspio/authentication:arm64
+    image: elyspio/external-server:arm64
     ports:
       - "4002:4000"
     environment:
       LOG_FOLDER: /var/logs
     volumes:
-      - /apps/authentication/logs:/var/logs
+      - /apps/test/logs:/var/logs
     restart: always
-    container_name: authentication
+    container_name: test
