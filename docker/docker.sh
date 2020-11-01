@@ -4,6 +4,8 @@ origin=$(pwd)
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
+. "$DIR/variables.sh"
+
 
 rm -rdf "$DIR/../back/build"
 rm -rdf "$DIR/../front/build"
@@ -18,12 +20,10 @@ else
   cd "$DIR/../back" && npm run build
 fi
 
-echo "Building for amd64"
-"$DIR/amd/amd64.sh" &
+cp "$DIR/DockerFile" "$DIR/../DockerFile"
 
-echo "Building for arm64"
-"$DIR/arm/arm64.sh" &
+cd "$DIR/.." && docker buildx build --platform linux/arm64,linux/amd64  -f ./DockerFile  -t elyspio/$app --push .
 
-wait
+rm "$DIR/../DockerFile"
 
 cd $origin
