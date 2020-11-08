@@ -3,10 +3,9 @@
 	"version": "0.0.0",
 	"private": true,
 	"scripts": {
-		"start": "ACCOUNT_PATH=./accounts.json nodemon --legacy-watch src/app.ts",
+		"start": "nodemon --legacy-watch src/app.ts",
 		"build": "tsc",
-		"docker": "wsl ../docker/docker.sh && yarn push",
-		"push": "wsl ../docker/arm/compose.sh"
+		"docker": "wsl ../docker/docker.sh"
 	},
 	"dependencies": {
 		"@tsed/common": "^6.1.5",
