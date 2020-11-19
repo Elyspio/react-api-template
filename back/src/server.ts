@@ -2,9 +2,10 @@ import {Configuration, Inject} from "@tsed/di";
 import {PlatformApplication} from "@tsed/common";
 import {middlewares} from "./middleware/common/raw";
 import * as path from "path";
+import "@tsed/swagger"; 
 
 export const rootDir = __dirname;
-let frontPath = path.resolve(__dirname, "..", "..", "front", "build");
+let frontPath = path.resolve(rootDir, "..", "..", "front", "build");
 
 @Configuration({
     rootDir,
@@ -23,7 +24,12 @@ let frontPath = path.resolve(__dirname, "..", "..", "front", "build");
         "/": [
             {root: frontPath}
         ]
-    }
+    },
+    swagger: [{
+        path: "/swagger",
+    }]
+
+
 })
 export class Server {
 
