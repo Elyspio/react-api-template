@@ -1,17 +1,32 @@
-import {BodyParams, IMiddleware, Middleware, Req} from "@tsed/common";
-import {Unauthorized} from "@tsed/exceptions";
-import {AuthenticationService} from "../core/services/authentication";
+import {BodyParams, Cookies, IMiddleware, Middleware, QueryParams, Req} from "@tsed/common";
 import * as Express from "express"
 import {authentication_token} from "../config/authentication";
+import {Property, Returns} from "@tsed/schema";
+import {Services} from "../core/services";
+import {Unauthorized} from "@tsed/exceptions"
+
+export class UnauthorizedModel {
+
+    @Property()
+    url: string
+
+    @Property()
+    message: string
+}
+
 
 @Middleware()
 export class RequireLogin implements IMiddleware {
-    public use(@Req() request: Express.Request, @BodyParams("token") token: string) {
+    @Returns(401).Of(UnauthorizedModel)
+    public async use(@Req() req,  @QueryParams("token") token: string) {
 
-        const tok = token ?? request.cookies[authentication_token]
+        token ??= token
 
-        if (!new AuthenticationService().isAuthenticated(tok)) {
-            throw new Unauthorized("You must be logged in to access to this page")
+        try {
+            await Services.authentication.isAuthenticated(token)
+            return true
+        } catch (e) {
+            throw new Unauthorized("You must be logged to access to this resource see https://elyspio.fr/authentication");
         }
     }
 }

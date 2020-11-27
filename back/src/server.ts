@@ -2,14 +2,13 @@ import {Configuration, Inject} from "@tsed/di";
 import {PlatformApplication} from "@tsed/common";
 import {middlewares} from "./middleware/common/raw";
 import * as path from "path";
-import "@tsed/swagger"; 
+import "@tsed/swagger";
 
 export const rootDir = __dirname;
 let frontPath = path.resolve(rootDir, "..", "..", "front", "build");
 
 @Configuration({
     rootDir,
-    acceptMimes: ["application/json"],
     httpPort: process.env.HTTP_PORT || 4000,
     httpsPort: false, // CHANGE
     mount: {
@@ -28,8 +27,6 @@ let frontPath = path.resolve(rootDir, "..", "..", "front", "build");
     swagger: [{
         path: "/swagger",
     }]
-
-
 })
 export class Server {
 
