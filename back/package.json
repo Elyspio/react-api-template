@@ -5,27 +5,26 @@
   "scripts": {
     "start": "nodemon src/app.ts",
     "build": "tsc",
-    "docker": "wsl ../docker/docker.sh",
-    "generate-back-api": "python ../front/scripts/generate-back-apis.py"
+    "docker": "wsl ../docker/docker.sh"
   },
   "dependencies": {
-    "@tsed/common": "^6.11.2",
-    "@tsed/core": "^6.11.2",
-    "@tsed/di": "^6.11.2",
-    "@tsed/schema": "^6.11.2",
-    "@tsed/platform-express": "^6.11.2",
-    "@tsed/swagger": "^6.11.2",
+    "@tsed/common": "^6.22.2",
+    "@tsed/core": "^6.22.2",
+    "@tsed/di": "^6.22.2",
+    "@tsed/schema": "^6.22.2",
+    "@tsed/platform-express": "^6.22.2",
+    "@tsed/swagger": "^6.22.2",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "method-override": "^3.0.0",
-    "axios": "^0.21.0",
-    "tslib": "^2.0.3"
+    "axios": "^0.21.1",
+    "tslib": "^2.1.0"
   },
   "devDependencies": {
-    "@types/cors": "^2.8.8",
-    "@types/node": "^14.14.9",
+    "@types/cors": "^2.8.9",
+    "@types/node": "^14.14.20",
     "nodemon": "latest",
     "ts-node": "latest",
     "typescript": "latest"

@@ -6,6 +6,7 @@
     "lib": [
       "es2016",
       "dom",
+      "ES2020",
       "ESNext"
     ],
     "typeRoots": [
