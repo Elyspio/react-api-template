@@ -12,14 +12,15 @@
     "push": "cd ../back && yarn push"
   },
   "dependencies": {
-    "axios": "^0.21.1",
     "@material-ui/core": "4.11.2",
+    "@material-ui/data-grid": "^4.0.0-alpha.17",
     "@material-ui/icons": "4.11.2",
     "@reduxjs/toolkit": "1.5.0",
-    "react-redux": "7.2.2",
-    "redux": "4.0.5",
+    "axios": "^0.21.1",
     "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react-dom": "^17.0.1",
+    "react-redux": "7.2.2",
+    "redux": "4.0.5"
   },
   "peerDependencies": {
     "react": "^17.0.1",

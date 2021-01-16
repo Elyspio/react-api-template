@@ -2,7 +2,7 @@ import {Controller, Get, Use, UseAuth, UseBefore} from "@tsed/common";
 import {RequireLogin} from "../../middleware/authentication";
 import {Returns} from "@tsed/schema";
 
-@Controller("/example")
+@Controller("/test")
 export class Example {
 
     @Get("/")

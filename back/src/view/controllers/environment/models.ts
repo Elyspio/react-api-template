@@ -1,5 +1,5 @@
 import * as process from "process";
-import {AdditionalProperties} from "@tsed/schema";
+import {AdditionalProperties, DateTime, Property} from "@tsed/schema";
 
 @AdditionalProperties({type: "string"})
 export class EnvironementsModel {

@@ -4,12 +4,12 @@ import {RequireExposedEnvironment} from "../../middleware/environment";
 import {EnvironementsModel} from "./models"
 
 @Controller("/environments")
-export class Example {
+export class Environments {
     @Get("/")
     @UseBefore(RequireExposedEnvironment)
     @Returns(403)
     @Returns(200, EnvironementsModel).ContentType("application/json")
-    async getAdmin() {
-        return process.env;
+    async get() {
+        return JSON.stringify(process.env);
     }
 }

@@ -15,7 +15,7 @@ export class TestService {
             return a.data
         }
         catch (e) {
-            Api.redirect(getLoginPage())
+            // Api.redirect(getLoginPage())
         }
     }
 }
