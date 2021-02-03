@@ -1,4 +1,4 @@
-import {Controller, Get, Use, UseAuth, UseBefore} from "@tsed/common";
+import {Controller, Get, UseBefore} from "@tsed/common";
 import {RequireLogin} from "../../middleware/authentication";
 import {Returns} from "@tsed/schema";
 

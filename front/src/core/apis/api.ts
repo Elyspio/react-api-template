@@ -1,4 +1,3 @@
-
 type apiCallResponse<T> = { data: T, status: number };
 export type apiCall<T = any> = <T>(url: string, data?: object) => Promise<apiCallResponse<T>>;
 

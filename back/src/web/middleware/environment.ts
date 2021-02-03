@@ -5,7 +5,6 @@ import {globalConf} from "../../config/global";
 import {UnauthorizedModel} from "./authentication";
 
 
-
 @Middleware()
 export class RequireExposedEnvironment implements IMiddleware {
     @Returns(401).Of(UnauthorizedModel)

@@ -1,7 +1,4 @@
 import {Apis} from "../apis";
-import {getLoginPage} from "../../config/apis/authentication";
-import {Api} from "../apis/api";
-import axios, {AxiosRequestConfig} from "axios";
 
 export class TestService {
     getContent() {
@@ -10,11 +7,10 @@ export class TestService {
 
     async getAdminContent() {
         try {
-            const conf= {query: {token: document.cookie.slice(document.cookie.indexOf("=") + 1)}}
+            const conf = {query: {token: document.cookie.slice(document.cookie.indexOf("=") + 1)}}
             const a = await Apis.core.example.exampleGetAdmin(conf)
             return a.data
-        }
-        catch (e) {
+        } catch (e) {
             // Api.redirect(getLoginPage())
         }
     }
