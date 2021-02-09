@@ -8,12 +8,12 @@
 		"docker": "docker buildx build --platform linux/arm64,linux/amd64  -f ../Dockerfile  -t elyspio/express-react-ts-template --push .."
 	},
 	"dependencies": {
-		"@tsed/common": "^6.24.0",
-		"@tsed/core": "^6.24.0",
-		"@tsed/di": "^6.24.0",
-		"@tsed/schema": "^6.24.0",
-		"@tsed/platform-express": "^6.24.0",
-		"@tsed/swagger": "^6.24.0",
+		"@tsed/common": "^6.24.1",
+		"@tsed/core": "^6.24.1",
+		"@tsed/di": "^6.24.1",
+		"@tsed/schema": "^6.24.1",
+		"@tsed/platform-express": "^6.24.1",
+		"@tsed/swagger": "^6.24.1",
 		"body-parser": "^1.19.0",
 		"compression": "^1.7.4",
 		"cookie-parser": "^1.4.5",
