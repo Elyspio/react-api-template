@@ -1,6 +1,6 @@
 import {Apis} from "../apis";
 
-export class TestService {
+export class ExampleService {
     getContent() {
         return Apis.core.example.exampleGet()
     }

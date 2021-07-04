@@ -1,29 +1,10 @@
-import {EnvironmentsApi, ExampleApi} from "./back"
-import store from "../../view/store";
+import {ExampleApi} from "./core"
 
-type Apis = {
+
+export const Apis = {
     core: {
-        example: ExampleApi,
-        environments: EnvironmentsApi
+        example: new ExampleApi(undefined, window.config.endpoints.core)
     }
-}
-
-const getEnv = (name: string, fallback: string): string => {
-    return store.getState().environments.envs[name] ?? fallback
-}
-
-export var Apis: Apis = createApis();
-
-export function createApis(): Apis {
-
-    const backend = getEnv("BACKEND_HOST", "http://localhost:4000");
-    Apis = {
-        core: {
-            example: new ExampleApi({basePath: backend}),
-            environments: new EnvironmentsApi({basePath: backend})
-        }
-    }
-    return Apis;
 }
 
 

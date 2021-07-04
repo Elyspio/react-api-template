@@ -10,7 +10,7 @@ $log.info({frontPath, rootDir});
 
 export const webConfig: Partial<TsED.Configuration> = {
     rootDir,
-    acceptMimes: ['application/json'],
+    acceptMimes: ['application/json', 'text/plain'],
     httpPort: process.env.HTTP_PORT || 4000,
     httpsPort: false, // CHANGE
     mount: {
