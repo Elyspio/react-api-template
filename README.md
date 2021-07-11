@@ -15,7 +15,7 @@ This project comes with a dockerfile to handle the creation of a docker image.
 
 ### Images
 
-- node for building steps
+- node for the building steps
 - node:alpine as the deployed container
 
 ### Platform supported

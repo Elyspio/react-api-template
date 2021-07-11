@@ -10,28 +10,28 @@ import {withDrawer} from "./utils/drawer/Drawer.hoc";
 
 function Application() {
 
-    const dispatch = useAppDispatch();
+	const dispatch = useAppDispatch();
 
-    const icon = useAppSelector(s => s.theme.current === "dark" ? <Brightness5Icon/> : <Brightness3Icon/>)
+	const icon = useAppSelector(s => s.theme.current === "dark" ? <Brightness5Icon/> : <Brightness3Icon/>)
 
-    const drawer = withDrawer({
-        component: <Example/>,
-        actions: [{
-            component: {
-                icon,
-                onClick: () => dispatch(toggleTheme()),
-            },
-            description: {children: "Switch Lights"}
-        }],
-        title: "Example"
-    })
+	const drawer = withDrawer({
+		component: <Example/>,
+		actions: [{
+			component: {
+				icon,
+				onClick: () => dispatch(toggleTheme()),
+			},
+			description: {children: "Switch Lights"}
+		}],
+		title: "Example"
+	})
 
 
-    return (
-        <Paper square={true} className={"Application"}>
-            {drawer}
-        </Paper>
-    );
+	return (
+		<Paper square={true} className={"Application"}>
+			{drawer}
+		</Paper>
+	);
 }
 
 
