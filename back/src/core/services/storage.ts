@@ -6,20 +6,20 @@ import {getLogger} from "../utils/logger";
 
 const {writeFile, readFile} = promises
 
-export const files = {
-	account: process.env.ACCOUNT_PATH ?? "/app/accounts.json"
-}
+export const files = {}
 
 export class Storage {
 
 	private static logger = getLogger.service(Storage)
 
 	@Log(Storage.logger)
-	async store(name: string, data: string) {
+	async store(name: string, data: string | object) {
 
 		if (name[0] === "~") {
 			name = path.join(os.homedir(), name.slice(1))
 		}
+
+		if (typeof data === "object") data = JSON.stringify(data, null, 4);
 
 		return writeFile(path.resolve(name), data);
 	}
