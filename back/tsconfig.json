@@ -16,9 +16,13 @@
 		"moduleResolution": "node",
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
-		"sourceMap": false,
+		"sourceMap": true,
 		"declaration": false,
-		"allowSyntheticDefaultImports": true
+		"allowSyntheticDefaultImports": true,
+		"importHelpers": true,
+		"strictBindCallApply": true,
+		"strictNullChecks": true,
+		"strictFunctionTypes": true
 	},
 	"include": [
 		"./src/**/*.ts"
@@ -26,7 +30,6 @@
 	"exclude": [
 		"node_modules",
 		"./public",
-		"dist",
-		"test"
+		"dist"
 	]
 }

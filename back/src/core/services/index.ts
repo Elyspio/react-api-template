@@ -1,7 +1,7 @@
 import {AuthenticationService} from "./authentication";
-import {Storage} from "./storage";
+import {StorageService} from "./storage";
 
 export const Services = {
 	authentication: new AuthenticationService(),
-	storage: new Storage()
+	storage: new StorageService()
 }

@@ -5,6 +5,8 @@ import {Services} from "../../core/services";
 import {Request} from "express"
 import {authorization_cookie_token} from "../../config/authentication";
 import {getLogger} from "../../core/utils/logger";
+import {Helper} from "../../core/utils/helper";
+import isDev = Helper.isDev;
 
 export class UnauthorizedModel {
 	@ArrayOf(String)
@@ -24,18 +26,22 @@ export class RequireLogin implements IMiddleware {
 	private static log = getLogger.middleware(RequireLogin)
 
 	@Returns(401, UnauthorizedModel)
-	public async use(@Req() {headers, cookies}: Request, @QueryParams("token") token: string) {
+	public async use(@Req() {headers, cookies}: Request, @QueryParams("token") token?: string) {
 
+		// Sanitize token param
+		if (token === "") token = undefined;
 
-		RequireLogin.log.info("New request checking IGNORE_AUTH value", process.env.IGNORE_AUTH)
-
-		if (!process.env.IGNORE_AUTH) {
+		if (!isDev()) {
 			try {
 
 				const cookieAuth = cookies[authorization_cookie_token]
 				const headerToken = headers[authorization_cookie_token];
 
-				RequireLogin.log.info("RequireLogin", {cookies: cookies.authorization_cookie_token, token, header: headerToken})
+				RequireLogin.log.info("RequireLogin", {
+					cookieAuth,
+					headerToken,
+					uriToken: token,
+				})
 
 				token = token ?? cookieAuth;
 				token = token ?? headerToken as string

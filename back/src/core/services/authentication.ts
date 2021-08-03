@@ -8,9 +8,8 @@ export class AuthenticationService {
 
 	@Log(AuthenticationService.log)
 	public async isAuthenticated(token: string) {
-		const result = await Apis.authentication.authenticationValidToken({token});
-		AuthenticationService.log.info("AuthenticationService.isAuthenticated", {data: result.data, status: result.status})
-		return result.status === 204;
+		const {data} = await Apis.authentication.validToken({token});
+		AuthenticationService.log.debug(`isAuthenticated token=${token} result=${data}`)
+		return data === true;
 	}
-
 }

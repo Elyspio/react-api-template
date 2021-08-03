@@ -1,0 +1,7 @@
+version: "3"
+services:
+    backuper:
+        image: elyspio/express-react-ts-template
+        ports:
+            - "4010:4000"
+
