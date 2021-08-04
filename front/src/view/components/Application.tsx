@@ -8,7 +8,7 @@ import {toggleTheme} from "../../store/module/theme/theme.action";
 import {createDrawerAction, withDrawer} from "./utils/drawer/Drawer.hoc";
 import {Box} from "@material-ui/core";
 import {Login, Logout} from "@material-ui/icons";
-import {login} from "../../store/module/authentication/authentication.action";
+import {login, logout} from "../../store/module/authentication/authentication.action";
 
 function Application() {
 
@@ -32,7 +32,7 @@ function Application() {
 	if (logged) {
 		actions.push(createDrawerAction("Logout", {
 			icon: <Logout/>,
-			onClick: () => dispatch(login()),
+			onClick: () => dispatch(logout()),
 		}))
 	} else {
 		actions.push(createDrawerAction("Login", {

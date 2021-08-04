@@ -1,5 +1,5 @@
 import {createReducer} from "@reduxjs/toolkit";
-import {login} from "./authentication.action";
+import {login, logout} from "./authentication.action";
 import {CredentialsModel, UserSettingsModel} from "../../../core/apis/authentication";
 
 export interface AuthenticationState {
@@ -20,4 +20,12 @@ export const authenticationReducer = createReducer(defaultState, (builder) => {
 		state.username = action.payload.username;
 		state.settings = action.payload.settings
 	});
+
+
+	builder.addCase(logout.fulfilled, state => {
+		state.logged = defaultState.logged;
+		state.credentials =  defaultState.credentials;
+		state.username =  defaultState.username;
+		state.settings =  defaultState.settings;
+	})
 });

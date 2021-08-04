@@ -3,6 +3,7 @@ import {Services} from "../../../core/services";
 import store, {StoreState} from "../../index";
 import {UserSettingsModel, UserSettingsModelThemeEnum} from "../../../core/apis/authentication";
 import {setTheme} from "../theme/theme.action";
+import {AuthenticationEvents} from "../../../core/services/authentication";
 
 const createAction = <T>(name: string) => _createAction<T>(`authentication/${name}`);
 
@@ -41,6 +42,7 @@ export const login = createAsyncThunk("authentication/login", async (_, {getStat
 				authentication.getCredentials(username),
 				authentication.getSettings(username)
 			]);
+			AuthenticationEvents.emit("login");
 			return {username, credentials, settings}
 		} else {
 			throw new Error("An error occurred while opening the login page")
@@ -49,6 +51,10 @@ export const login = createAsyncThunk("authentication/login", async (_, {getStat
 		console.info("You are already logged");
 		return {username, credentials, settings}
 	}
+})
+
+export const logout = createAsyncThunk("authentication/logout", async () => {
+	await Services.authentication.logout();
 })
 
 export const setUserSettings = createAction<UserSettingsModel>("setUserSettings");

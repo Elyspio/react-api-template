@@ -1,5 +1,6 @@
 import {Apis} from "../apis";
 import {openPage} from "../utils/web";
+import {EventManager} from "../utils/event";
 
 export class AuthenticationService {
 	public openLoginPage() {
@@ -27,4 +28,13 @@ export class AuthenticationService {
 		return Apis.authentication.login.validToken().then(x => x.data);
 	}
 
+	public logout() {
+		return Apis.authentication.login.logout()
+	}
+
 }
+
+export const AuthenticationEvents = new EventManager<{
+	login: () => void
+	logout: () => void
+}>();
