@@ -24,8 +24,8 @@ export const authenticationReducer = createReducer(defaultState, (builder) => {
 
 	builder.addCase(logout.fulfilled, state => {
 		state.logged = defaultState.logged;
-		state.credentials =  defaultState.credentials;
-		state.username =  defaultState.username;
-		state.settings =  defaultState.settings;
+		state.credentials = defaultState.credentials;
+		state.username = defaultState.username;
+		state.settings = defaultState.settings;
 	})
 });

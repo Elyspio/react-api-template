@@ -1,14 +1,11 @@
-import {createAction as _createAction, createAsyncThunk} from "@reduxjs/toolkit";
+import {createAsyncThunk} from "@reduxjs/toolkit";
 import {Services} from "../../../core/services";
 import store, {StoreState} from "../../index";
-import {UserSettingsModel, UserSettingsModelThemeEnum} from "../../../core/apis/authentication";
+import {UserSettingsModelThemeEnum} from "../../../core/apis/authentication";
 import {setTheme} from "../theme/theme.action";
 import {AuthenticationEvents} from "../../../core/services/authentication";
 
-const createAction = <T>(name: string) => _createAction<T>(`authentication/${name}`);
-
-
-export const login = createAsyncThunk("authentication/login", async (_, {getState}) => {
+export const login = createAsyncThunk("authentication/login", async (_, {getState, dispatch}) => {
 	const {authentication} = Services
 	const {logged, username, credentials, settings} = (getState() as StoreState).authentication
 	if (!logged || username === undefined || credentials === undefined) {
@@ -29,19 +26,24 @@ export const login = createAsyncThunk("authentication/login", async (_, {getStat
 
 					return false;
 				}
+
 				if (!(await func())) {
 					interval = setInterval(func, 500);
 				}
-
-				page.onclose = clearInter
+				if (process.env.NODE_ENV === "production") page.onclose = clearInter
 			})
-			page.close();
+			if (process.env.NODE_ENV === "production") page.close();
 			const username = await authentication.getUsername();
 
-			const [credentials, settings] = await Promise.all([
+			const [settings, credentials] = await Promise.all([
+				authentication.getSettings(username),
 				authentication.getCredentials(username),
-				authentication.getSettings(username)
 			]);
+
+			const theme = await authentication.getUserTheme(username);
+			dispatch(setTheme(theme));
+			Services.localStorage.settings.store(undefined, settings);
+
 			AuthenticationEvents.emit("login");
 			return {username, credentials, settings}
 		} else {
@@ -55,9 +57,8 @@ export const login = createAsyncThunk("authentication/login", async (_, {getStat
 
 export const logout = createAsyncThunk("authentication/logout", async () => {
 	await Services.authentication.logout();
+	AuthenticationEvents.emit("logout")
 })
-
-export const setUserSettings = createAction<UserSettingsModel>("setUserSettings");
 
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
 	const newColorScheme = e.matches ? "dark" : "light";

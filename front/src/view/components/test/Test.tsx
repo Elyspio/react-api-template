@@ -1,4 +1,4 @@
-import {CircularProgress, Container} from "@material-ui/core";
+import {CircularProgress, Container, Grid} from "@material-ui/core";
 import "./Test.scss"
 import Typography from "@material-ui/core/Typography";
 import Button from '@material-ui/core/Button';
@@ -6,17 +6,13 @@ import {Services} from "../../../core/services";
 import * as React from 'react';
 import {useAsyncEffect} from "../../hooks/useAsyncEffect";
 import {useAsyncCallback} from "../../hooks/useAsyncCallback";
+import {AuthenticationEvents} from "../../../core/services/authentication";
 
 const Test = () => {
 
 
 	const [msg, setMsg] = React.useState("");
 	const [admin, setAdmin] = React.useState("");
-
-	useAsyncEffect(async () => {
-		const {data} = await Services.example.getContent();
-		setMsg(data)
-	}, [])
 
 	const [fetchAdmin, {isExecuting}] = useAsyncCallback(async () => {
 		const data = await Services.example.getAdminContent();
@@ -25,13 +21,35 @@ const Test = () => {
 		}
 	}, [])
 
+
+	useAsyncEffect(async () => {
+		const {data} = await Services.example.getContent();
+		setMsg(data)
+
+		AuthenticationEvents.on("login", () => {
+			fetchAdmin();
+		})
+	}, [])
+
+
 	return (
 		<Container className={"Test"}>
-			<Typography variant={"h6"} color={"textPrimary"}>Test</Typography>
-			<Typography color={"textPrimary"}>msg: {msg}</Typography>
 
-			<Button onClick={fetchAdmin}>{isExecuting ? <CircularProgress/> : "Admin content"}</Button>
-			{admin && <Typography color={"textPrimary"}>admin response: {admin}</Typography>}
+
+			<Grid container direction={"column"}>
+
+				<Grid item container alignItems={"center"} spacing={4}>
+					<Grid item><Typography color={"textPrimary"} variant={"overline"}>Test</Typography></Grid>
+					<Grid item><Typography color={"textPrimary"}>{msg}</Typography></Grid>
+				</Grid>
+
+				<Grid item container alignItems={"center"} spacing={4}>
+					<Grid item><Typography color={"textPrimary"} variant={"overline"}>Test (Admin)</Typography></Grid>
+					<Button color={"secondary"} onClick={fetchAdmin}>{isExecuting ? <CircularProgress/> : "Fetch admin"}</Button>
+					<Grid item><Typography color={"error"}>{admin}</Typography></Grid>
+				</Grid>
+			</Grid>
+
 
 		</Container>
 	);

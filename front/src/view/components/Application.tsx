@@ -7,7 +7,8 @@ import {useAppDispatch, useAppSelector} from "../../store";
 import {toggleTheme} from "../../store/module/theme/theme.action";
 import {createDrawerAction, withDrawer} from "./utils/drawer/Drawer.hoc";
 import {Box} from "@material-ui/core";
-import {Login, Logout} from "@material-ui/icons";
+import {ReactComponent as Logout} from "../icons/logout.svg"
+import {ReactComponent as Login} from "../icons/login.svg"
 import {login, logout} from "../../store/module/authentication/authentication.action";
 
 function Application() {
@@ -31,12 +32,12 @@ function Application() {
 
 	if (logged) {
 		actions.push(createDrawerAction("Logout", {
-			icon: <Logout/>,
+			icon: <Logout fill={"currentColor"}/>,
 			onClick: () => dispatch(logout()),
 		}))
 	} else {
 		actions.push(createDrawerAction("Login", {
-			icon: <Login/>,
+			icon: <Login fill={"currentColor"}/>,
 			onClick: () => dispatch(login()),
 		}))
 	}
