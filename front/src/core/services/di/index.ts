@@ -1,5 +1,7 @@
-export const DiServices = {
-	authentication: Symbol.for("AuthenticationService"),
-	theme: Symbol.for("ThemeService")
-}
+import {container} from "./di.service"
+import {DiKeysService} from "./di.keys.service"
 
+export const DependencyInjection =  {
+	keys: DiKeysService,
+	container,
+}

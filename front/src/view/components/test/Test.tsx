@@ -2,20 +2,26 @@ import {CircularProgress, Container, Grid} from "@material-ui/core";
 import "./Test.scss"
 import Typography from "@material-ui/core/Typography";
 import Button from '@material-ui/core/Button';
-import {Services} from "../../../core/services";
 import * as React from 'react';
 import {useAsyncEffect} from "../../hooks/useAsyncEffect";
 import {useAsyncCallback} from "../../hooks/useAsyncCallback";
 import {AuthenticationEvents} from "../../../core/services/authentication";
+import {ExampleService} from "../../../core/services/example";
+import {useInjection} from "inversify-react";
+import {DependencyInjection} from "../../../core/services/di";
 
 const Test = () => {
+
+	const services = {
+		example: useInjection<ExampleService>(DependencyInjection.keys.example)
+	}
 
 
 	const [msg, setMsg] = React.useState("");
 	const [admin, setAdmin] = React.useState("");
 
 	const [fetchAdmin, {isExecuting, error}] = useAsyncCallback(async () => {
-		const data = await Services.example.getAdminContent();
+		const data = await services.example.getAdminContent();
 		if (data) {
 			setAdmin(data)
 		}
@@ -23,7 +29,7 @@ const Test = () => {
 
 
 	useAsyncEffect(async () => {
-		const {data} = await Services.example.getContent();
+		const {data} = await services.example.getContent();
 		setMsg(data)
 
 		AuthenticationEvents.on("login", () => {

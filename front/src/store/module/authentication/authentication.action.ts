@@ -1,13 +1,17 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {container, Services} from "../../../core/services";
 import store, {StoreState} from "../../index";
 import {UserSettingsModelThemeEnum} from "../../../core/apis/authentication";
 import {setTheme} from "../theme/theme.action";
 import {AuthenticationEvents, AuthenticationService} from "../../../core/services/authentication";
-import {DiServices} from "../../../core/services/di";
 import {toast} from "react-toastify";
+import {DependencyInjection} from "../../../core/services/di";
+import {LocalStorageService} from "../../../core/services/localStorage";
 
-const authentication = container.get<AuthenticationService>(DiServices.authentication)
+const authentication = DependencyInjection.container.get<AuthenticationService>(DependencyInjection.keys.authentication)
+const localStorages = {
+	validation :  DependencyInjection.container.get<LocalStorageService>(DependencyInjection.keys.localStorage.validation),
+	settings: DependencyInjection.container.get<LocalStorageService>(DependencyInjection.keys.localStorage.settings)
+}
 
 
 function waitForLogin(page: Window) {
@@ -19,9 +23,9 @@ function waitForLogin(page: Window) {
 
 		const func = async () => {
 			console.debug("Checking if user is logged from local storage")
-			const isPresent = Services.localStorage.validation.retrieve(undefined) !== undefined;
+			const isPresent = localStorages.validation.retrieve(undefined) !== undefined;
 			if (isPresent) {
-				Services.localStorage.validation.remove()
+				localStorages.validation.remove()
 				clearInter();
 				resolve()
 				return true;
@@ -65,7 +69,7 @@ export const getUserInfos = createAsyncThunk("authentication/getUserInfos", asyn
 		authentication.getCredentials(username),
 	]);
 
-	Services.localStorage.settings.store(undefined, settings);
+	localStorages.settings.store(undefined, settings);
 
 	AuthenticationEvents.emit("login", username);
 	return {settings, credentials, username}

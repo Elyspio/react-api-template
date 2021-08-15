@@ -1,9 +1,9 @@
 import {createTheme, Theme} from "@material-ui/core";
 import * as colors from "@material-ui/core/colors";
-import {container, Services} from "../core/services";
 import {UserSettingsModel} from "../core/apis/authentication";
-import {DiServices} from "../core/services/di";
 import {ThemeService} from "../core/services/theme";
+import {DependencyInjection} from "../core/services/di";
+import {LocalStorageService} from "../core/services/localStorage";
 
 const darkTheme = createTheme(({
 	palette: {
@@ -45,10 +45,12 @@ export const themes = {
 };
 
 export type Themes = "dark" | "light";
-const themeService = container.get<ThemeService>(DiServices.theme);
+const themeService = DependencyInjection.container.get<ThemeService>(DependencyInjection.keys.theme);
+const localStorageSettings = DependencyInjection.container.get<LocalStorageService>(DependencyInjection.keys.localStorage.settings);
+
 export const getUrlTheme = (): Themes => {
 	let fromUrl = new URL(window.location.toString()).searchParams.get("theme");
-	let fromSession = Services.localStorage.settings.retrieve<UserSettingsModel>()
+	let fromSession = localStorageSettings.retrieve<UserSettingsModel>()
 	if (fromUrl) return fromUrl as Themes;
 	if (fromSession?.theme) {
 		if (fromSession.theme === "system") {
