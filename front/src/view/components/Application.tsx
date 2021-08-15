@@ -10,6 +10,7 @@ import {createDrawerAction, withDrawer} from "./utils/drawer/Drawer.hoc";
 import {Box} from "@material-ui/core";
 import {ReactComponent as Logout} from "../icons/logout.svg"
 import {login, logout} from "../../store/module/authentication/authentication.action";
+import {updateToastTheme} from "./utils/toast";
 
 function Application() {
 
@@ -21,6 +22,7 @@ function Application() {
 		logged: s.authentication.logged
 	}))
 
+	React.useEffect(() => updateToastTheme(theme), [theme])
 
 	const actions = [
 		createDrawerAction(theme === "dark" ? "Light Mode" : "Dark Mode", {

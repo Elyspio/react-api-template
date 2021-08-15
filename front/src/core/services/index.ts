@@ -14,6 +14,7 @@ container.bind<ThemeService>(DiServices.theme).to(ThemeService)
 export const Services = {
 	example: new ExampleService(),
 	localStorage: {
-		settings: new LocalStorageService("elyspio-authentication-settings")
+		settings: new LocalStorageService("elyspio-authentication-settings"),
+		validation: new LocalStorageService("elyspio-authentication-validation"),
 	},
 }

@@ -6,7 +6,6 @@ import {setTheme} from "../theme/theme.action";
 import {AuthenticationEvents, AuthenticationService} from "../../../core/services/authentication";
 import {DiServices} from "../../../core/services/di";
 import {toast} from "react-toastify";
-import {CircularProgress, Typography} from "@material-ui/core";
 
 const authentication = container.get<AuthenticationService>(DiServices.authentication)
 
@@ -19,8 +18,10 @@ function waitForLogin(page: Window) {
 		page.onclose = clearInter
 
 		const func = async () => {
-			console.debug("Checking if user got logged")
-			if (await authentication.isLogged()) {
+			console.debug("Checking if user is logged from local storage")
+			const isPresent = Services.localStorage.validation.retrieve(undefined) !== undefined;
+			if (isPresent) {
+				Services.localStorage.validation.remove()
 				clearInter();
 				resolve()
 				return true;
@@ -39,14 +40,13 @@ function waitForLogin(page: Window) {
 export const login = createAsyncThunk("authentication/login", async (_, {getState, dispatch}) => {
 	const {logged, username, credentials, settings} = (getState() as StoreState).authentication
 	if (!logged || username === undefined || credentials === undefined) {
-		const toastId = toast.info(<Typography>Loading in progress <CircularProgress color={"primary"}/></Typography>, {autoClose: false})
+		const toastId = toast.info("Connecting", {autoClose: false})
 		const page = authentication.openLoginPage();
 		if (page != null) {
 			await waitForLogin(page);
 			page.close();
 			dispatch(getUserInfos());
-			toast.update(toastId, {type: "success", render: <Typography>Login completed</Typography>})
-			setTimeout(() => toast.dismiss(toastId), 1e4)
+			toast.update(toastId, {render: "Connected", autoClose: 5000, type: "success"})
 		} else {
 			throw new Error("An error occurred while opening the login page")
 		}

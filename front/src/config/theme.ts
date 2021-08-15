@@ -14,8 +14,8 @@ const darkTheme = createTheme(({
 
 		},
 		primary: {
-			...colors.blue,
-			main: colors.blue["400"],
+			...colors.teal,
+			main: colors.teal["A400"],
 		},
 		background: {
 			paper: "#1d1d1d",

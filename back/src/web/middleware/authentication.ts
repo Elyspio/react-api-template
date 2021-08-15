@@ -4,7 +4,6 @@ import {Unauthorized} from "@tsed/exceptions"
 import {Request} from "express"
 import {authorization_cookie_token} from "../../config/authentication";
 import {getLogger} from "../../core/utils/logger";
-import {Helper} from "../../core/utils/helper";
 import {Inject} from "@tsed/di";
 import {AuthenticationService} from "../../core/services/authentication";
 

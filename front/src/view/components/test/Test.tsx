@@ -14,7 +14,7 @@ const Test = () => {
 	const [msg, setMsg] = React.useState("");
 	const [admin, setAdmin] = React.useState("");
 
-	const [fetchAdmin, {isExecuting}] = useAsyncCallback(async () => {
+	const [fetchAdmin, {isExecuting, error}] = useAsyncCallback(async () => {
 		const data = await Services.example.getAdminContent();
 		if (data) {
 			setAdmin(data)
@@ -36,17 +36,18 @@ const Test = () => {
 		<Container className={"Test"}>
 
 
-			<Grid container direction={"column"}>
+			<Grid container direction={"column"} spacing={2}>
 
 				<Grid item container alignItems={"center"} spacing={4}>
 					<Grid item><Typography color={"textPrimary"} variant={"overline"}>Test</Typography></Grid>
-					<Grid item><Typography color={"textPrimary"}>{msg}</Typography></Grid>
+					<Grid item><Typography color={"textSecondary"}>{msg}</Typography></Grid>
 				</Grid>
 
 				<Grid item container alignItems={"center"} spacing={4}>
 					<Grid item><Typography color={"textPrimary"} variant={"overline"}>Test (Admin)</Typography></Grid>
-					<Button color={"secondary"} onClick={fetchAdmin}>{isExecuting ? <CircularProgress/> : "Fetch admin"}</Button>
-					<Grid item><Typography color={"error"}>{admin}</Typography></Grid>
+					<Button color={"primary"} style={{width: "12rem", height: "2.5rem"}} variant={"outlined"} onClick={fetchAdmin}>{isExecuting ? <CircularProgress/> : "Fetch admin"}</Button>
+					<Grid item><Typography color={"textSecondary"}>{admin}</Typography></Grid>
+					{error && <Grid item><Typography color={"error"}>{error.toString()}</Typography></Grid>}
 				</Grid>
 			</Grid>
 

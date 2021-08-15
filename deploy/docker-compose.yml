@@ -1,7 +1,11 @@
 version: "3"
 services:
-    backuper:
+    express-react-ts-template:
         image: elyspio/express-react-ts-template
         ports:
             - "4010:4000"
-
+        volumes:
+            - "./config/front/conf.js:/front/conf.js"
+        container_name: "express-react-ts-template"
+        environment:
+            AUTHENTICATION_SERVER_URI: "https://elyspio.fr/authentication"
