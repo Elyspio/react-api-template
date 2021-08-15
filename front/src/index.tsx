@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.scss';
@@ -7,7 +8,8 @@ import Application from "./view/components/Application";
 import {ThemeProvider} from '@material-ui/core';
 import {themes} from "./config/theme";
 import {Config} from "./config/window";
-
+import {ToastContainer} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 declare global {
 	interface Window {
@@ -22,6 +24,7 @@ function Wrapper() {
 	return (
 		<ThemeProvider theme={theme}>
 			<Application/>
+			<ToastContainer position={"top-left"}/>
 		</ThemeProvider>
 	);
 }

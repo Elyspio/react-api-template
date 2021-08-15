@@ -1,9 +1,18 @@
 import {Apis} from "../apis";
 import {openPage} from "../utils/web";
 import {EventManager} from "../utils/event";
-import {Services} from "./index";
+import {inject, injectable} from "inversify";
+import {DiServices} from "./di";
+import {ThemeService} from "./theme";
 
+@injectable()
 export class AuthenticationService {
+
+
+	@inject(DiServices.theme)
+	private themeService!: ThemeService
+
+
 	public openLoginPage() {
 		return openPage(window.config.loginPageUrl);
 	}
@@ -25,7 +34,7 @@ export class AuthenticationService {
 	}
 
 	public async getUserTheme(username: string) {
-		let theme = await Services.theme.getThemeFromSystem();
+		let theme = await this.themeService.getThemeFromSystem();
 		return Apis.authentication.user.getUserTheme(
 			username,
 			theme
@@ -43,6 +52,7 @@ export class AuthenticationService {
 }
 
 export const AuthenticationEvents = new EventManager<{
-	login: () => void
+	login: (username: string) => void
 	logout: () => void
 }>();
+

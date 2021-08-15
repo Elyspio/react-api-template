@@ -1,5 +1,7 @@
 import {Themes} from "../../config/theme";
+import {injectable} from "inversify";
 
+@injectable()
 export class ThemeService {
 
 	getThemeFromSystem(): Themes {

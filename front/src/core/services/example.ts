@@ -2,16 +2,10 @@ import {Apis} from "../apis";
 
 export class ExampleService {
 	getContent() {
-		return Apis.core.example.exampleGet()
+		return Apis.core.example.get()
 	}
 
 	async getAdminContent() {
-		try {
-			const conf = {query: {token: document.cookie.slice(document.cookie.indexOf("=") + 1)}}
-			const a = await Apis.core.example.exampleGetAdmin(conf)
-			return a.data
-		} catch (e) {
-			// Api.redirect(getLoginPage())
-		}
+		return Apis.core.example.getAdmin().then(x => x.data);
 	}
 }

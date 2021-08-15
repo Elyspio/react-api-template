@@ -19,6 +19,9 @@ export const webConfig: Partial<Configuration> = {
 			`${rootDir}/web/controllers/**/*.ts`
 		]
 	},
+	componentsScan: [
+		`${rootDir}/core/**/*ts`
+	],
 	exclude: [
 		'**/*.spec.ts'
 	],

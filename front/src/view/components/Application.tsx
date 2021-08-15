@@ -2,13 +2,13 @@ import * as React from 'react';
 import "./Application.scss"
 import Brightness5Icon from '@material-ui/icons/Brightness5';
 import Brightness3Icon from '@material-ui/icons/Brightness3';
+import Login from '@material-ui/icons/AccountCircle';
 import Example from "./test/Test";
 import {useAppDispatch, useAppSelector} from "../../store";
 import {toggleTheme} from "../../store/module/theme/theme.action";
 import {createDrawerAction, withDrawer} from "./utils/drawer/Drawer.hoc";
 import {Box} from "@material-ui/core";
 import {ReactComponent as Logout} from "../icons/logout.svg"
-import {ReactComponent as Login} from "../icons/login.svg"
 import {login, logout} from "../../store/module/authentication/authentication.action";
 
 function Application() {

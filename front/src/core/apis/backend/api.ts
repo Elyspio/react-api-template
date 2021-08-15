@@ -64,10 +64,10 @@ export interface Forbidden {
 	errors?: Array<GenericError>;
 	/**
 	 * The stack trace (only in development mode)
-	 * @type {Array<string>}
+	 * @type {string}
 	 * @memberof Forbidden
 	 */
-	stack?: Array<string>;
+	stack?: string;
 }
 
 /**
@@ -103,7 +103,7 @@ export const ExampleApiAxiosParamCreator = function (configuration?: Configurati
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		exampleGet: async (options: any = {}): Promise<RequestArgs> => {
+		get: async (options: any = {}): Promise<RequestArgs> => {
 			const localVarPath = `/api/test`;
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -131,7 +131,7 @@ export const ExampleApiAxiosParamCreator = function (configuration?: Configurati
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		exampleGetAdmin: async (options: any = {}): Promise<RequestArgs> => {
+		getAdmin: async (options: any = {}): Promise<RequestArgs> => {
 			const localVarPath = `/api/test/admin`;
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -169,8 +169,8 @@ export const ExampleApiFp = function (configuration?: Configuration) {
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async exampleGet(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.exampleGet(options);
+		async get(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.get(options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
@@ -178,8 +178,8 @@ export const ExampleApiFp = function (configuration?: Configuration) {
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async exampleGetAdmin(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.exampleGetAdmin(options);
+		async getAdmin(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.getAdmin(options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 	}
@@ -197,16 +197,16 @@ export const ExampleApiFactory = function (configuration?: Configuration, basePa
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		exampleGet(options?: any): AxiosPromise<string> {
-			return localVarFp.exampleGet(options).then((request) => request(axios, basePath));
+		get(options?: any): AxiosPromise<string> {
+			return localVarFp.get(options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		exampleGetAdmin(options?: any): AxiosPromise<string> {
-			return localVarFp.exampleGetAdmin(options).then((request) => request(axios, basePath));
+		getAdmin(options?: any): AxiosPromise<string> {
+			return localVarFp.getAdmin(options).then((request) => request(axios, basePath));
 		},
 	};
 };
@@ -224,8 +224,8 @@ export class ExampleApi extends BaseAPI {
 	 * @throws {RequiredError}
 	 * @memberof ExampleApi
 	 */
-	public exampleGet(options?: any) {
-		return ExampleApiFp(this.configuration).exampleGet(options).then((request) => request(this.axios, this.basePath));
+	public get(options?: any) {
+		return ExampleApiFp(this.configuration).get(options).then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
@@ -234,8 +234,8 @@ export class ExampleApi extends BaseAPI {
 	 * @throws {RequiredError}
 	 * @memberof ExampleApi
 	 */
-	public exampleGetAdmin(options?: any) {
-		return ExampleApiFp(this.configuration).exampleGetAdmin(options).then((request) => request(this.axios, this.basePath));
+	public getAdmin(options?: any) {
+		return ExampleApiFp(this.configuration).getAdmin(options).then((request) => request(this.axios, this.basePath));
 	}
 }
 

@@ -178,20 +178,6 @@ export interface GithubModel {
 /**
  *
  * @export
- * @interface InlineObject
- */
-export interface InlineObject {
-	/**
-	 *
-	 * @type {string}
-	 * @memberof InlineObject
-	 */
-	token?: string;
-}
-
-/**
- *
- * @export
  * @interface PostLoginInitRequest
  */
 export interface PostLoginInitRequest {
@@ -481,11 +467,11 @@ export const AuthenticationApiAxiosParamCreator = function (configuration?: Conf
 		},
 		/**
 		 *
-		 * @param {InlineObject} [inlineObject]
+		 * @param {string} [token]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		validToken: async (inlineObject?: InlineObject, options: any = {}): Promise<RequestArgs> => {
+		validToken: async (token?: string, options: any = {}): Promise<RequestArgs> => {
 			const localVarPath = `/api/authentication/valid`;
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -498,13 +484,14 @@ export const AuthenticationApiAxiosParamCreator = function (configuration?: Conf
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
 
+			if (token !== undefined) {
+				localVarQueryParameter['token'] = token;
+			}
 
-			localVarHeaderParameter['Content-Type'] = 'application/json';
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-			localVarRequestOptions.data = serializeDataIfNeeded(inlineObject, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -562,12 +549,12 @@ export const AuthenticationApiFp = function (configuration?: Configuration) {
 		},
 		/**
 		 *
-		 * @param {InlineObject} [inlineObject]
+		 * @param {string} [token]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async validToken(inlineObject?: InlineObject, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.validToken(inlineObject, options);
+		async validToken(token?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.validToken(token, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 	}
@@ -617,12 +604,12 @@ export const AuthenticationApiFactory = function (configuration?: Configuration,
 		},
 		/**
 		 *
-		 * @param {InlineObject} [inlineObject]
+		 * @param {string} [token]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		validToken(inlineObject?: InlineObject, options?: any): AxiosPromise<boolean> {
-			return localVarFp.validToken(inlineObject, options).then((request) => request(axios, basePath));
+		validToken(token?: string, options?: any): AxiosPromise<boolean> {
+			return localVarFp.validToken(token, options).then((request) => request(axios, basePath));
 		},
 	};
 };
@@ -679,13 +666,13 @@ export class AuthenticationApi extends BaseAPI {
 
 	/**
 	 *
-	 * @param {InlineObject} [inlineObject]
+	 * @param {string} [token]
 	 * @param {*} [options] Override http request option.
 	 * @throws {RequiredError}
 	 * @memberof AuthenticationApi
 	 */
-	public validToken(inlineObject?: InlineObject, options?: any) {
-		return AuthenticationApiFp(this.configuration).validToken(inlineObject, options).then((request) => request(this.axios, this.basePath));
+	public validToken(token?: string, options?: any) {
+		return AuthenticationApiFp(this.configuration).validToken(token, options).then((request) => request(this.axios, this.basePath));
 	}
 }
 
@@ -820,7 +807,7 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 			const localVarQueryParameter = {} as any;
 
 			if (windowsTheme !== undefined) {
-				localVarQueryParameter['windowsTheme'] = windowsTheme;
+				localVarQueryParameter['windows_theme'] = windowsTheme;
 			}
 
 
