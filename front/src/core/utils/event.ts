@@ -1,8 +1,8 @@
-import {EventEmitter} from "events";
+import { EventEmitter } from "events";
 
 type Event = {
-	[key in string]: (...args: any) => void
-}
+	[key in string]: (...args: any) => void;
+};
 
 export class EventManager<T extends Event = {}> {
 	private base = new EventEmitter();
@@ -12,7 +12,7 @@ export class EventManager<T extends Event = {}> {
 	}
 
 	public emit<event extends keyof T>(evt: event, ...params: Parameters<T[event]>) {
-		console.log("EventManager emit", evt)
+		console.log("EventManager emit", evt);
 		this.base.emit(evt as string, params);
 	}
 }

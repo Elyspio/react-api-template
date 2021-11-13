@@ -1,12 +1,3 @@
-*/node_modules
-*/build
-*.map
-logs
-*.js
-*.d.ts
-front/.bitmap
 .idea
-back/src/core/apis/authentication
-front/src/core/apis/back
-*.pyc
-front/scripts/generator.jar
+build
+node_modules
