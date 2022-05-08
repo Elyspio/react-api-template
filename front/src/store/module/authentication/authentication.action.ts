@@ -8,7 +8,7 @@ import { LocalStorageService } from "../../../core/services/localStorage.service
 import { UserSettingsModelThemeEnum } from "../../../core/apis/authentication/generated";
 import { DiKeysService } from "../../../core/di/services/di.keys.service";
 
-const authentication = container.get<AuthenticationService>(DiKeysService.authentication);
+const authentication = container.get(AuthenticationService);
 const localStorages = {
 	validation: container.get<LocalStorageService>(DiKeysService.localStorage.validation),
 	settings: container.get<LocalStorageService>(DiKeysService.localStorage.settings),
