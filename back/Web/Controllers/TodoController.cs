@@ -25,7 +25,7 @@ namespace Example.Api.Web.Controllers
 			return Ok(await todoService.GetAll());
 		}
 
-		[HttpPut("{id:guid}")]
+		[HttpPut("{id:guid}/toggle")]
 		[SwaggerResponse(200, type: typeof(Todo))]
 		public async Task<IActionResult> Check(Guid id)
 		{
@@ -82,7 +82,7 @@ namespace Example.Api.Web.Controllers
 
 
 		[RequireAuth]
-		[HttpPut("user/{id:guid}")]
+		[HttpPut("user/{id:guid}/toggle")]
 		[SwaggerResponse(200, type: typeof(Todo))]
 		public async Task<IActionResult> CheckForUser(Guid id)
 		{
