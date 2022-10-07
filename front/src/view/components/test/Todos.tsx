@@ -3,7 +3,7 @@ import "./Test.scss";
 import * as React from "react";
 import { Todo } from "./todo/Todo";
 
-const Test = () => {
+export const Todos = () => {
 	return (
 		<Container className={"Test"}>
 			<Paper>
@@ -22,4 +22,3 @@ const Test = () => {
 	);
 };
 
-export default Test;
