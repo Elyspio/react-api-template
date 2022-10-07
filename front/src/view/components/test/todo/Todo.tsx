@@ -24,7 +24,7 @@ import { bindActionCreators } from "redux";
 import { addTodo, checkTodo, deleteTodo, getTodos } from "../../../../store/module/todo/todo.actions";
 import { useModal } from "../../../hooks/useModal";
 import IconButton from "@mui/material/IconButton";
-import { Add } from "@mui/icons-material";
+import Add  from "@mui/icons-material/Add";
 import { TodoItem } from "./TodoItem";
 
 type TodoProps = {

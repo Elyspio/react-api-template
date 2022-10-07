@@ -1,6 +1,9 @@
 import { Container } from "inversify";
+import { addApis } from "./apis/di.api";
+import { addServices } from "./services/di.service";
 
 export const container = new Container({ defaultScope: "Singleton" });
 
-require("./apis/di.api");
-require("./services/di.service");
+
+addApis(container);
+addServices(container);
