@@ -11,8 +11,11 @@ export default defineConfig({
 			events: "rollup-plugin-node-polyfills/polyfills/events",
 		},
 	},
-	base: "/react-api-template/",
-	server: { port: 3000, host: true },
+	base: process.env.NODE_ENV === "production" ? "/react-api-template/" : undefined,
+	server: {
+		port: 3000,
+		host: true,
+	},
 	build: {
 		minify: "terser",
 		terserOptions: {
@@ -21,7 +24,7 @@ export default defineConfig({
 			ie8: false,
 			keep_classnames: true,
 			ecma: 2020,
-			format: {comments: false}
+			format: { comments: false },
 		},
 		rollupOptions: {
 			output: {

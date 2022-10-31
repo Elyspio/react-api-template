@@ -15,33 +15,33 @@ export class TodoService extends BaseService {
 	@inject(BackendApiClient)
 	private backendApiClient!: BackendApiClient;
 
-	public default: ITodoServiceSub = {
+	public common: ITodoServiceSub = {
 		get: async () => {
-			return await this.backendApiClient.clients.todo.getAll().then(this.unWrapAxios);
+			return await this.backendApiClient.todo.common.getAll().then(this.unWrapAxios);
 		},
 		add: async (label: string) => {
-			return await this.backendApiClient.clients.todo.add(label).then(this.unWrapAxios);
+			return await this.backendApiClient.todo.common.add(label).then(this.unWrapAxios);
 		},
 		check: async (id: Todo["id"]) => {
-			return await this.backendApiClient.clients.todo.check(id).then(this.unWrapAxios);
+			return await this.backendApiClient.todo.common.check(id).then(this.unWrapAxios);
 		},
 		remove: async (id: Todo["id"]) => {
-			await this.backendApiClient.clients.todo._delete(id);
+			await this.backendApiClient.todo.common._delete(id);
 		},
 	};
 
 	public user: ITodoServiceSub = {
 		get: async () => {
-			return await this.backendApiClient.clients.todo.getAllForUser().then(this.unWrapAxios);
+			return await this.backendApiClient.todo.user.getAllForUser().then(this.unWrapAxios);
 		},
 		add: async (label: string) => {
-			return await this.backendApiClient.clients.todo.addForUser(label).then(this.unWrapAxios);
+			return await this.backendApiClient.todo.user.addForUser(label).then(this.unWrapAxios);
 		},
 		check: async (id: Todo["id"]) => {
-			return await this.backendApiClient.clients.todo.checkForUser(id).then(this.unWrapAxios);
+			return await this.backendApiClient.todo.user.checkForUser(id).then(this.unWrapAxios);
 		},
 		remove: async (id: Todo["id"]) => {
-			await this.backendApiClient.clients.todo.deleteForUser(id);
+			await this.backendApiClient.todo.user.deleteForUser(id);
 		},
 	};
 }
