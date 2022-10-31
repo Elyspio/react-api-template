@@ -1,19 +1,20 @@
-﻿using System.Net;
-using System.Text.Json.Serialization;
-using Example.Api.Abstractions.Helpers;
+﻿using Example.Api.Abstractions.Helpers;
 using Example.Api.Abstractions.Interfaces.Injections;
 using Example.Api.Adapters.Injections;
 using Example.Api.Core.Injections;
 using Example.Api.Db.Injections;
 using Example.Api.Web.Filters;
+using Example.Api.Web.Processors;
 using Example.Api.Web.Utils;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Converters;
+using NJsonSchema.Generation;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
+using System.Net;
+using System.Text.Json.Serialization;
 
 namespace Example.Api.Web.Server
 {
@@ -25,8 +26,10 @@ namespace Example.Api.Web.Server
 		public ServerBuilder(string[] args)
 		{
 			var builder = WebApplication.CreateBuilder(args);
-			builder.WebHost.ConfigureKestrel((_, options) => {
-					options.Listen(IPAddress.Any, 4000, listenOptions => {
+			builder.WebHost.ConfigureKestrel((_, options) =>
+				{
+					options.Listen(IPAddress.Any, 4000, listenOptions =>
+						{
 							// Use HTTP/3
 							listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
 						}
@@ -36,8 +39,10 @@ namespace Example.Api.Web.Server
 
 
 			// Setup CORS
-			builder.Services.AddCors(options => {
-					options.AddPolicy("Cors", b => {
+			builder.Services.AddCors(options =>
+				{
+					options.AddPolicy("Cors", b =>
+						{
 							b.AllowAnyOrigin();
 							b.AllowAnyHeader();
 							b.AllowAnyMethod();
@@ -62,7 +67,8 @@ namespace Example.Api.Web.Server
 			);
 
 			// Convert Enum to String 
-			builder.Services.AddControllers(o => {
+			builder.Services.AddControllers(o =>
+					{
 						o.Conventions.Add(new ControllerDocumentationConvention());
 						o.OutputFormatters.RemoveType<StringOutputFormatter>();
 					}
@@ -72,22 +78,15 @@ namespace Example.Api.Web.Server
 
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			builder.Services.AddEndpointsApiExplorer();
-			builder.Services.AddSwaggerGen(options => {
-					if (builder.Environment.IsProduction())
-						options.AddServer(new OpenApiServer
-							{
-								Url = appPath
-							}
-						);
-
-					options.SwaggerDoc("v1", new OpenApiInfo {Title = "Example API", Version = "1"});
-
-					options.CustomOperationIds(e => $"{e.ActionDescriptor.RouteValues["action"]}");
-
-					options.OperationFilter<RequireAuthAttribute.Swagger>();
-				}
-			);
-
+			builder.Services.AddOpenApiDocument(document =>
+			{
+				document.DocumentName = "Example.Api";
+				document.Title = "Example.Api";
+				document.DefaultResponseReferenceTypeNullHandling = ReferenceTypeNullHandling.NotNull;
+				document.SchemaProcessors.Add(new NullableSchemaProcessor());
+				document.OperationProcessors.Add(new NullableOperationProcessor());
+				document.OperationProcessors.Add(new RequireAuthAttribute.Swagger());
+			});
 			// Setup SPA Serving
 			if (builder.Environment.IsProduction()) Console.WriteLine($"Server in production, serving SPA from {frontPath} folder");
 

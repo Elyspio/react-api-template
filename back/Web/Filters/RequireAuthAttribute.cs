@@ -2,8 +2,10 @@
 using Example.Api.Web.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.SwaggerGen;
+using NJsonSchema;
+using NSwag;
+using NSwag.Generation.Processors;
+using NSwag.Generation.Processors.Contexts;
 
 namespace Example.Api.Web.Filters
 {
@@ -48,53 +50,47 @@ namespace Example.Api.Web.Filters
 		}
 
 
-		public class Swagger : IOperationFilter
+		public class Swagger : IOperationProcessor
 		{
-			public void Apply(OpenApiOperation operation, OperationFilterContext context)
+			public bool Process(OperationProcessorContext context)
 			{
-				context.ApiDescription.TryGetMethodInfo(out var info);
 
 				// Get method attributes
 				var attributes = context.MethodInfo.CustomAttributes.ToList();
 
 				// Add class' attributes
-				if (info.DeclaringType != null) attributes.AddRange(info.DeclaringType.CustomAttributes);
 
-				if (attributes.All(attribute => attribute.AttributeType != typeof(RequireAuthAttribute))) return;
+				if (attributes.All(attribute => attribute.AttributeType != typeof(RequireAuthAttribute))) return true;
 
-				operation.Parameters ??= new List<OpenApiParameter>();
 
-				operation.Parameters.Add(new OpenApiParameter
+				context.OperationDescription.Operation.Parameters.Add(new OpenApiParameter
 					{
 						Name = AuthenticationTokenField,
-						In = ParameterLocation.Header,
-						Required = false,
+						Kind = OpenApiParameterKind.Header,
+						IsRequired = false,
 						AllowEmptyValue = true,
 						Description = "Authentication Token",
-						Schema = new OpenApiSchema
-						{
-							Type = "string"
-						}
+						Schema = new JsonSchema() {Type = JsonObjectType.String}
 					}
 				);
 
-				operation.Parameters.Add(new OpenApiParameter
+				context.OperationDescription.Operation.Parameters.Add(new OpenApiParameter
 					{
 						Name = AuthenticationTokenField,
-						In = ParameterLocation.Cookie,
-						Required = false,
+						Kind = OpenApiParameterKind.Cookie,
+						IsRequired = false,
 						AllowEmptyValue = true,
 						Description = "Authentication Token",
-						Schema = new OpenApiSchema
-						{
-							Type = "string"
-						}
+						Schema = new JsonSchema() {Type = JsonObjectType.String}
 					}
 				);
 
-				operation.Responses.Add("401", new OpenApiResponse {Description = "Unauthorized"});
-				operation.Responses.Add("403", new OpenApiResponse {Description = "Forbidden"});
+				context.OperationDescription.Operation.Responses.Add("401", new OpenApiResponse {Description = "Unauthorized"});
+				context.OperationDescription.Operation.Responses.Add("403", new OpenApiResponse {Description = "Forbidden"});
+				return true;
 			}
+
+			
 		}
 	}
 }

@@ -7,8 +7,8 @@
 			// Allow CORS
 			application.UseCors("Cors");
 
-			application.UseSwagger();
-			application.UseSwaggerUI();
+			application.UseOpenApi();
+			application.UseSwaggerUi3();
 
 			// Start Dependency Injection
 			application.UseAdvancedDependencyInjection();

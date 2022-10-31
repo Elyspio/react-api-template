@@ -1,6 +1,8 @@
-﻿using Example.Api.Abstractions.Helpers;
-using Example.Api.Db.Configs;
+﻿using Example.Api.Db.Configs;
 using Microsoft.Extensions.Configuration;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 
 namespace Example.Api.Db.Repositories.Internal
@@ -10,16 +12,22 @@ namespace Example.Api.Db.Repositories.Internal
 		public MongoContext(IConfiguration configuration)
 		{
 			var conf = new DbConfig();
-			configuration.GetSection(DbConfig.Section).Bind(conf);
 
-			var host = Env.Get("DB_HOST", conf.Host);
-			var username = Env.Get("DB_USERNAME", conf.Username);
-			var password = Env.Get("DB_PASSWORD", conf.Password);
-			var database = Env.Get("DB_DATABASE", conf.Database);
-			var port = Env.Get("DB_PORT", conf.Port);
-			var client = new MongoClient($"mongodb://{username}:{password}@{host}:{port}");
-			Console.WriteLine($"Connecting to Database '{database}' on {host}:{port} as {username}");
-			MongoDatabase = client.GetDatabase(database);
+			var connectionString = configuration["Database"];
+
+			var url = new MongoUrl(connectionString);
+			var client = new MongoClient(url);
+
+			Console.WriteLine($"Connecting to Database '{url.DatabaseName}'");
+
+			MongoDatabase = client.GetDatabase(url.DatabaseName);
+
+			var pack = new ConventionPack
+			{
+				new EnumRepresentationConvention(BsonType.String)
+			};
+			ConventionRegistry.Register("EnumStringConvention", pack, _ => true);
+			BsonSerializer.RegisterSerializationProvider(new EnumAsStringSerializationProvider());
 		}
 
 		/// <summary>
