@@ -1,5 +1,5 @@
 import { inject, injectable } from "inversify";
-import { BackendApiClient } from "../apis/backend";
+import { BackendApi } from "../apis/backend";
 import { Todo } from "../apis/backend/generated";
 import { BaseService } from "./base.service";
 
@@ -12,8 +12,8 @@ interface ITodoServiceSub {
 
 @injectable()
 export class TodoService extends BaseService {
-	@inject(BackendApiClient)
-	private backendApiClient!: BackendApiClient;
+	@inject(BackendApi)
+	private backendApiClient!: BackendApi;
 
 	public common: ITodoServiceSub = {
 		get: async () => {
