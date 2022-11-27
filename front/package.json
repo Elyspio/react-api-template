@@ -2,11 +2,10 @@
 	"name": "front",
 	"version": "0.1.0",
 	"private": true,
-	"homepage": "/react-api-template/",
+	"homepage": "/coexya/burgers",
 	"scripts": {
-		"start": "vite",
-		"build": "vite build",
-		"preview": "vite preview",
+		"start": "craco start",
+		"build": "craco build",
 		"docker": "node ../deploy/build/build.js",
 		"refresh-clients": "ts-node ./scripts/generate-api.ts"
 	},
@@ -25,22 +24,32 @@
 		"react-redux": "8.0.4",
 		"react-toastify": "9.0.8",
 		"redux": "4.2.0",
-		"reflect-metadata": "^0.1.13"
+		"reflect-metadata": "^0.1.13",
+		"@swc/helpers": "^0.4.14"
 	},
 	"devDependencies": {
-		"@esbuild-plugins/node-modules-polyfill": "^0.1.4",
-		"rollup-plugin-polyfill-node": "^0.10.2",
-		"@swc/helpers": "^0.4.11",
+		"craco-swc": "^0.5.1",
+		"@craco/craco": "^7.0.0",
+		"@craco/types": "^7.0.0",
 		"@types/node": "^18.8.3",
 		"@types/react": "^18.0.21",
 		"@types/react-dom": "^18.0.6",
-		"@types/react-redux": "^7.1.24",
 		"sass": "^1.55.0",
-		"terser": "^5.15.1",
-		"typescript": "^4.8.4",
 		"ts-node": "^10.9.1",
-		"vite": "^3.1.6",
-		"vite-plugin-importer": "^0.2.5",
-		"vite-plugin-swc-react": "^0.1.12"
+		"typescript": "^4.9.3",
+		"prettier": "^2.8.0",
+		"react-scripts": "^5.0.1"
+	},
+	"browserslist": {
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version"
+		]
 	}
 }
