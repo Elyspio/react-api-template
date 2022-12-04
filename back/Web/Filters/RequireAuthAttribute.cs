@@ -54,7 +54,6 @@ namespace Example.Api.Web.Filters
 		{
 			public bool Process(OperationProcessorContext context)
 			{
-
 				// Get method attributes
 				var attributes = context.MethodInfo.CustomAttributes.ToList();
 
@@ -70,7 +69,8 @@ namespace Example.Api.Web.Filters
 						IsRequired = false,
 						AllowEmptyValue = true,
 						Description = "Authentication Token",
-						Schema = new JsonSchema() {Type = JsonObjectType.String}
+						Schema = new JsonSchema
+							{Type = JsonObjectType.String}
 					}
 				);
 
@@ -81,7 +81,8 @@ namespace Example.Api.Web.Filters
 						IsRequired = false,
 						AllowEmptyValue = true,
 						Description = "Authentication Token",
-						Schema = new JsonSchema() {Type = JsonObjectType.String}
+						Schema = new JsonSchema
+							{Type = JsonObjectType.String}
 					}
 				);
 
@@ -89,8 +90,6 @@ namespace Example.Api.Web.Filters
 				context.OperationDescription.Operation.Responses.Add("403", new OpenApiResponse {Description = "Forbidden"});
 				return true;
 			}
-
-			
 		}
 	}
 }

@@ -32,7 +32,6 @@ namespace Example.Api.Web.Controllers
 		[RequireAuth]
 		[HttpPost("")]
 		[SwaggerResponse(HttpStatusCode.Created, typeof(Todo))]
-		[Consumes("text/plain")]
 		public async Task<IActionResult> AddForUser([FromBody] string label)
 		{
 			var todo = await todoService.AddForUser(label, AuthUtility.GetUsername(Request));

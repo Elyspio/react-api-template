@@ -4,14 +4,14 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Example.Api.Core.Injections
 {
-	public class ExampleApiCoreModule : IDotnetModule
+	public class CoreModule : IDotnetModule
 	{
 		public void Load(IServiceCollection services, IConfiguration configuration)
 		{
-			var nsp = typeof(ExampleApiCoreModule).Namespace!;
+			var nsp = typeof(CoreModule).Namespace!;
 			var baseNamespace = nsp[..nsp.LastIndexOf(".")];
 			services.Scan(scan => scan
-				.FromAssemblyOf<ExampleApiCoreModule>()
+				.FromAssemblyOf<CoreModule>()
 				.AddClasses(classes => classes.InNamespaces(baseNamespace + ".Services"))
 				.AsImplementedInterfaces()
 				.WithSingletonLifetime()

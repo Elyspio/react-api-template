@@ -2,14 +2,8 @@
 
 namespace Example.Api.Abstractions.Transports
 {
-	public class Todo
+	public class Todo : TodoBase
 	{
-		[Required] public Guid Id { get; init; }
-
-		[Required] public string Label { get; init; }
-
-		[Required] public string User { get; init; }
-
-		[Required] public bool Checked { get; init; }
+		[Required] public required Guid Id { get; init; }
 	}
 }

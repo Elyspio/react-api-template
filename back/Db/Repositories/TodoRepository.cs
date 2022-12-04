@@ -11,7 +11,9 @@ namespace Example.Api.Db.Repositories
 {
 	internal class TodoRepository : BaseRepository<TodoEntity>, ITodoRepository
 	{
-		public TodoRepository(IConfiguration configuration, ILogger<BaseRepository<TodoEntity>> logger) : base(configuration, logger) { }
+		public TodoRepository(IConfiguration configuration, ILogger<BaseRepository<TodoEntity>> logger) : base(configuration, logger)
+		{
+		}
 
 
 		public async Task<TodoEntity> Add(string label, string user)

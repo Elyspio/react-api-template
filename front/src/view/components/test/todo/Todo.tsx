@@ -32,7 +32,11 @@ type TodoProps = {
 };
 
 export function Todo({ mode }: TodoProps) {
-	const todos = useAppSelector((state) => [...state.todo.todos[mode]].sort((a, b) => a.label.localeCompare(b.label)));
+	const { todos, logged } = useAppSelector((state) => ({
+		todos: [...state.todo.todos[mode]].sort((a, b) => a.label.localeCompare(b.label)),
+		logged: state.authentication.logged,
+	}));
+
 	const dispatch = useAppDispatch();
 	const actions = useMemo(() => bindActionCreators({ addTodo, deleteTodo, checkTodo, getTodos }, dispatch), [dispatch]);
 
@@ -57,11 +61,12 @@ export function Todo({ mode }: TodoProps) {
 				<Grid item>
 					<Typography variant={"overline"}>{mode}</Typography>
 				</Grid>
-				<Grid item>
+				{logged && <Grid item>
 					<IconButton color={"success"} onClick={setOpen}>
 						<Add />
 					</IconButton>
-				</Grid>
+				</Grid>}
+
 			</Grid>
 
 			<Grid item width={"100%"}>

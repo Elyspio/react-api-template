@@ -1,24 +1,23 @@
 import * as React from "react";
 import "./Application.scss";
-import Brightness5Icon from "@mui/icons-material/Brightness5";
-import Brightness3Icon from "@mui/icons-material/Brightness3";
 import Login from "@mui/icons-material/Login";
 import Logout from "@mui/icons-material/Logout";
 import { Todos } from "./test/Todos";
-import { useAppSelector } from "../../store";
+import { useAppDispatch, useAppSelector } from "../../store";
 import { toggleTheme } from "../../store/module/theme/theme.action";
 import { createDrawerAction, withDrawer } from "./utils/drawer/Drawer.hoc";
 import { Box } from "@mui/material";
-import { login, logout } from "../../store/module/authentication/authentication.action";
+import { login, logout, silentLogin } from "../../store/module/authentication/authentication.action";
 import { useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
+import { DarkMode, LightMode } from "@mui/icons-material";
 
 function Application() {
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 
 	const { theme, themeIcon, logged } = useAppSelector((s) => ({
 		theme: s.theme.current,
-		themeIcon: s.theme.current === "dark" ? <Brightness5Icon /> : <Brightness3Icon />,
+		themeIcon: s.theme.current === "dark" ? <LightMode /> : <DarkMode />,
 		logged: s.authentication.logged,
 	}));
 
@@ -52,6 +51,11 @@ function Application() {
 		actions,
 		title: "Todos",
 	});
+
+	React.useEffect(() => {
+		dispatch(silentLogin())
+	}, [dispatch])
+
 
 	return (
 		<Box className={"Application"} bgcolor={"background.default"}>

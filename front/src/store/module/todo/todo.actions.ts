@@ -9,10 +9,7 @@ export const getTodos = createAsyncThunk("todo/getTodo", async (mode: keyof Todo
 	const service = container.get(TodoService);
 	const fn = mode === "user" ? service.user.get : service.common.get;
 
-
-
-
-	return await fn(signal);
+	return await fn();
 });
 
 type AddTodoProps = { mode: keyof TodoState["todos"]; label: string };
@@ -31,7 +28,7 @@ export const deleteTodo = createAsyncThunk("todo/deleteTodo", async ({ mode, id 
 	return await fn(id);
 });
 
-export const checkTodo = createAsyncThunk("todo/checkTodo", async ({ mode, id }: DeleteTodoProps, { extra,  }) => {
+export const checkTodo = createAsyncThunk("todo/checkTodo", async ({ mode, id }: DeleteTodoProps, { extra }) => {
 	const { container } = extra as ExtraArgument;
 	const service = container.get(TodoService);
 	const fn = mode === "user" ? service.user.check : service.common.check;

@@ -19,14 +19,14 @@ namespace Example.Api.Web.Controllers
 		}
 
 		[HttpGet]
-		[SwaggerResponse(HttpStatusCode.OK,  typeof(List<Todo>))]
+		[SwaggerResponse(HttpStatusCode.OK, typeof(List<Todo>))]
 		public async Task<IActionResult> GetAll()
 		{
 			return Ok(await todoService.GetAll());
 		}
 
 		[HttpPut("{id:guid}/toggle")]
-		[SwaggerResponse(HttpStatusCode.OK,  typeof(Todo))]
+		[SwaggerResponse(HttpStatusCode.OK, typeof(Todo))]
 		public async Task<IActionResult> Check(Guid id)
 		{
 			return Ok(await todoService.Check(id));
@@ -35,8 +35,7 @@ namespace Example.Api.Web.Controllers
 
 		[RequireAuth]
 		[HttpPost]
-		[SwaggerResponse(HttpStatusCode.OK,  typeof(Todo))]
-		[Consumes("text/plain")]
+		[SwaggerResponse(HttpStatusCode.OK, typeof(Todo))]
 		public async Task<IActionResult> Add([FromBody] string label)
 		{
 			return Ok(await todoService.Add(label));
@@ -50,8 +49,5 @@ namespace Example.Api.Web.Controllers
 			await todoService.Delete(id);
 			return NoContent();
 		}
-
-
-	
 	}
 }

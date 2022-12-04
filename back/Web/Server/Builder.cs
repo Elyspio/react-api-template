@@ -9,7 +9,6 @@ using Example.Api.Web.Utils;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Newtonsoft.Json.Converters;
-using NJsonSchema.Generation;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
@@ -20,7 +19,6 @@ namespace Example.Api.Web.Server
 {
 	public class ServerBuilder
 	{
-		private readonly string appPath = "/example";
 		private readonly string frontPath = Env.Get("FRONT_PATH", "/front");
 
 		public ServerBuilder(string[] args)
@@ -54,9 +52,9 @@ namespace Example.Api.Web.Server
 			);
 
 
-			builder.Services.AddModule<ExampleApiAdapterModule>(builder.Configuration);
-			builder.Services.AddModule<ExampleApiCoreModule>(builder.Configuration);
-			builder.Services.AddModule<ExampleApiDatabaseModule>(builder.Configuration);
+			builder.Services.AddModule<AdapterModule>(builder.Configuration);
+			builder.Services.AddModule<CoreModule>(builder.Configuration);
+			builder.Services.AddModule<DatabaseModule>(builder.Configuration);
 
 
 			// Setup Logging
@@ -82,7 +80,7 @@ namespace Example.Api.Web.Server
 			{
 				document.DocumentName = "Example.Api";
 				document.Title = "Example.Api";
-				document.DefaultResponseReferenceTypeNullHandling = ReferenceTypeNullHandling.NotNull;
+
 				document.SchemaProcessors.Add(new NullableSchemaProcessor());
 				document.OperationProcessors.Add(new NullableOperationProcessor());
 				document.OperationProcessors.Add(new RequireAuthAttribute.Swagger());

@@ -12,7 +12,7 @@ const store = configureStore({
 		todo: todoReducer,
 	},
 	devTools: process.env.NODE_ENV !== "production",
-	middleware: (getDefaultMiddleware) => [...getDefaultMiddleware({ thunk: { extraArgument: { container } as ExtraArgument } })],
+	middleware: (getDefaultMiddleware) => getDefaultMiddleware({ thunk: { extraArgument: { container } as ExtraArgument } }),
 });
 
 export type StoreState = ReturnType<typeof store.getState>;

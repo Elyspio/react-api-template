@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Example.Api.Adapters.Injections
 {
-	public class ExampleApiAdapterModule : IDotnetModule
+	public class AdapterModule : IDotnetModule
 	{
 		public void Load(IServiceCollection services, IConfiguration configuration)
 		{
