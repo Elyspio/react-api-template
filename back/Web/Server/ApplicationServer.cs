@@ -24,10 +24,10 @@
 				application.UseRouting();
 
 				application.UseDefaultFiles(new DefaultFilesOptions
-					{
-						DefaultFileNames = new List<string> {"index.html"},
-						RedirectToAppendTrailingSlash = true
-					}
+				{
+					DefaultFileNames = new List<string> { "index.html" },
+					RedirectToAppendTrailingSlash = true
+				}
 				);
 				application.UseStaticFiles();
 

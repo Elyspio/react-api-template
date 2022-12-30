@@ -5,7 +5,7 @@ import { Todo } from "./todo/Todo";
 import { useAppSelector } from "../../../store";
 
 export const Todos = () => {
-	const logged = useAppSelector(s => s.authentication.logged);
+	const logged = useAppSelector((s) => s.authentication.logged);
 	return (
 		<Container className={"Test"}>
 			<Paper>
@@ -14,14 +14,14 @@ export const Todos = () => {
 						<Grid item xs={true}>
 							<Todo mode={"public"} />
 						</Grid>
-						{logged && <Grid item xs={6}>
-							<Todo mode={"user"} />
-						</Grid>}
-
+						{logged && (
+							<Grid item xs={6}>
+								<Todo mode={"user"} />
+							</Grid>
+						)}
 					</Grid>
 				</Box>
 			</Paper>
 		</Container>
 	);
 };
-

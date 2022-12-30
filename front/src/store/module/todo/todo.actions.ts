@@ -34,4 +34,3 @@ export const checkTodo = createAsyncThunk("todo/checkTodo", async ({ mode, id }:
 	const fn = mode === "user" ? service.user.check : service.common.check;
 	return await fn(id);
 });
-

@@ -61,12 +61,13 @@ export function Todo({ mode }: TodoProps) {
 				<Grid item>
 					<Typography variant={"overline"}>{mode}</Typography>
 				</Grid>
-				{logged && <Grid item>
-					<IconButton color={"success"} onClick={setOpen}>
-						<Add />
-					</IconButton>
-				</Grid>}
-
+				{logged && (
+					<Grid item>
+						<IconButton color={"success"} onClick={setOpen}>
+							<Add />
+						</IconButton>
+					</Grid>
+				)}
 			</Grid>
 
 			<Grid item width={"100%"}>

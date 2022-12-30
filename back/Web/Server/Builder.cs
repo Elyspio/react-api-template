@@ -59,9 +59,10 @@ namespace Example.Api.Web.Server
 
 			// Setup Logging
 			builder.Host.UseSerilog((_, lc) => lc
+				.MinimumLevel.Debug()
+				.Filter.ByExcluding(e => e.Level == LogEventLevel.Debug && e.Properties["SourceContext"].ToString().Contains("Microsoft"))
 				.Enrich.FromLogContext()
-				.Enrich.With(new CallerEnricher())
-				.WriteTo.Console(LogEventLevel.Debug, "[{Timestamp:HH:mm:ss} {Level}{Caller}] {Message:lj}{NewLine}{Exception}", theme: AnsiConsoleTheme.Code)
+				.WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level} {SourceContext:l}] {Message:lj}{NewLine}{Exception}", theme: AnsiConsoleTheme.Sixteen)
 			);
 
 			// Convert Enum to String 
@@ -69,6 +70,7 @@ namespace Example.Api.Web.Server
 					{
 						o.Conventions.Add(new ControllerDocumentationConvention());
 						o.OutputFormatters.RemoveType<StringOutputFormatter>();
+						o.Filters.Add<HttpExceptionFilter>();
 					}
 				)
 				.AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()))
@@ -83,7 +85,6 @@ namespace Example.Api.Web.Server
 
 				document.SchemaProcessors.Add(new NullableSchemaProcessor());
 				document.OperationProcessors.Add(new NullableOperationProcessor());
-				document.OperationProcessors.Add(new RequireAuthAttribute.Swagger());
 			});
 			// Setup SPA Serving
 			if (builder.Environment.IsProduction()) Console.WriteLine($"Server in production, serving SPA from {frontPath} folder");

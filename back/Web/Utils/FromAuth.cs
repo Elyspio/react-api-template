@@ -1,19 +1,17 @@
-﻿namespace Example.Api.Web.Utils
+﻿using Example.Api.Adapters.AuthenticationApi;
+
+namespace Example.Api.Web.Utils
 {
 	public class AuthUtility
 	{
-		public static readonly string UsernameField = "auth_username";
-
-		public static readonly string TokenField = "auth_token";
-
-		public static string GetUsername(HttpRequest request)
+		public static User GetUser(HttpRequest request)
 		{
-			return request.Headers[UsernameField].First();
+			return (User) request.HttpContext.Items["user"];
 		}
 
 		public static string GetToken(HttpRequest request)
 		{
-			return request.Headers[TokenField].First();
+			return request.Headers.Authorization;
 		}
 	}
 }

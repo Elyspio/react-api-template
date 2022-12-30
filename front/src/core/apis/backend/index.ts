@@ -1,6 +1,7 @@
-import { injectable } from "inversify";
+import { inject, injectable } from "inversify";
 import { TodoClient, TodoUserClient } from "./generated";
-
+import { TokenService } from "../../services/common/auth/token.service";
+import axios from "axios";
 
 const fetch: (url: RequestInfo, init?: RequestInit) => Promise<Response> = (url, init) => {
 	return window.fetch(url, {
@@ -11,10 +12,19 @@ const fetch: (url: RequestInfo, init?: RequestInit) => Promise<Response> = (url,
 
 @injectable()
 export class BackendApi {
+	public todo: { common: TodoClient; user: TodoUserClient };
 
+	constructor(@inject(TokenService) tokenService: TokenService) {
+		const instance = axios.create({ withCredentials: true, transformResponse: [] });
 
-	public readonly todo = {
-		common: new TodoClient(window.config.endpoints.core),
-		user: new TodoUserClient(window.config.endpoints.core),
-	};
+		instance.interceptors.request.use((value) => {
+			value.headers!["Authorization"] = `Bearer ${tokenService.getToken()}`;
+			return value;
+		});
+
+		this.todo = {
+			common: new TodoClient(window.config.endpoints.core, instance),
+			user: new TodoUserClient(window.config.endpoints.core, instance),
+		};
+	}
 }

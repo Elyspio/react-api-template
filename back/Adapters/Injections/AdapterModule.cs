@@ -13,8 +13,6 @@ namespace Example.Api.Adapters.Injections
 			var conf = new EndpointConfig();
 			configuration.GetSection(EndpointConfig.Section).Bind(conf);
 
-			services.AddHttpClient<IUsersClient, UsersClient>(client => { client.BaseAddress = new Uri(conf.Authentication); });
-
 			services.AddHttpClient<IAuthenticationClient, AuthenticationClient>(client => { client.BaseAddress = new Uri(conf.Authentication); });
 		}
 	}
