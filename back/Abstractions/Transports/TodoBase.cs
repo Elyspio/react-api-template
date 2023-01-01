@@ -1,11 +1,10 @@
-﻿namespace Example.Api.Abstractions.Transports
+﻿namespace Example.Api.Abstractions.Transports;
+
+public class TodoBase
 {
-	public class TodoBase
-	{
-		public required string Label { get; init; }
+	public required string Label { get; init; }
 
-		public required string User { get; init; }
+	public required string User { get; init; }
 
-		public required bool Checked { get; set; }
-	}
+	public required bool Checked { get; set; }
 }

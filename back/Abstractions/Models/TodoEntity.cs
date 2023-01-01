@@ -2,12 +2,11 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Example.Api.Abstractions.Models
+namespace Example.Api.Abstractions.Models;
+
+public class TodoEntity : TodoBase
 {
-	public class TodoEntity : TodoBase
-	{
-		[BsonId]
-		[BsonRepresentation(BsonType.ObjectId)]
-		public ObjectId Id { get; init; }
-	}
+	[BsonId]
+	[BsonRepresentation(BsonType.ObjectId)]
+	public ObjectId Id { get; init; }
 }

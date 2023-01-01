@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Example.Api.Abstractions.Transports
+namespace Example.Api.Abstractions.Transports;
+
+public class Todo : TodoBase
 {
-	public class Todo : TodoBase
-	{
-		[Required] public required Guid Id { get; init; }
-	}
+	[Required] public required Guid Id { get; init; }
 }
