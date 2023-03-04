@@ -6,17 +6,6 @@
 
 #nullable enable
 
-using System.CodeDom.Compiler;
-using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
-using System.Globalization;
-using System.Net.Http.Headers;
-using System.Reflection;
-using System.Runtime.Serialization;
-using System.Text;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-
 #pragma warning disable 108 // Disable "CS0108 '{derivedDto}.ToJson()' hides inherited member '{dtoBase}.ToJson()'. Use the new keyword if hiding was intended."
 #pragma warning disable 114 // Disable "CS0114 '{derivedDto}.RaisePropertyChanged(String)' hides inherited member 'dtoBase.RaisePropertyChanged(String)'. To make the current member override that implementation, add the override keyword. Otherwise add the new keyword."
 #pragma warning disable 472 // Disable "CS0472 The result of the expression is always 'false' since a value of type 'Int32' is never equal to 'null' of type 'Int32?'
@@ -28,7 +17,9 @@ using Newtonsoft.Json.Converters;
 
 namespace Example.Api.Adapters.AuthenticationApi
 {
-	[GeneratedCode("NSwag", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
+    using System = global::System;
+
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
     public partial interface IAuthenticationClient
     {
 
@@ -39,7 +30,7 @@ namespace Example.Api.Adapters.AuthenticationApi
         /// <param name="hash">user's password hashed with salt</param>
         /// <returns>the created user</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        Task<User> RegisterAsync(string username, string hash, CancellationToken cancellationToken = default(CancellationToken));
+        System.Threading.Tasks.Task<User> RegisterAsync(string username, string hash, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -48,7 +39,7 @@ namespace Example.Api.Adapters.AuthenticationApi
         /// <param name="hash">user's password hashed with salt</param>
         /// <returns>the created user</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        Task ChangePasswordAsync(string username, string hash, CancellationToken cancellationToken = default(CancellationToken));
+        System.Threading.Tasks.Task ChangePasswordAsync(string username, string hash, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -56,7 +47,7 @@ namespace Example.Api.Adapters.AuthenticationApi
         /// </summary>
         /// <returns>a salt for this username</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        Task<InitRegisterResponse> InitRegisterAsync(string username, CancellationToken cancellationToken = default(CancellationToken));
+        System.Threading.Tasks.Task<InitRegisterResponse> InitRegisterAsync(string username, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -64,7 +55,7 @@ namespace Example.Api.Adapters.AuthenticationApi
         /// </summary>
         /// <returns>a salt for this username</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        Task<InitRegisterResponse> InitChangePasswordAsync(string username, CancellationToken cancellationToken = default(CancellationToken));
+        System.Threading.Tasks.Task<InitRegisterResponse> InitChangePasswordAsync(string username, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -72,7 +63,7 @@ namespace Example.Api.Adapters.AuthenticationApi
         /// </summary>
         /// <returns>a JWT for this user</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        Task<string> LoginAsync(string username, string hash, CancellationToken cancellationToken = default(CancellationToken));
+        System.Threading.Tasks.Task<string> LoginAsync(string username, string hash, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -80,52 +71,36 @@ namespace Example.Api.Adapters.AuthenticationApi
         /// </summary>
         /// <returns>a challenge for this username</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        Task<InitVerifyResponse> InitLoginAsync(string username, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>
-        /// Verify if Jwt is still valid
-        /// </summary>
-        /// <returns>a JWT for this user</returns>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        Task<bool> VerifyAsync(CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>
-        /// Get public RSA key used for Jwt validation
-        /// </summary>
-        /// <returns>a JWT for this user</returns>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        Task<StringResponse> GetValidationKeyAsync(CancellationToken cancellationToken = default(CancellationToken));
+        System.Threading.Tasks.Task<InitVerifyResponse> InitLoginAsync(string username, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
     }
 
-    [GeneratedCode("NSwag", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
     public partial class AuthenticationClient : IAuthenticationClient
     {
-        private HttpClient _httpClient;
-        private Lazy<JsonSerializerSettings> _settings;
+        private System.Net.Http.HttpClient _httpClient;
+        private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public AuthenticationClient(HttpClient httpClient)
+        public AuthenticationClient(System.Net.Http.HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _settings = new Lazy<JsonSerializerSettings>(CreateSerializerSettings);
+            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
         }
 
-        private JsonSerializerSettings CreateSerializerSettings()
+        private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new JsonSerializerSettings();
+            var settings = new Newtonsoft.Json.JsonSerializerSettings();
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
 
-        protected JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
+        protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
 
-        partial void UpdateJsonSerializerSettings(JsonSerializerSettings settings);
+        partial void UpdateJsonSerializerSettings(Newtonsoft.Json.JsonSerializerSettings settings);
 
-        partial void PrepareRequest(HttpClient client, HttpRequestMessage request, string url);
-        partial void PrepareRequest(HttpClient client, HttpRequestMessage request, StringBuilder urlBuilder);
-        partial void ProcessResponse(HttpClient client, HttpResponseMessage response);
+        partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, string url);
+        partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
+        partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -134,43 +109,43 @@ namespace Example.Api.Adapters.AuthenticationApi
         /// <param name="hash">user's password hashed with salt</param>
         /// <returns>the created user</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async Task<User> RegisterAsync(string username, string hash, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual async System.Threading.Tasks.Task<User> RegisterAsync(string username, string hash, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (username == null)
-                throw new ArgumentNullException("username");
+                throw new System.ArgumentNullException("username");
 
             if (hash == null)
-                throw new ArgumentNullException("hash");
+                throw new System.ArgumentNullException("hash");
 
-            var urlBuilder_ = new StringBuilder();
+            var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/auth/{username}");
-            urlBuilder_.Replace("{username}", Uri.EscapeDataString(ConvertToString(username, CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{username}", System.Uri.EscapeDataString(ConvertToString(username, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
             {
-                using (var request_ = new HttpRequestMessage())
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var json_ = JsonConvert.SerializeObject(hash, _settings.Value);
-                    var content_ = new StringContent(json_);
-                    content_.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(hash, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
-                    request_.Method = new HttpMethod("POST");
-                    request_.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
                     var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new Uri(url_, UriKind.RelativeOrAbsolute);
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
 
                     PrepareRequest(client_, request_, url_);
 
-                    var response_ = await client_.SendAsync(request_, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     var disposeResponse_ = true;
                     try
                     {
-                        var headers_ = Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
                         if (response_.Content != null && response_.Content.Headers != null)
                         {
                             foreach (var item_ in response_.Content.Headers)
@@ -216,42 +191,42 @@ namespace Example.Api.Adapters.AuthenticationApi
         /// <param name="hash">user's password hashed with salt</param>
         /// <returns>the created user</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async Task ChangePasswordAsync(string username, string hash, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual async System.Threading.Tasks.Task ChangePasswordAsync(string username, string hash, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (username == null)
-                throw new ArgumentNullException("username");
+                throw new System.ArgumentNullException("username");
 
             if (hash == null)
-                throw new ArgumentNullException("hash");
+                throw new System.ArgumentNullException("hash");
 
-            var urlBuilder_ = new StringBuilder();
+            var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/auth/{username}");
-            urlBuilder_.Replace("{username}", Uri.EscapeDataString(ConvertToString(username, CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{username}", System.Uri.EscapeDataString(ConvertToString(username, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
             {
-                using (var request_ = new HttpRequestMessage())
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var json_ = JsonConvert.SerializeObject(hash, _settings.Value);
-                    var content_ = new StringContent(json_);
-                    content_.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(hash, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
-                    request_.Method = new HttpMethod("PUT");
+                    request_.Method = new System.Net.Http.HttpMethod("PUT");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
                     var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new Uri(url_, UriKind.RelativeOrAbsolute);
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
 
                     PrepareRequest(client_, request_, url_);
 
-                    var response_ = await client_.SendAsync(request_, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     var disposeResponse_ = true;
                     try
                     {
-                        var headers_ = Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
                         if (response_.Content != null && response_.Content.Headers != null)
                         {
                             foreach (var item_ in response_.Content.Headers)
@@ -291,37 +266,37 @@ namespace Example.Api.Adapters.AuthenticationApi
         /// </summary>
         /// <returns>a salt for this username</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async Task<InitRegisterResponse> InitRegisterAsync(string username, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual async System.Threading.Tasks.Task<InitRegisterResponse> InitRegisterAsync(string username, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (username == null)
-                throw new ArgumentNullException("username");
+                throw new System.ArgumentNullException("username");
 
-            var urlBuilder_ = new StringBuilder();
+            var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/auth/{username}/init");
-            urlBuilder_.Replace("{username}", Uri.EscapeDataString(ConvertToString(username, CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{username}", System.Uri.EscapeDataString(ConvertToString(username, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
             {
-                using (var request_ = new HttpRequestMessage())
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    request_.Content = new StringContent(string.Empty, Encoding.UTF8, "application/json");
-                    request_.Method = new HttpMethod("POST");
-                    request_.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
                     var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new Uri(url_, UriKind.RelativeOrAbsolute);
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
 
                     PrepareRequest(client_, request_, url_);
 
-                    var response_ = await client_.SendAsync(request_, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     var disposeResponse_ = true;
                     try
                     {
-                        var headers_ = Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
                         if (response_.Content != null && response_.Content.Headers != null)
                         {
                             foreach (var item_ in response_.Content.Headers)
@@ -366,37 +341,37 @@ namespace Example.Api.Adapters.AuthenticationApi
         /// </summary>
         /// <returns>a salt for this username</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async Task<InitRegisterResponse> InitChangePasswordAsync(string username, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual async System.Threading.Tasks.Task<InitRegisterResponse> InitChangePasswordAsync(string username, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (username == null)
-                throw new ArgumentNullException("username");
+                throw new System.ArgumentNullException("username");
 
-            var urlBuilder_ = new StringBuilder();
+            var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/auth/{username}/init");
-            urlBuilder_.Replace("{username}", Uri.EscapeDataString(ConvertToString(username, CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{username}", System.Uri.EscapeDataString(ConvertToString(username, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
             {
-                using (var request_ = new HttpRequestMessage())
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    request_.Content = new StringContent(string.Empty, Encoding.UTF8, "application/json");
-                    request_.Method = new HttpMethod("PUT");
-                    request_.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    request_.Method = new System.Net.Http.HttpMethod("PUT");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
                     var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new Uri(url_, UriKind.RelativeOrAbsolute);
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
 
                     PrepareRequest(client_, request_, url_);
 
-                    var response_ = await client_.SendAsync(request_, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     var disposeResponse_ = true;
                     try
                     {
-                        var headers_ = Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
                         if (response_.Content != null && response_.Content.Headers != null)
                         {
                             foreach (var item_ in response_.Content.Headers)
@@ -441,43 +416,43 @@ namespace Example.Api.Adapters.AuthenticationApi
         /// </summary>
         /// <returns>a JWT for this user</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async Task<string> LoginAsync(string username, string hash, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual async System.Threading.Tasks.Task<string> LoginAsync(string username, string hash, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (username == null)
-                throw new ArgumentNullException("username");
+                throw new System.ArgumentNullException("username");
 
             if (hash == null)
-                throw new ArgumentNullException("hash");
+                throw new System.ArgumentNullException("hash");
 
-            var urlBuilder_ = new StringBuilder();
+            var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/auth/{username}/login");
-            urlBuilder_.Replace("{username}", Uri.EscapeDataString(ConvertToString(username, CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{username}", System.Uri.EscapeDataString(ConvertToString(username, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
             {
-                using (var request_ = new HttpRequestMessage())
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var json_ = JsonConvert.SerializeObject(hash, _settings.Value);
-                    var content_ = new StringContent(json_);
-                    content_.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(hash, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
-                    request_.Method = new HttpMethod("POST");
-                    request_.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
                     var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new Uri(url_, UriKind.RelativeOrAbsolute);
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
 
                     PrepareRequest(client_, request_, url_);
 
-                    var response_ = await client_.SendAsync(request_, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     var disposeResponse_ = true;
                     try
                     {
-                        var headers_ = Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
                         if (response_.Content != null && response_.Content.Headers != null)
                         {
                             foreach (var item_ in response_.Content.Headers)
@@ -522,37 +497,37 @@ namespace Example.Api.Adapters.AuthenticationApi
         /// </summary>
         /// <returns>a challenge for this username</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async Task<InitVerifyResponse> InitLoginAsync(string username, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual async System.Threading.Tasks.Task<InitVerifyResponse> InitLoginAsync(string username, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (username == null)
-                throw new ArgumentNullException("username");
+                throw new System.ArgumentNullException("username");
 
-            var urlBuilder_ = new StringBuilder();
+            var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/auth/{username}/login/init");
-            urlBuilder_.Replace("{username}", Uri.EscapeDataString(ConvertToString(username, CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{username}", System.Uri.EscapeDataString(ConvertToString(username, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
             {
-                using (var request_ = new HttpRequestMessage())
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    request_.Content = new StringContent(string.Empty, Encoding.UTF8, "application/json");
-                    request_.Method = new HttpMethod("POST");
-                    request_.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
                     var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new Uri(url_, UriKind.RelativeOrAbsolute);
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
 
                     PrepareRequest(client_, request_, url_);
 
-                    var response_ = await client_.SendAsync(request_, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     var disposeResponse_ = true;
                     try
                     {
-                        var headers_ = Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
                         if (response_.Content != null && response_.Content.Headers != null)
                         {
                             foreach (var item_ in response_.Content.Headers)
@@ -591,38 +566,198 @@ namespace Example.Api.Adapters.AuthenticationApi
             }
         }
 
+        protected struct ObjectResponseResult<T>
+        {
+            public ObjectResponseResult(T responseObject, string responseText)
+            {
+                this.Object = responseObject;
+                this.Text = responseText;
+            }
+
+            public T Object { get; }
+
+            public string Text { get; }
+        }
+
+        public bool ReadResponseAsString { get; set; }
+
+        protected virtual async System.Threading.Tasks.Task<ObjectResponseResult<T>> ReadObjectResponseAsync<T>(System.Net.Http.HttpResponseMessage response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, System.Threading.CancellationToken cancellationToken)
+        {
+            if (response == null || response.Content == null)
+            {
+                return new ObjectResponseResult<T>(default(T)!, string.Empty);
+            }
+
+            if (ReadResponseAsString)
+            {
+                var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                try
+                {
+                    var typedBody = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(responseText, JsonSerializerSettings);
+                    return new ObjectResponseResult<T>(typedBody!, responseText);
+                }
+                catch (Newtonsoft.Json.JsonException exception)
+                {
+                    var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
+                    throw new ApiException(message, (int)response.StatusCode, responseText, headers, exception);
+                }
+            }
+            else
+            {
+                try
+                {
+                    using (var responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
+                    using (var streamReader = new System.IO.StreamReader(responseStream))
+                    using (var jsonTextReader = new Newtonsoft.Json.JsonTextReader(streamReader))
+                    {
+                        var serializer = Newtonsoft.Json.JsonSerializer.Create(JsonSerializerSettings);
+                        var typedBody = serializer.Deserialize<T>(jsonTextReader);
+                        return new ObjectResponseResult<T>(typedBody!, string.Empty);
+                    }
+                }
+                catch (Newtonsoft.Json.JsonException exception)
+                {
+                    var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
+                    throw new ApiException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                }
+            }
+        }
+
+        private string ConvertToString(object? value, System.Globalization.CultureInfo cultureInfo)
+        {
+            if (value == null)
+            {
+                return "";
+            }
+
+            if (value is System.Enum)
+            {
+                var name = System.Enum.GetName(value.GetType(), value);
+                if (name != null)
+                {
+                    var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
+                    if (field != null)
+                    {
+                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
+                            as System.Runtime.Serialization.EnumMemberAttribute;
+                        if (attribute != null)
+                        {
+                            return attribute.Value != null ? attribute.Value : name;
+                        }
+                    }
+
+                    var converted = System.Convert.ToString(System.Convert.ChangeType(value, System.Enum.GetUnderlyingType(value.GetType()), cultureInfo));
+                    return converted == null ? string.Empty : converted;
+                }
+            }
+            else if (value is bool) 
+            {
+                return System.Convert.ToString((bool)value, cultureInfo).ToLowerInvariant();
+            }
+            else if (value is byte[])
+            {
+                return System.Convert.ToBase64String((byte[]) value);
+            }
+            else if (value.GetType().IsArray)
+            {
+                var array = System.Linq.Enumerable.OfType<object>((System.Array) value);
+                return string.Join(",", System.Linq.Enumerable.Select(array, o => ConvertToString(o, cultureInfo)));
+            }
+
+            var result = System.Convert.ToString(value, cultureInfo);
+            return result == null ? "" : result;
+        }
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
+    public partial interface IJwtClient
+    {
+
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
         /// Verify if Jwt is still valid
         /// </summary>
         /// <returns>a JWT for this user</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async Task<bool> VerifyAsync(CancellationToken cancellationToken = default(CancellationToken))
+        System.Threading.Tasks.Task<bool> VerifyAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Get public RSA key used for Jwt validation
+        /// </summary>
+        /// <returns>a JWT for this user</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<StringResponse> GetValidationKeyAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Refresh a JWT
+        /// </summary>
+        /// <returns>a JWT for this user</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<StringResponse> RefreshJwtAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
+    public partial class JwtClient : IJwtClient
+    {
+        private System.Net.Http.HttpClient _httpClient;
+        private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
+
+        public JwtClient(System.Net.Http.HttpClient httpClient)
         {
-            var urlBuilder_ = new StringBuilder();
-            urlBuilder_.Append("api/auth/jwt/verify");
+            _httpClient = httpClient;
+            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
+        }
+
+        private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
+        {
+            var settings = new Newtonsoft.Json.JsonSerializerSettings();
+            UpdateJsonSerializerSettings(settings);
+            return settings;
+        }
+
+        protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
+
+        partial void UpdateJsonSerializerSettings(Newtonsoft.Json.JsonSerializerSettings settings);
+
+        partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, string url);
+        partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
+        partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Verify if Jwt is still valid
+        /// </summary>
+        /// <returns>a JWT for this user</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<bool> VerifyAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("api/jwt/verify");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
             {
-                using (var request_ = new HttpRequestMessage())
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    request_.Method = new HttpMethod("GET");
-                    request_.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
                     var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new Uri(url_, UriKind.RelativeOrAbsolute);
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
 
                     PrepareRequest(client_, request_, url_);
 
-                    var response_ = await client_.SendAsync(request_, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     var disposeResponse_ = true;
                     try
                     {
-                        var headers_ = Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
                         if (response_.Content != null && response_.Content.Headers != null)
                         {
                             foreach (var item_ in response_.Content.Headers)
@@ -667,32 +802,103 @@ namespace Example.Api.Adapters.AuthenticationApi
         /// </summary>
         /// <returns>a JWT for this user</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async Task<StringResponse> GetValidationKeyAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public virtual async System.Threading.Tasks.Task<StringResponse> GetValidationKeyAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            var urlBuilder_ = new StringBuilder();
-            urlBuilder_.Append("api/auth/jwt/validation-key");
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("api/jwt/validation-key");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
             {
-                using (var request_ = new HttpRequestMessage())
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    request_.Method = new HttpMethod("GET");
-                    request_.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
                     var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new Uri(url_, UriKind.RelativeOrAbsolute);
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
 
                     PrepareRequest(client_, request_, url_);
 
-                    var response_ = await client_.SendAsync(request_, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     var disposeResponse_ = true;
                     try
                     {
-                        var headers_ = Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<StringResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Refresh a JWT
+        /// </summary>
+        /// <returns>a JWT for this user</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<StringResponse> RefreshJwtAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("api/jwt/refresh");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
                         if (response_.Content != null && response_.Content.Headers != null)
                         {
                             foreach (var item_ in response_.Content.Headers)
@@ -746,7 +952,7 @@ namespace Example.Api.Adapters.AuthenticationApi
 
         public bool ReadResponseAsString { get; set; }
 
-        protected virtual async Task<ObjectResponseResult<T>> ReadObjectResponseAsync<T>(HttpResponseMessage response, IReadOnlyDictionary<string, IEnumerable<string>> headers, CancellationToken cancellationToken)
+        protected virtual async System.Threading.Tasks.Task<ObjectResponseResult<T>> ReadObjectResponseAsync<T>(System.Net.Http.HttpResponseMessage response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, System.Threading.CancellationToken cancellationToken)
         {
             if (response == null || response.Content == null)
             {
@@ -758,10 +964,10 @@ namespace Example.Api.Adapters.AuthenticationApi
                 var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 try
                 {
-                    var typedBody = JsonConvert.DeserializeObject<T>(responseText, JsonSerializerSettings);
+                    var typedBody = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(responseText, JsonSerializerSettings);
                     return new ObjectResponseResult<T>(typedBody!, responseText);
                 }
-                catch (JsonException exception)
+                catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
                     throw new ApiException(message, (int)response.StatusCode, responseText, headers, exception);
@@ -772,15 +978,15 @@ namespace Example.Api.Adapters.AuthenticationApi
                 try
                 {
                     using (var responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
-                    using (var streamReader = new StreamReader(responseStream))
-                    using (var jsonTextReader = new JsonTextReader(streamReader))
+                    using (var streamReader = new System.IO.StreamReader(responseStream))
+                    using (var jsonTextReader = new Newtonsoft.Json.JsonTextReader(streamReader))
                     {
-                        var serializer = JsonSerializer.Create(JsonSerializerSettings);
+                        var serializer = Newtonsoft.Json.JsonSerializer.Create(JsonSerializerSettings);
                         var typedBody = serializer.Deserialize<T>(jsonTextReader);
                         return new ObjectResponseResult<T>(typedBody!, string.Empty);
                     }
                 }
-                catch (JsonException exception)
+                catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
                     throw new ApiException(message, (int)response.StatusCode, string.Empty, headers, exception);
@@ -788,53 +994,53 @@ namespace Example.Api.Adapters.AuthenticationApi
             }
         }
 
-        private string ConvertToString(object? value, CultureInfo cultureInfo)
+        private string ConvertToString(object? value, System.Globalization.CultureInfo cultureInfo)
         {
             if (value == null)
             {
                 return "";
             }
 
-            if (value is Enum)
+            if (value is System.Enum)
             {
-                var name = Enum.GetName(value.GetType(), value);
+                var name = System.Enum.GetName(value.GetType(), value);
                 if (name != null)
                 {
-                    var field = IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
+                    var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
                     if (field != null)
                     {
-                        var attribute = CustomAttributeExtensions.GetCustomAttribute(field, typeof(EnumMemberAttribute)) 
-                            as EnumMemberAttribute;
+                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
+                            as System.Runtime.Serialization.EnumMemberAttribute;
                         if (attribute != null)
                         {
                             return attribute.Value != null ? attribute.Value : name;
                         }
                     }
 
-                    var converted = Convert.ToString(Convert.ChangeType(value, Enum.GetUnderlyingType(value.GetType()), cultureInfo));
+                    var converted = System.Convert.ToString(System.Convert.ChangeType(value, System.Enum.GetUnderlyingType(value.GetType()), cultureInfo));
                     return converted == null ? string.Empty : converted;
                 }
             }
             else if (value is bool) 
             {
-                return Convert.ToString((bool)value, cultureInfo).ToLowerInvariant();
+                return System.Convert.ToString((bool)value, cultureInfo).ToLowerInvariant();
             }
             else if (value is byte[])
             {
-                return Convert.ToBase64String((byte[]) value);
+                return System.Convert.ToBase64String((byte[]) value);
             }
             else if (value.GetType().IsArray)
             {
-                var array = Enumerable.OfType<object>((Array) value);
-                return string.Join(",", Enumerable.Select(array, o => ConvertToString(o, cultureInfo)));
+                var array = System.Linq.Enumerable.OfType<object>((System.Array) value);
+                return string.Join(",", System.Linq.Enumerable.Select(array, o => ConvertToString(o, cultureInfo)));
             }
 
-            var result = Convert.ToString(value, cultureInfo);
+            var result = System.Convert.ToString(value, cultureInfo);
             return result == null ? "" : result;
         }
     }
 
-    [GeneratedCode("NSwag", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
     public partial interface IUsersClient
     {
 
@@ -843,28 +1049,28 @@ namespace Example.Api.Adapters.AuthenticationApi
         /// Get a specific user
         /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        Task<User> GetAsync(Guid id, CancellationToken cancellationToken = default(CancellationToken));
+        System.Threading.Tasks.Task<User> GetAsync(System.Guid id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
         /// Update an user
         /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        Task UpdateUserAsync(Guid id, User user, CancellationToken cancellationToken = default(CancellationToken));
+        System.Threading.Tasks.Task UpdateUserAsync(System.Guid id, User user, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
         /// Delete an user
         /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        Task DeleteUserAsync(Guid id, CancellationToken cancellationToken = default(CancellationToken));
+        System.Threading.Tasks.Task DeleteUserAsync(System.Guid id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
         /// Get all users
         /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        Task<ICollection<User>> GetAllAsync(CancellationToken cancellationToken = default(CancellationToken));
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<User>> GetAllAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -872,72 +1078,72 @@ namespace Example.Api.Adapters.AuthenticationApi
         /// </summary>
         /// <returns>If at least one user exist in database</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        Task<bool> CheckIfUsersExistAsync(CancellationToken cancellationToken = default(CancellationToken));
+        System.Threading.Tasks.Task<bool> CheckIfUsersExistAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
     }
 
-    [GeneratedCode("NSwag", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
     public partial class UsersClient : IUsersClient
     {
-        private HttpClient _httpClient;
-        private Lazy<JsonSerializerSettings> _settings;
+        private System.Net.Http.HttpClient _httpClient;
+        private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public UsersClient(HttpClient httpClient)
+        public UsersClient(System.Net.Http.HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _settings = new Lazy<JsonSerializerSettings>(CreateSerializerSettings);
+            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
         }
 
-        private JsonSerializerSettings CreateSerializerSettings()
+        private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new JsonSerializerSettings();
+            var settings = new Newtonsoft.Json.JsonSerializerSettings();
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
 
-        protected JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
+        protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
 
-        partial void UpdateJsonSerializerSettings(JsonSerializerSettings settings);
+        partial void UpdateJsonSerializerSettings(Newtonsoft.Json.JsonSerializerSettings settings);
 
-        partial void PrepareRequest(HttpClient client, HttpRequestMessage request, string url);
-        partial void PrepareRequest(HttpClient client, HttpRequestMessage request, StringBuilder urlBuilder);
-        partial void ProcessResponse(HttpClient client, HttpResponseMessage response);
+        partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, string url);
+        partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
+        partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
         /// Get a specific user
         /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async Task<User> GetAsync(Guid id, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual async System.Threading.Tasks.Task<User> GetAsync(System.Guid id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
-                throw new ArgumentNullException("id");
+                throw new System.ArgumentNullException("id");
 
-            var urlBuilder_ = new StringBuilder();
+            var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/users/{id}");
-            urlBuilder_.Replace("{id}", Uri.EscapeDataString(ConvertToString(id, CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
             {
-                using (var request_ = new HttpRequestMessage())
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    request_.Method = new HttpMethod("GET");
-                    request_.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
                     var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new Uri(url_, UriKind.RelativeOrAbsolute);
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
 
                     PrepareRequest(client_, request_, url_);
 
-                    var response_ = await client_.SendAsync(request_, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     var disposeResponse_ = true;
                     try
                     {
-                        var headers_ = Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
                         if (response_.Content != null && response_.Content.Headers != null)
                         {
                             foreach (var item_ in response_.Content.Headers)
@@ -981,42 +1187,42 @@ namespace Example.Api.Adapters.AuthenticationApi
         /// Update an user
         /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async Task UpdateUserAsync(Guid id, User user, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual async System.Threading.Tasks.Task UpdateUserAsync(System.Guid id, User user, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
-                throw new ArgumentNullException("id");
+                throw new System.ArgumentNullException("id");
 
             if (user == null)
-                throw new ArgumentNullException("user");
+                throw new System.ArgumentNullException("user");
 
-            var urlBuilder_ = new StringBuilder();
+            var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/users/{id}");
-            urlBuilder_.Replace("{id}", Uri.EscapeDataString(ConvertToString(id, CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
             {
-                using (var request_ = new HttpRequestMessage())
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var json_ = JsonConvert.SerializeObject(user, _settings.Value);
-                    var content_ = new StringContent(json_);
-                    content_.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(user, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
-                    request_.Method = new HttpMethod("PUT");
+                    request_.Method = new System.Net.Http.HttpMethod("PUT");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
                     var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new Uri(url_, UriKind.RelativeOrAbsolute);
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
 
                     PrepareRequest(client_, request_, url_);
 
-                    var response_ = await client_.SendAsync(request_, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     var disposeResponse_ = true;
                     try
                     {
-                        var headers_ = Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
                         if (response_.Content != null && response_.Content.Headers != null)
                         {
                             foreach (var item_ in response_.Content.Headers)
@@ -1055,35 +1261,35 @@ namespace Example.Api.Adapters.AuthenticationApi
         /// Delete an user
         /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async Task DeleteUserAsync(Guid id, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual async System.Threading.Tasks.Task DeleteUserAsync(System.Guid id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
-                throw new ArgumentNullException("id");
+                throw new System.ArgumentNullException("id");
 
-            var urlBuilder_ = new StringBuilder();
+            var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/users/{id}");
-            urlBuilder_.Replace("{id}", Uri.EscapeDataString(ConvertToString(id, CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
             {
-                using (var request_ = new HttpRequestMessage())
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    request_.Method = new HttpMethod("DELETE");
+                    request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
                     var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new Uri(url_, UriKind.RelativeOrAbsolute);
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
 
                     PrepareRequest(client_, request_, url_);
 
-                    var response_ = await client_.SendAsync(request_, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     var disposeResponse_ = true;
                     try
                     {
-                        var headers_ = Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
                         if (response_.Content != null && response_.Content.Headers != null)
                         {
                             foreach (var item_ in response_.Content.Headers)
@@ -1122,32 +1328,32 @@ namespace Example.Api.Adapters.AuthenticationApi
         /// Get all users
         /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async Task<ICollection<User>> GetAllAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<User>> GetAllAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            var urlBuilder_ = new StringBuilder();
+            var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/users");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
             {
-                using (var request_ = new HttpRequestMessage())
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    request_.Method = new HttpMethod("GET");
-                    request_.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
                     var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new Uri(url_, UriKind.RelativeOrAbsolute);
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
 
                     PrepareRequest(client_, request_, url_);
 
-                    var response_ = await client_.SendAsync(request_, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     var disposeResponse_ = true;
                     try
                     {
-                        var headers_ = Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
                         if (response_.Content != null && response_.Content.Headers != null)
                         {
                             foreach (var item_ in response_.Content.Headers)
@@ -1159,7 +1365,7 @@ namespace Example.Api.Adapters.AuthenticationApi
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ICollection<User>>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<User>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -1192,33 +1398,33 @@ namespace Example.Api.Adapters.AuthenticationApi
         /// </summary>
         /// <returns>If at least one user exist in database</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async Task<bool> CheckIfUsersExistAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public virtual async System.Threading.Tasks.Task<bool> CheckIfUsersExistAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            var urlBuilder_ = new StringBuilder();
+            var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/users/any");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
             {
-                using (var request_ = new HttpRequestMessage())
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    request_.Content = new StringContent(string.Empty, Encoding.UTF8, "application/json");
-                    request_.Method = new HttpMethod("POST");
-                    request_.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
                     var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new Uri(url_, UriKind.RelativeOrAbsolute);
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
 
                     PrepareRequest(client_, request_, url_);
 
-                    var response_ = await client_.SendAsync(request_, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     var disposeResponse_ = true;
                     try
                     {
-                        var headers_ = Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
                         if (response_.Content != null && response_.Content.Headers != null)
                         {
                             foreach (var item_ in response_.Content.Headers)
@@ -1272,7 +1478,7 @@ namespace Example.Api.Adapters.AuthenticationApi
 
         public bool ReadResponseAsString { get; set; }
 
-        protected virtual async Task<ObjectResponseResult<T>> ReadObjectResponseAsync<T>(HttpResponseMessage response, IReadOnlyDictionary<string, IEnumerable<string>> headers, CancellationToken cancellationToken)
+        protected virtual async System.Threading.Tasks.Task<ObjectResponseResult<T>> ReadObjectResponseAsync<T>(System.Net.Http.HttpResponseMessage response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, System.Threading.CancellationToken cancellationToken)
         {
             if (response == null || response.Content == null)
             {
@@ -1284,10 +1490,10 @@ namespace Example.Api.Adapters.AuthenticationApi
                 var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 try
                 {
-                    var typedBody = JsonConvert.DeserializeObject<T>(responseText, JsonSerializerSettings);
+                    var typedBody = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(responseText, JsonSerializerSettings);
                     return new ObjectResponseResult<T>(typedBody!, responseText);
                 }
-                catch (JsonException exception)
+                catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
                     throw new ApiException(message, (int)response.StatusCode, responseText, headers, exception);
@@ -1298,15 +1504,15 @@ namespace Example.Api.Adapters.AuthenticationApi
                 try
                 {
                     using (var responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
-                    using (var streamReader = new StreamReader(responseStream))
-                    using (var jsonTextReader = new JsonTextReader(streamReader))
+                    using (var streamReader = new System.IO.StreamReader(responseStream))
+                    using (var jsonTextReader = new Newtonsoft.Json.JsonTextReader(streamReader))
                     {
-                        var serializer = JsonSerializer.Create(JsonSerializerSettings);
+                        var serializer = Newtonsoft.Json.JsonSerializer.Create(JsonSerializerSettings);
                         var typedBody = serializer.Deserialize<T>(jsonTextReader);
                         return new ObjectResponseResult<T>(typedBody!, string.Empty);
                     }
                 }
-                catch (JsonException exception)
+                catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
                     throw new ApiException(message, (int)response.StatusCode, string.Empty, headers, exception);
@@ -1314,281 +1520,281 @@ namespace Example.Api.Adapters.AuthenticationApi
             }
         }
 
-        private string ConvertToString(object? value, CultureInfo cultureInfo)
+        private string ConvertToString(object? value, System.Globalization.CultureInfo cultureInfo)
         {
             if (value == null)
             {
                 return "";
             }
 
-            if (value is Enum)
+            if (value is System.Enum)
             {
-                var name = Enum.GetName(value.GetType(), value);
+                var name = System.Enum.GetName(value.GetType(), value);
                 if (name != null)
                 {
-                    var field = IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
+                    var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
                     if (field != null)
                     {
-                        var attribute = CustomAttributeExtensions.GetCustomAttribute(field, typeof(EnumMemberAttribute)) 
-                            as EnumMemberAttribute;
+                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
+                            as System.Runtime.Serialization.EnumMemberAttribute;
                         if (attribute != null)
                         {
                             return attribute.Value != null ? attribute.Value : name;
                         }
                     }
 
-                    var converted = Convert.ToString(Convert.ChangeType(value, Enum.GetUnderlyingType(value.GetType()), cultureInfo));
+                    var converted = System.Convert.ToString(System.Convert.ChangeType(value, System.Enum.GetUnderlyingType(value.GetType()), cultureInfo));
                     return converted == null ? string.Empty : converted;
                 }
             }
             else if (value is bool) 
             {
-                return Convert.ToString((bool)value, cultureInfo).ToLowerInvariant();
+                return System.Convert.ToString((bool)value, cultureInfo).ToLowerInvariant();
             }
             else if (value is byte[])
             {
-                return Convert.ToBase64String((byte[]) value);
+                return System.Convert.ToBase64String((byte[]) value);
             }
             else if (value.GetType().IsArray)
             {
-                var array = Enumerable.OfType<object>((Array) value);
-                return string.Join(",", Enumerable.Select(array, o => ConvertToString(o, cultureInfo)));
+                var array = System.Linq.Enumerable.OfType<object>((System.Array) value);
+                return string.Join(",", System.Linq.Enumerable.Select(array, o => ConvertToString(o, cultureInfo)));
             }
 
-            var result = Convert.ToString(value, cultureInfo);
+            var result = System.Convert.ToString(value, cultureInfo);
             return result == null ? "" : result;
         }
     }
 
-    [GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
     public partial class User : UserBase
     {
-        [JsonProperty("id", Required = Required.Always)]
-        [Required]
-        public Guid Id { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Guid Id { get; set; } = default!;
 
-        [JsonProperty("createdAt", Required = Required.Always)]
-        [Required]
-        public DateTimeOffset CreatedAt { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("createdAt", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.DateTimeOffset CreatedAt { get; set; } = default!;
 
     }
 
-    [GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
     public partial class UserBase
     {
-        [JsonProperty("username", Required = Required.Always)]
-        [Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("username", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Username { get; set; } = default!;
 
-        [JsonProperty("hash", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("hash", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string? Hash { get; set; } = default!;
 
-        [JsonProperty("salt", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("salt", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string? Salt { get; set; } = default!;
 
-        [JsonProperty("settings", Required = Required.Always)]
-        [Required]
+        [Newtonsoft.Json.JsonProperty("settings", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
         public Settings Settings { get; set; } = new Settings();
 
-        [JsonProperty("credentials", Required = Required.Always)]
-        [Required]
+        [Newtonsoft.Json.JsonProperty("credentials", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
         public Credentials Credentials { get; set; } = new Credentials();
 
-        [JsonProperty("authorizations", Required = Required.Always)]
-        [Required]
+        [Newtonsoft.Json.JsonProperty("authorizations", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
         public Authorizations Authorizations { get; set; } = new Authorizations();
 
-        [JsonProperty("lastConnection", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
-        public DateTimeOffset? LastConnection { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("lastConnection", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset? LastConnection { get; set; } = default!;
 
-        [JsonProperty("disabled", Required = Required.Always)]
+        [Newtonsoft.Json.JsonProperty("disabled", Required = Newtonsoft.Json.Required.Always)]
         public bool Disabled { get; set; } = default!;
 
     }
 
-    [GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
     public partial class Settings
     {
-        [JsonProperty("theme", Required = Required.Always)]
-        [Required(AllowEmptyStrings = true)]
-        [JsonConverter(typeof(StringEnumConverter))]
+        [Newtonsoft.Json.JsonProperty("theme", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public SettingsType Theme { get; set; } = default!;
 
     }
 
-    [GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
     public enum SettingsType
     {
 
-        [EnumMember(Value = @"Dark")]
+        [System.Runtime.Serialization.EnumMember(Value = @"Dark")]
         Dark = 0,
 
-        [EnumMember(Value = @"Light")]
+        [System.Runtime.Serialization.EnumMember(Value = @"Light")]
         Light = 1,
 
-        [EnumMember(Value = @"System")]
+        [System.Runtime.Serialization.EnumMember(Value = @"System")]
         System = 2,
 
     }
 
-    [GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
     public partial class Credentials
     {
-        [JsonProperty("github", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("github", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Github? Github { get; set; } = default!;
 
-        [JsonProperty("docker", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("docker", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Docker? Docker { get; set; } = default!;
 
     }
 
-    [GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
     public partial class Github
     {
-        [JsonProperty("token", Required = Required.Always)]
-        [Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("token", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Token { get; set; } = default!;
 
-        [JsonProperty("user", Required = Required.Always)]
-        [Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("user", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string User { get; set; } = default!;
 
     }
 
-    [GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
     public partial class Docker
     {
-        [JsonProperty("username", Required = Required.Always)]
-        [Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("username", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Username { get; set; } = default!;
 
-        [JsonProperty("password", Required = Required.Always)]
-        [Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("password", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Password { get; set; } = default!;
 
     }
 
-    [GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
     public partial class Authorizations
     {
-        [JsonProperty("authentication", Required = Required.Always)]
-        [Required]
+        [Newtonsoft.Json.JsonProperty("authentication", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
         public Authentication Authentication { get; set; } = new Authentication();
 
-        [JsonProperty("videyo", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("videyo", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Videyo? Videyo { get; set; } = default!;
 
-        [JsonProperty("sousMarinJaune", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("sousMarinJaune", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SousMarinJaune? SousMarinJaune { get; set; } = default!;
 
     }
 
-    [GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
     public partial class Authentication
     {
-        [JsonProperty("roles", Required = Required.Always, ItemConverterType = typeof(StringEnumConverter))]
-        [Required]
-        public ICollection<AuthenticationRoles> Roles { get; set; } = new Collection<AuthenticationRoles>();
+        [Newtonsoft.Json.JsonProperty("roles", Required = Newtonsoft.Json.Required.Always, ItemConverterType = typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.ICollection<AuthenticationRoles> Roles { get; set; } = new System.Collections.ObjectModel.Collection<AuthenticationRoles>();
 
     }
 
-    [GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
     public enum AuthenticationRoles
     {
 
-        [EnumMember(Value = @"User")]
+        [System.Runtime.Serialization.EnumMember(Value = @"User")]
         User = 0,
 
-        [EnumMember(Value = @"Admin")]
+        [System.Runtime.Serialization.EnumMember(Value = @"Admin")]
         Admin = 1,
 
     }
 
-    [GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
     public partial class Videyo
     {
-        [JsonProperty("roles", Required = Required.Always, ItemConverterType = typeof(StringEnumConverter))]
-        [Required]
-        public ICollection<VideyoRole> Roles { get; set; } = new Collection<VideyoRole>();
+        [Newtonsoft.Json.JsonProperty("roles", Required = Newtonsoft.Json.Required.Always, ItemConverterType = typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.ICollection<VideyoRole> Roles { get; set; } = new System.Collections.ObjectModel.Collection<VideyoRole>();
 
     }
 
-    [GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
     public enum VideyoRole
     {
 
-        [EnumMember(Value = @"User")]
+        [System.Runtime.Serialization.EnumMember(Value = @"User")]
         User = 0,
 
-        [EnumMember(Value = @"Admin")]
+        [System.Runtime.Serialization.EnumMember(Value = @"Admin")]
         Admin = 1,
 
     }
 
-    [GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
     public partial class SousMarinJaune
     {
-        [JsonProperty("roles", Required = Required.Always, ItemConverterType = typeof(StringEnumConverter))]
-        [Required]
-        public ICollection<SousMarinJauneRole> Roles { get; set; } = new Collection<SousMarinJauneRole>();
+        [Newtonsoft.Json.JsonProperty("roles", Required = Newtonsoft.Json.Required.Always, ItemConverterType = typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.ICollection<SousMarinJauneRole> Roles { get; set; } = new System.Collections.ObjectModel.Collection<SousMarinJauneRole>();
 
     }
 
-    [GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
     public enum SousMarinJauneRole
     {
 
-        [EnumMember(Value = @"Admin")]
+        [System.Runtime.Serialization.EnumMember(Value = @"Admin")]
         Admin = 0,
 
-        [EnumMember(Value = @"User")]
+        [System.Runtime.Serialization.EnumMember(Value = @"User")]
         User = 1,
 
     }
 
-    [GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
     public partial class InitRegisterResponse
     {
-        [JsonProperty("salt", Required = Required.Always)]
-        [Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("salt", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Salt { get; set; } = default!;
 
     }
 
-    [GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
     public partial class InitVerifyResponse
     {
-        [JsonProperty("salt", Required = Required.Always)]
-        [Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("salt", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Salt { get; set; } = default!;
 
-        [JsonProperty("challenge", Required = Required.Always)]
-        [Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("challenge", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Challenge { get; set; } = default!;
 
     }
 
-    [GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
     public partial class StringResponse
     {
-        [JsonProperty("data", Required = Required.Always)]
-        [Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Data { get; set; } = default!;
 
     }
 
 
 
-    [GeneratedCode("NSwag", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
-    public partial class ApiException : Exception
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
+    public partial class ApiException : System.Exception
     {
         public int StatusCode { get; private set; }
 
         public string? Response { get; private set; }
 
-        public IReadOnlyDictionary<string, IEnumerable<string>> Headers { get; private set; }
+        public System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> Headers { get; private set; }
 
-        public ApiException(string message, int statusCode, string? response, IReadOnlyDictionary<string, IEnumerable<string>> headers, Exception? innerException)
+        public ApiException(string message, int statusCode, string? response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, System.Exception? innerException)
             : base(message + "\n\nStatus: " + statusCode + "\nResponse: \n" + ((response == null) ? "(null)" : response.Substring(0, response.Length >= 512 ? 512 : response.Length)), innerException)
         {
             StatusCode = statusCode;
@@ -1602,12 +1808,12 @@ namespace Example.Api.Adapters.AuthenticationApi
         }
     }
 
-    [GeneratedCode("NSwag", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.1.0))")]
     public partial class ApiException<TResult> : ApiException
     {
         public TResult Result { get; private set; }
 
-        public ApiException(string message, int statusCode, string? response, IReadOnlyDictionary<string, IEnumerable<string>> headers, TResult result, Exception? innerException)
+        public ApiException(string message, int statusCode, string? response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, TResult result, System.Exception? innerException)
             : base(message, statusCode, response, headers, innerException)
         {
             Result = result;

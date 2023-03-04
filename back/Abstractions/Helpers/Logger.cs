@@ -59,12 +59,13 @@ public static class Log
 		}
 
 
-		public void Exit()
+		public void Exit(string? content = null)
 		{
 			if (!_logger.IsEnabled(_level)) return;
 
 			var sb = new StringBuilder($"Exiting method {_method}");
 			if (_arguments?.Length > 0) sb.Append($": {_arguments}");
+			if (!string.IsNullOrWhiteSpace(content)) sb.Append($" {content}");
 			sb.Append($" ({(DateTime.Now - _startedAt).Milliseconds}ms)");
 			_logger.Log(_level, sb.ToString());
 		}

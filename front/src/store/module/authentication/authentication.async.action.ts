@@ -1,15 +1,16 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
 import store, { StoreState } from "../../index";
 import { setTheme } from "../theme/theme.action";
 import { toast } from "react-toastify";
 import { container } from "../../../core/di";
 import { LocalStorageService } from "../../../core/services/common/localStorage.service";
 import { DiKeysService } from "../../../core/di/services/di.keys.service";
-import { getService } from "../../common/common.actions";
+import { createAsyncActionGenerator, getService } from "../../common/common.actions";
 import { setUserFromToken } from "./authentication.action";
 import { SettingsType } from "../../../core/apis/authentication/generated";
 import { AuthenticationEvents, AuthenticationService } from "../../../core/services/common/auth/authentication.service";
 import { TokenService } from "../../../core/services/common/auth/token.service";
+
+const createAsyncThunk = createAsyncActionGenerator("authentication");
 
 const localStorages = container.get<LocalStorageService>(DiKeysService.localStorage.jwt);
 
@@ -40,7 +41,7 @@ function waitForLogin(page: Window) {
 	});
 }
 
-export const login = createAsyncThunk("authentication/login", async (_, { getState, dispatch, extra }) => {
+export const login = createAsyncThunk("login", async (_, { getState, dispatch, extra }) => {
 	const tokenService = getService(TokenService, extra);
 	const authenticationService = getService(AuthenticationService, extra);
 
@@ -61,7 +62,7 @@ export const login = createAsyncThunk("authentication/login", async (_, { getSta
 	}
 });
 
-export const silentLogin = createAsyncThunk("authentication/silentLogin", async (_, { extra, dispatch }) => {
+export const silentLogin = createAsyncThunk("silentLogin", async (_, { extra, dispatch }) => {
 	const authenticationService = getService(AuthenticationService, extra);
 	const tokenService = getService(TokenService, extra);
 
@@ -76,7 +77,7 @@ export const silentLogin = createAsyncThunk("authentication/silentLogin", async 
 	}
 });
 
-export const logout = createAsyncThunk("authentication/logout", async (_, { extra }) => {
+export const logout = createAsyncThunk("logout", async (_, { extra }) => {
 	const authenticationService = getService(AuthenticationService, extra);
 	await authenticationService.logout();
 	AuthenticationEvents.emit("logout");

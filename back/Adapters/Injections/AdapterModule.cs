@@ -13,6 +13,6 @@ public class AdapterModule : IDotnetModule
 		var conf = new EndpointConfig();
 		configuration.GetSection(EndpointConfig.Section).Bind(conf);
 
-		services.AddHttpClient<IAuthenticationClient, AuthenticationClient>(client => { client.BaseAddress = new(conf.Authentication); });
+		services.AddHttpClient<IJwtClient, JwtClient>(client => { client.BaseAddress = new Uri(conf.Authentication); });
 	}
 }
