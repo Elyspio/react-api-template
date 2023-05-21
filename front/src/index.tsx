@@ -5,7 +5,7 @@ import "./index.scss";
 import { Provider } from "react-redux";
 import store, { useAppSelector } from "./store";
 import Application from "./view/components/Application";
-import { StyledEngineProvider, Theme, ThemeProvider } from "@mui/material";
+import { StyledEngineProvider, Theme, ThemeProvider } from "@mui/material/styles";
 import { themes } from "./config/theme";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";

@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { setUserFromToken } from "./authentication.action";
-import { Settings, User } from "../../../core/apis/authentication/generated";
+import { Settings, User } from "@apis/authentication/generated";
 import { logout } from "./authentication.async.action";
 
 export interface AuthenticationState {

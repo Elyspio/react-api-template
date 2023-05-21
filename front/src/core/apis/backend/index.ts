@@ -1,14 +1,7 @@
 import { inject, injectable } from "inversify";
 import { TodoClient, TodoUserClient } from "./generated";
-import { TokenService } from "../../services/common/auth/token.service";
+import { TokenService } from "@services/common/auth/token.service";
 import axios from "axios";
-
-const fetch: (url: RequestInfo, init?: RequestInit) => Promise<Response> = (url, init) => {
-	return window.fetch(url, {
-		...init,
-		credentials: "include",
-	});
-};
 
 @injectable()
 export class BackendApi {

@@ -1,7 +1,7 @@
 import { inject, injectable } from "inversify";
 import axios from "axios";
 import { AuthenticationClient, JwtClient } from "./generated";
-import { TokenService } from "../../services/common/auth/token.service";
+import { TokenService } from "@services/common/auth/token.service";
 
 @injectable()
 export class AuthenticationApiClient {

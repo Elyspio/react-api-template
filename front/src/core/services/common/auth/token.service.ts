@@ -1,8 +1,8 @@
 import { inject, injectable } from "inversify";
 import { BaseService } from "../technical/base.service";
-import { DiKeysService } from "../../../di/services/di.keys.service";
+import { DiKeysService } from "@/core/di/services/di.keys.service";
 import { LocalStorageService } from "../localStorage.service";
-import { User } from "../../../apis/authentication/generated";
+import { User } from "@apis/authentication/generated";
 
 @injectable()
 export class TokenService extends BaseService {

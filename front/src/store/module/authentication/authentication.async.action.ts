@@ -1,21 +1,21 @@
 import store, { StoreState } from "../../index";
 import { setTheme } from "../theme/theme.action";
 import { toast } from "react-toastify";
-import { container } from "../../../core/di";
-import { LocalStorageService } from "../../../core/services/common/localStorage.service";
-import { DiKeysService } from "../../../core/di/services/di.keys.service";
+import { container } from "@/core/di";
+import { LocalStorageService } from "@services/common/localStorage.service";
+import { DiKeysService } from "@/core/di/services/di.keys.service";
 import { createAsyncActionGenerator, getService } from "../../common/common.actions";
 import { setUserFromToken } from "./authentication.action";
-import { SettingsType } from "../../../core/apis/authentication/generated";
-import { AuthenticationEvents, AuthenticationService } from "../../../core/services/common/auth/authentication.service";
-import { TokenService } from "../../../core/services/common/auth/token.service";
+import { SettingsType } from "@apis/authentication/generated";
+import { AuthenticationEvents, AuthenticationService } from "@services/common/auth/authentication.service";
+import { TokenService } from "@services/common/auth/token.service";
 
 const createAsyncThunk = createAsyncActionGenerator("authentication");
 
 const localStorages = container.get<LocalStorageService>(DiKeysService.localStorage.jwt);
 
 function waitForLogin(page: Window) {
-	return new Promise<void>(async (resolve) => {
+	return new Promise<void>((resolve) => {
 		let interval: NodeJS.Timer | undefined;
 
 		const clearInter = () => interval !== undefined && clearInterval(interval);
@@ -23,7 +23,7 @@ function waitForLogin(page: Window) {
 
 		const func = () => {
 			console.debug("Checking if user is logged from local storage");
-			let isPresent = localStorages.get() !== undefined;
+			const isPresent = localStorages.get() !== undefined;
 			if (isPresent) {
 				clearInter();
 				resolve();

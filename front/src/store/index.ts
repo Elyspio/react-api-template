@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { themeReducer } from "./module/theme/theme.reducer";
 import { authenticationReducer } from "./module/authentication/authentication.reducer";
-import { container } from "../core/di";
+import { container } from "@/core/di";
 import { todoReducer } from "./module/todo/todo.reducer";
 
 const store = configureStore({

@@ -1,11 +1,11 @@
 import React, { useCallback, useMemo } from "react";
-import { Todo } from "../../../../core/apis/backend/generated";
+import { Todo } from "@apis/backend/generated";
 import { Menu, MenuItem, Switch, TableCell, TableRow, Typography } from "@mui/material";
-import { useMenu } from "../../../hooks/useMenu";
-import { useAppDispatch } from "../../../../store";
+import { useMenu } from "@hooks/useMenu";
+import { useAppDispatch } from "@store";
 import { bindActionCreators } from "redux";
-import { addTodo, checkTodo, deleteTodo, getTodos } from "../../../../store/module/todo/todo.actions";
-import { TodoState } from "../../../../store/module/todo/todo.reducer";
+import { addTodo, checkTodo, deleteTodo, getTodos } from "@store/module/todo/todo.actions";
+import { TodoState } from "@store/module/todo/todo.reducer";
 
 // TodoItem Props
 interface TodoItemProps {

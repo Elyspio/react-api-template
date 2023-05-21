@@ -1,12 +1,11 @@
 import { inject, injectable } from "inversify";
-import { AuthenticationApiClient } from "../../../apis/authentication";
-import { EventManager } from "../../../utils/event";
+import { AuthenticationApiClient } from "@apis/authentication";
+import { EventManager } from "@/core/utils/event";
 import { BaseService } from "../technical/base.service";
-import { User } from "../../../apis/authentication/generated";
+import { User } from "@apis/authentication/generated";
 import { LocalStorageService } from "../localStorage.service";
-import { openPage } from "../../../utils/web";
-import { TokenService } from "./token.service";
-import { DiKeysService } from "../../../di/services/di.keys.service";
+import { openPage } from "@/core/utils/web";
+import { DiKeysService } from "@/core/di/services/di.keys.service";
 
 @injectable()
 export class AuthenticationService extends BaseService {

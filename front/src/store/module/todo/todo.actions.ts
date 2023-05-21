@@ -1,12 +1,12 @@
-import { ExtraArgument } from "../../index";
-import { TodoService } from "../../../core/services/todo.service";
+import { ExtraArgument } from "@store";
+import { TodoService } from "@services/todo.service";
 import { TodoState } from "./todo.reducer";
-import { Todo } from "../../../core/apis/backend/generated";
+import { Todo } from "@apis/backend/generated";
 import { createAsyncActionGenerator } from "../../common/common.actions";
 
 const createAsyncThunk = createAsyncActionGenerator("todo");
 
-export const getTodos = createAsyncThunk("getTodo", async (mode: keyof TodoState["todos"], { extra, signal }) => {
+export const getTodos = createAsyncThunk("getTodo", async (mode: keyof TodoState["todos"], { extra }) => {
 	const { container } = extra as ExtraArgument;
 	const service = container.get(TodoService);
 	const fn = mode === "user" ? service.user.get : service.common.get;
@@ -23,7 +23,7 @@ export const addTodo = createAsyncThunk("addTodo", async ({ mode, label }: AddTo
 });
 
 type DeleteTodoProps = { mode: keyof TodoState["todos"]; id: Todo["id"] };
-export const deleteTodo = createAsyncThunk("deleteTodo", async ({ mode, id }: DeleteTodoProps, { extra, signal, requestId }) => {
+export const deleteTodo = createAsyncThunk("deleteTodo", async ({ mode, id }: DeleteTodoProps, { extra }) => {
 	const { container } = extra as ExtraArgument;
 	const service = container.get(TodoService);
 	const fn = mode === "user" ? service.user.remove : service.common.remove;
