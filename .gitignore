@@ -17,5 +17,5 @@ back/*/obj
 # Production configuration
 deploy/environments/prod/.env
 deploy/environments/prod/config/front/conf.js
-deploy/environments/prod/config/back/appsettings.json
+deploy/environments/prod/config/back/appsettings.docker.json
 front/dist

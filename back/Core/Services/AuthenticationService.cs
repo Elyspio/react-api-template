@@ -1,17 +1,19 @@
-﻿using Example.Api.Abstractions.Interfaces.Services;
-using Example.Api.Adapters.AuthenticationApi;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography;
+using Example.Api.Abstractions.Common.Technical.Tracing;
+using Example.Api.Abstractions.Interfaces.Services;
+using Example.Api.Adapters.Rest.AuthenticationApi;
+using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Example.Api.Core.Services;
 
-internal class AuthenticationService : IAuthenticationService
+internal class AuthenticationService : TracingService, IAuthenticationService
 {
 	private readonly IJwtClient _jwtClient;
 	private readonly SecurityKey _publicKey;
 
-	public AuthenticationService(IJwtClient jwtClient)
+	public AuthenticationService(IJwtClient jwtClient, ILogger<AuthenticationService> logger) : base(logger)
 	{
 		_jwtClient = jwtClient;
 		_publicKey = GetPublicKey().Result;
@@ -20,6 +22,8 @@ internal class AuthenticationService : IAuthenticationService
 
 	public bool ValidateJwt(string? token, out JwtSecurityToken? validatedToken)
 	{
+		using var _ = LogService();
+
 		validatedToken = null;
 
 		if (string.IsNullOrWhiteSpace(token))
@@ -32,7 +36,7 @@ internal class AuthenticationService : IAuthenticationService
 
 		try
 		{
-			tokenHandler.ValidateToken(token, new()
+			tokenHandler.ValidateToken(token, new TokenValidationParameters
 			{
 				ValidateIssuerSigningKey = true,
 				IssuerSigningKey = _publicKey,
@@ -53,6 +57,8 @@ internal class AuthenticationService : IAuthenticationService
 
 	private async Task<SecurityKey> GetPublicKey()
 	{
+		using var _ = LogService();
+
 		var key = (await _jwtClient.GetValidationKeyAsync()).Data;
 		var rsa = RSA.Create();
 

@@ -1,4 +1,4 @@
-﻿using Example.Api.Abstractions.Transports;
+﻿using Example.Api.Abstractions.Models.Transports;
 
 namespace Example.Api.Abstractions.Interfaces.Services;
 

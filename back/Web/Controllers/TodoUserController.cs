@@ -1,56 +1,55 @@
-﻿using Example.Api.Abstractions.Interfaces.Services;
-using Example.Api.Abstractions.Transports;
-using Example.Api.Adapters.AuthenticationApi;
-using Example.Api.Web.Filters;
-using Example.Api.Web.Utils;
+﻿using Example.Api.Abstractions.Common.Helpers;
+using Example.Api.Abstractions.Common.Technical.Tracing;
+using Example.Api.Abstractions.Interfaces.Services;
+using Example.Api.Abstractions.Models.Transports;
+using Example.Api.Adapters.Rest.AuthenticationApi;
+using Example.Api.Web.Technical.Extensions;
+using Example.Api.Web.Technical.Filters;
 using Microsoft.AspNetCore.Mvc;
-using NSwag.Annotations;
-using System.Net;
 
 namespace Example.Api.Web.Controllers;
 
 [Route("api/todo/user")]
 [ApiController]
 [Authorize(AuthenticationRoles.User)]
-public class TodoUserController : ControllerBase
+public class TodoUserController(ITodoService todoService, ILogger<TodoUserController> logger) : TracingController(logger)
 {
-	private readonly ITodoService todoService;
+	private string Username => Request.GetUsername();
 
-	public TodoUserController(ITodoService todoService)
-	{
-		this.todoService = todoService;
-	}
 
 	[HttpDelete("{id:guid}")]
-	[SwaggerResponse(HttpStatusCode.NoContent, typeof(void))]
+	[ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
 	public async Task<IActionResult> DeleteForUser(Guid id)
 	{
-		await todoService.DeleteForUser(id, AuthUtility.GetUser(Request).Username);
+		using var _ = LogController($"{Log.F(id)} {Log.F(Username)}");
+		await todoService.DeleteForUser(id, Username);
 		return NoContent();
 	}
 
 	[HttpPost]
-	[SwaggerResponse(HttpStatusCode.Created, typeof(Todo))]
+	[ProducesResponseType(typeof(Todo), StatusCodes.Status201Created)]
 	public async Task<IActionResult> AddForUser([FromBody] string label)
 	{
-		var todo = await todoService.AddForUser(label, AuthUtility.GetUser(Request).Username);
+		using var _ = LogController($"{Log.F(label)} {Log.F(Username)}");
+		var todo = await todoService.AddForUser(label, Username);
 		return Created($"/{todo.Id}", todo);
 	}
 
 
 	[HttpGet]
-	[SwaggerResponse(HttpStatusCode.OK, typeof(List<Todo>))]
+	[ProducesResponseType(typeof(List<Todo>), StatusCodes.Status200OK)]
 	public async Task<IActionResult> GetAllForUser()
 	{
-		var user = AuthUtility.GetUser(Request).Username;
-		return Ok(await todoService.GetAllForUser(user));
+		using var _ = LogController($"{Log.F(Username)}");
+		return Ok(await todoService.GetAllForUser(Username));
 	}
 
 
 	[HttpPut("{id:guid}/toggle")]
-	[SwaggerResponse(HttpStatusCode.OK, typeof(Todo))]
+	[ProducesResponseType(typeof(Todo), StatusCodes.Status200OK)]
 	public async Task<IActionResult> CheckForUser(Guid id)
 	{
-		return Ok(await todoService.CheckForUser(id, AuthUtility.GetUser(Request).Username));
+		using var _ = LogController($"{Log.F(id)} {Log.F(Username)}");
+		return Ok(await todoService.CheckForUser(id, Username));
 	}
 }

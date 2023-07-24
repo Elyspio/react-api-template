@@ -4,7 +4,7 @@ import "./Application.scss";
 import Login from "@mui/icons-material/Login";
 import Logout from "@mui/icons-material/Logout";
 import { Todos } from "./test/Todos";
-import { useAppDispatch, useAppSelector } from "@store";
+import { StoreState, useAppDispatch, useAppSelector } from "@store";
 import { toggleTheme } from "@store/module/theme/theme.action";
 import { createDrawerAction, withDrawer } from "./utils/drawer/Drawer.hoc";
 import { Box } from "@mui/material";
@@ -12,15 +12,18 @@ import { bindActionCreators } from "redux";
 import { DarkMode, LightMode } from "@mui/icons-material";
 import { login, logout } from "@store/module/authentication/authentication.async.action";
 import { initApp } from "@store/module/workflow/workflow.async.actions";
+import { createSelector } from "@reduxjs/toolkit";
+
+const applicationSelector = createSelector([(s: StoreState) => s.theme.current, (s: StoreState) => s.authentication.logged], (current, logged) => ({
+	theme: current,
+	themeIcon: current === "dark" ? <LightMode /> : <DarkMode />,
+	logged: logged,
+}));
 
 function Application() {
 	const dispatch = useAppDispatch();
 
-	const { theme, themeIcon, logged } = useAppSelector((s) => ({
-		theme: s.theme.current,
-		themeIcon: s.theme.current === "dark" ? <LightMode /> : <DarkMode />,
-		logged: s.authentication.logged,
-	}));
+	const { theme, themeIcon, logged } = useAppSelector(applicationSelector);
 
 	const storeActions = React.useMemo(() => bindActionCreators({ toggleTheme, logout, login }, dispatch), [dispatch]);
 

@@ -1,4 +1,4 @@
-﻿namespace Example.Api.Adapters.Configs;
+﻿namespace Example.Api.Adapters.Rest.Configs;
 
 public class EndpointConfig
 {

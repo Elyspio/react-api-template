@@ -1,3 +1,3 @@
-using Example.Api.Web.Server;
+using Example.Api.Web.Start;
 
-new ServerBuilder(args).Application.Initialize().Run();
+new AppBuilder(args).Application.Initialize().Run();

@@ -1,4 +1,4 @@
-﻿namespace Example.Api.Db.Configs;
+﻿namespace Example.Api.Adapters.Mongo.Configs;
 
 public class DbConfig
 {
