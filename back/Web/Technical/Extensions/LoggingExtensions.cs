@@ -1,5 +1,4 @@
-﻿using Example.Api.Web.Technical.Filters.Logging;
-using Serilog;
+﻿using Serilog;
 
 namespace Example.Api.Web.Technical.Extensions;
 
@@ -19,7 +18,6 @@ public static class LoggingExtensions
 		host.UseSerilog((ctx, lc) => lc
 			.ReadFrom.Configuration(ctx.Configuration)
 			.Enrich.FromLogContext()
-			.Filter.With<DiscardHangfireControllerLogs>()
 			.WriteTo.Console(outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] {Message}{NewLine}{Exception}")
 		);
 

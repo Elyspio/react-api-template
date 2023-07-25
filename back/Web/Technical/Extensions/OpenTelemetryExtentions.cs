@@ -35,19 +35,25 @@ public static class OpenTelemetryExtentions
 					.AddSource(sources)
 					.AddSource("MongoDB.Driver.Core.Extensions.DiagnosticSources")
 					// Configure adapter
-					.AddHangfireInstrumentation(options => { options.RecordException = true; })
-					.AddAspNetCoreInstrumentation(options => { options.RecordException = true; })
+					.AddAspNetCoreInstrumentation(o =>
+					{
+						o.Filter = ctx => ctx.Request.Path != "/metrics";
+					})					
 					.AddHttpClientInstrumentation(options => { options.RecordException = true; })
 					// Configure exporters
 					.AddOtlpExporter();
 			}).WithMetrics(metricBuilder =>
 			{
 				metricBuilder
-					.AddMeter(sources)
-					.AddMeter("MongoDB.Driver.Core.Extensions.DiagnosticSources")
-					.AddMeter("*")
+					// .AddMeter(sources)
+					.AddRuntimeInstrumentation()
+					.AddProcessInstrumentation()
 					.AddHttpClientInstrumentation()
-					.AddAspNetCoreInstrumentation()
+					.AddAspNetCoreInstrumentation(o =>
+					{
+						o.Filter = (_, ctx) => ctx.Request.Path != "/metrics";
+					})
+					.AddPrometheusExporter()
 					.AddOtlpExporter();
 			});
 

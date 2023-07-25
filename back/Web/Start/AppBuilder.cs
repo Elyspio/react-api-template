@@ -38,7 +38,7 @@ public sealed class AppBuilder
 
 
 		if (builder.Environment.IsDevelopment()) builder.Services.SetupDevelopmentCors();
-		else builder.Services.AddAppOpenTelemetry(builder.Configuration);
+		builder.Services.AddAppOpenTelemetry(builder.Configuration);
 
 		Application = builder.Build();
 	}
