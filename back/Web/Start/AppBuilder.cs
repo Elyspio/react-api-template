@@ -23,22 +23,19 @@ public sealed class AppBuilder
 
 		builder.Services.AddModule<CoreModule>(builder.Configuration);
 
-
 		builder.Services.AddModule<MongoAdapterModule>(builder.Configuration);
 		builder.Services.AddModule<RestAdapterModule>(builder.Configuration);
 
-
 		builder.Host.AddLogging();
-
 
 		builder.Services
 			.AddAppControllers()
 			.AddAppSignalR()
-			.AddAppSwagger();
+			.AddAppSwagger()
+			.AddAppOpenTelemetry(builder.Configuration);
 
 
 		if (builder.Environment.IsDevelopment()) builder.Services.SetupDevelopmentCors();
-		builder.Services.AddAppOpenTelemetry(builder.Configuration);
 
 		Application = builder.Build();
 	}

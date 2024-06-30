@@ -16,7 +16,7 @@ const localStorages = container.get<LocalStorageService>(DiKeysService.localStor
 
 function waitForLogin(page: Window) {
 	return new Promise<void>((resolve) => {
-		let interval: NodeJS.Timer | undefined;
+		let interval: NodeJS.Timeout | undefined;
 
 		const clearInter = () => interval !== undefined && clearInterval(interval);
 		page.onclose = clearInter;

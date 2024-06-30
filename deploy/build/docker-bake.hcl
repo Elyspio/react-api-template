@@ -1,3 +1,7 @@
+variable "GITHUB_TOKEN" {
+	default = "$GITHUB_TOKEN"
+}
+
 target "default" {
 	context    = "../.."
 	dockerfile = "./deploy/build/dockerfile"
@@ -9,9 +13,11 @@ target "default" {
 		"elyspio/react-api-template:latest"
 	]
 	args = {
-		SLN_PATH         = "back/ExampleApi.sln"
+		SLN_PATH         = "ExampleApi.sln"
 		MAIN_CSPROJ_PATH = "Web/Example.Api.Web.csproj"
 		ROOT_FOLDER      = "back/"
 		ENTRY_DLL        = "Example.Api.Web.dll"
+		GITHUB_TOKEN     = "${GITHUB_TOKEN}"
 	}
+
 }

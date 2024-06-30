@@ -5,7 +5,7 @@ VisualStudioVersion = 17.1.32120.378
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Api.Abstractions", "Abstractions\Example.Api.Abstractions.csproj", "{04D70810-6D52-4BCA-94E0-E5138C3923BE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Api.Adapters.Rest", "Adapters\Example.Api.Adapters.Rest.csproj", "{FB92BB0B-2A3F-4A6D-8547-7993BF9DA5D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Api.Adapters.Rest", "Rest\Example.Api.Adapters.Rest.csproj", "{FB92BB0B-2A3F-4A6D-8547-7993BF9DA5D2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Api.Core", "Core\Example.Api.Core.csproj", "{388A04AE-1081-445B-8DDC-B837AA5D0F3D}"
 EndProject

@@ -23,8 +23,6 @@ public static class AppRuntime
 		app.UseAuthentication();
 		app.UseAuthorization();
 
-		app.UseOpenTelemetryPrometheusScrapingEndpoint();
-
 		// Setup Controllers
 		app.MapControllers();
 

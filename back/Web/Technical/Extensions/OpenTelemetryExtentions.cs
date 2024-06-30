@@ -1,9 +1,6 @@
-﻿using Example.Api.Abstractions.Common.Technical.Tracing.Base;
-using Example.Api.Web.Technical.Helpers;
-using OpenTelemetry.Exporter;
-using OpenTelemetry.Metrics;
-using OpenTelemetry.Resources;
-using OpenTelemetry.Trace;
+﻿using Elyspio.Utils.Telemetry.MongoDB.Extensions;
+using Elyspio.Utils.Telemetry.Technical.Extensions;
+using Elyspio.Utils.Telemetry.Tracing.Builder;
 
 namespace Example.Api.Web.Technical.Extensions;
 
@@ -20,43 +17,14 @@ public static class OpenTelemetryExtentions
 	/// <returns></returns>
 	public static IServiceCollection AddAppOpenTelemetry(this IServiceCollection services, IConfiguration configuration)
 	{
-		var sources = AssemblyHelper.GetClassWithInterface<Program, ITracingContext>().ToArray();
+		if (!configuration.IsTelemetryEnabled(out var telemetryConf)) return services;
 
-		services.AddOptions<OtlpExporterOptions>().Configure(opts => { opts.Endpoint = new Uri(configuration["OpenTelemetry:Url"]!); });
+		var telemetryBuilder = new AppOpenTelemetryBuilder<Program>(telemetryConf!)
+		{
+			Tracing = tracing => tracing.AddAppMongoInstrumentation()
+		};
 
-		services.AddOpenTelemetryEventLogging();
-
-		services.AddOpenTelemetry()
-			.ConfigureResource(conf => conf.AddService(configuration["OpenTelemetry:Service"]!))
-			.WithTracing(tracingBuilder =>
-			{
-				tracingBuilder
-					.SetErrorStatusOnException()
-					.AddSource(sources)
-					.AddSource("MongoDB.Driver.Core.Extensions.DiagnosticSources")
-					// Configure adapter
-					.AddAspNetCoreInstrumentation(o =>
-					{
-						o.Filter = ctx => ctx.Request.Path != "/metrics";
-					})					
-					.AddHttpClientInstrumentation(options => { options.RecordException = true; })
-					// Configure exporters
-					.AddOtlpExporter();
-			}).WithMetrics(metricBuilder =>
-			{
-				metricBuilder
-					// .AddMeter(sources)
-					.AddRuntimeInstrumentation()
-					.AddProcessInstrumentation()
-					.AddHttpClientInstrumentation()
-					.AddAspNetCoreInstrumentation(o =>
-					{
-						o.Filter = (_, ctx) => ctx.Request.Path != "/metrics";
-					})
-					.AddPrometheusExporter()
-					.AddOtlpExporter();
-			});
-
+		telemetryBuilder.Build(services);
 
 		return services;
 	}

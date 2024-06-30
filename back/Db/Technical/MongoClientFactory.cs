@@ -1,5 +1,5 @@
-﻿using MongoDB.Driver;
-using MongoDB.Driver.Core.Extensions.DiagnosticSources;
+﻿using Elyspio.Utils.Telemetry.MongoDB.Business;
+using MongoDB.Driver;
 
 namespace Example.Api.Adapters.Mongo.Technical;
 
@@ -17,10 +17,7 @@ public static class MongoClientFactory
 	{
 		var mongoUrl = new MongoUrl(connectionString);
 		var clientSettings = MongoClientSettings.FromUrl(mongoUrl);
-		clientSettings.ClusterConfigurator = cb => cb.Subscribe(new DiagnosticsActivityEventSubscriber(new InstrumentationOptions
-		{
-			CaptureCommandText = true
-		}));
+		clientSettings.ClusterConfigurator = cb => cb.Subscribe(new MongoDbActivityEventSubscriber());
 
 		return (new MongoClient(clientSettings), mongoUrl);
 	}

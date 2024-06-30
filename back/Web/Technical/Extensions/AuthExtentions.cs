@@ -6,7 +6,7 @@ public static class AuthExtentions
 {
 	public static User GetUser(this HttpRequest request)
 	{
-		return (User) request.HttpContext.Items["user"];
+		return (User)request.HttpContext.Items["user"];
 	}
 
 	public static string GetUsername(this HttpRequest request)

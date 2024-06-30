@@ -2,9 +2,6 @@
 using Example.Api.Adapters.Mongo.Technical;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 
 namespace Example.Api.Adapters.Mongo.Repositories.Base;
@@ -27,13 +24,6 @@ public abstract class BaseRepository<T> : TracingAdapter
 	{
 		_context = new MongoContext(configuration);
 		_collectionName = typeof(T).Name[..^"Entity".Length];
-		var pack = new ConventionPack
-		{
-			new EnumRepresentationConvention(BsonType.String)
-		};
-
-		ConventionRegistry.Register("EnumStringConvention", pack, _ => true);
-		BsonSerializer.RegisterSerializationProvider(new EnumAsStringSerializationProvider());
 	}
 
 	/// <summary>

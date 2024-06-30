@@ -11,6 +11,16 @@ namespace Example.Api.Adapters.Mongo.Technical;
 /// </summary>
 public sealed class MongoContext
 {
+	static MongoContext()
+	{
+		var pack = new ConventionPack
+		{
+			new EnumRepresentationConvention(BsonType.String)
+		};
+		ConventionRegistry.Register("EnumStringConvention", pack, _ => true);
+		BsonSerializer.RegisterSerializationProvider(new EnumAsStringSerializationProvider());
+	}
+
 	/// <summary>
 	///     Default constructor
 	/// </summary>
@@ -23,16 +33,9 @@ public sealed class MongoContext
 
 		var (client, url) = MongoClientFactory.Create(connectionString);
 
-		Console.WriteLine($"Connecting to Database '{url.DatabaseName}'");
+		Console.WriteLine($"Connecting to Database '{url.Server.Host}:{url.Server.Port}/{url.DatabaseName}'");
 
 		MongoDatabase = client.GetDatabase(url.DatabaseName);
-
-		var pack = new ConventionPack
-		{
-			new EnumRepresentationConvention(BsonType.String)
-		};
-		ConventionRegistry.Register("EnumStringConvention", pack, _ => true);
-		BsonSerializer.RegisterSerializationProvider(new EnumAsStringSerializationProvider());
 	}
 
 	/// <summary>
