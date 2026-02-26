@@ -1,4 +1,5 @@
 ﻿using Example.Api.Web.Technical.Extensions;
+using ServiceDefaults;
 
 namespace Example.Api.Web.Start;
 
@@ -14,6 +15,9 @@ public static class AppRuntime
 	/// <returns></returns>
 	public static WebApplication Initialize(this WebApplication app)
 	{
+		// Map Aspire default endpoints (health checks)
+		app.MapDefaultEndpoints();
+
 		// Allow CORS
 		app.UseCors();
 

@@ -25,6 +25,7 @@
 		<ProjectReference Include="..\Rest\Example.Api.Adapters.Rest.csproj"/>
 		<ProjectReference Include="..\Core\Example.Api.Core.csproj"/>
 		<ProjectReference Include="..\Db\Example.Api.Adapters.Mongo.csproj"/>
+		<ProjectReference Include="..\ServiceDefaults\ServiceDefaults.csproj"/>
 	</ItemGroup>
 
 

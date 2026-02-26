@@ -3,6 +3,7 @@ using Example.Api.Adapters.Mongo.Injections;
 using Example.Api.Adapters.Rest.Injections;
 using Example.Api.Core.Injections;
 using Example.Api.Web.Technical.Extensions;
+using ServiceDefaults;
 
 namespace Example.Api.Web.Start;
 
@@ -18,6 +19,9 @@ public sealed class AppBuilder
 	public AppBuilder(string[] args)
 	{
 		var builder = WebApplication.CreateBuilder(args);
+
+		// Add Aspire service defaults (OpenTelemetry, health checks, service discovery)
+		builder.AddServiceDefaults();
 
 		builder.Configuration.AddJsonFile("appsettings.docker.json", true, true);
 
