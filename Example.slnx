@@ -1,0 +1,15 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+  </Configurations>
+  <Folder Name="/Api/">
+    <Project Path="Example.Api/Example.Api.Abstractions/Example.Api.Abstractions.csproj" />
+    <Project Path="Example.Api/Example.Api.Core/Example.Api.Core.csproj" />
+    <Project Path="Example.Api/Example.Api.Web/Example.Api.Web.csproj" />
+  </Folder>
+  <Folder Name="/Api/Adapters/">
+    <Project Path="Example.Api/Example.Api.Adapters.Mongo/Example.Api.Adapters.Mongo.csproj" />
+    <Project Path="Example.Api/Example.Api.Adapters.Rest/Example.Api.Adapters.Rest.csproj" />
+  </Folder>
+  <Project Path="Example.AppHost/Example.AppHost.csproj" />
+</Solution>

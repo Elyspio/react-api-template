@@ -1,8 +1,13 @@
 back/**/bin
 back/**/obj
+Example.Api/**/bin
+Example.Api/**/obj
 deploy
 .idea
 .git
 front/dist
 front/node_modules
+Example.Front/dist
+Example.Front/node_modules
 back/.vs
+Example.Api/.vs

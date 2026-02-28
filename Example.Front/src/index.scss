@@ -1,0 +1,29 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap");
+
+:root {
+	--shadow-soft: 0 12px 35px rgba(14, 27, 52, 0.12);
+	--shadow-deep: 0 20px 52px rgba(4, 12, 25, 0.26);
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+	width: 100%;
+	min-height: 100%;
+}
+
+body {
+	margin: 0;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+code {
+	font-family: "JetBrains Mono", "Cascadia Code", Consolas, "Courier New", monospace;
+}

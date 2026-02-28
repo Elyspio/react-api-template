@@ -1,7 +1,9 @@
 .idea
+.vs
+.aspire
 
 # TypeScript (front)
-*/node_modules
+node_modules
 */build
 *.map
 
@@ -10,12 +12,17 @@ deploy/environments/local/data
 !deploy/build/
 
 # C# (back)
-.vs
-back/*/bin
-back/*/obj
+bin
+obj
 
-# Production configuration
-deploy/environments/prod/.env
-deploy/environments/prod/config/front/conf.js
-deploy/environments/prod/config/back/appsettings.docker.json
-front/dist
+Example.Front/dist
+Example.Front/src/core/apis/backend/generated/.openapi-generator
+Example.Front/src/core/apis/backend/generated/docs
+Example.Front/src/core/apis/backend/generated/.gitignore
+Example.Front/src/core/apis/backend/generated/.gitkeep
+Example.Front/src/core/apis/backend/generated/.npmignore
+Example.Front/src/core/apis/backend/generated/.openapi-generator-ignore
+Example.Front/src/core/apis/backend/generated/git_push.sh
+
+Example.Front/openapitools.json
+front/src/core/apis/generated/docs

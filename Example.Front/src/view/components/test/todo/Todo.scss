@@ -1,0 +1,107 @@
+.TodoPanel {
+	height: 100%;
+	box-shadow: var(--shadow-soft);
+}
+
+.TodoPanel-content {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 0.95rem;
+	padding: 1.15rem 1.2rem !important;
+}
+
+.TodoPanel-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	gap: 1rem;
+}
+
+.TodoPanel-headline {
+	max-width: 36rem;
+}
+
+.TodoPanel-kicker {
+	letter-spacing: 0.12em;
+	opacity: 0.72;
+}
+
+.TodoPanel-metrics {
+	flex-shrink: 0;
+	align-items: flex-end;
+}
+
+.TodoPanel-progress {
+	height: 0.5rem !important;
+	border-radius: 99px;
+}
+
+.TodoPanel-list {
+	display: flex;
+	flex-direction: column;
+}
+
+.TodoPanel-empty {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	min-height: 7rem;
+	padding-block: 1.2rem;
+}
+
+.TodoRow {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 0.65rem;
+	padding: 0.5rem 0.15rem 0.55rem;
+	border-bottom: 1px solid rgba(128, 160, 205, 0.18);
+}
+
+.TodoRow-checked .TodoRow-label {
+	text-decoration: line-through;
+	opacity: 0.72;
+}
+
+.TodoRow-last {
+	border-bottom: 0;
+	padding-bottom: 0.2rem;
+}
+
+.TodoRow-main {
+	min-width: 0;
+}
+
+.TodoRow-label {
+	font-weight: 500;
+	word-break: break-word;
+}
+
+.TodoRow-meta {
+	font-size: 0.78rem !important;
+}
+
+@media (max-width: 900px) {
+	.TodoPanel-content {
+		padding: 1rem 0.9rem !important;
+	}
+
+	.TodoPanel-header {
+		flex-direction: column;
+	}
+
+	.TodoPanel-metrics {
+		width: 100%;
+		align-items: flex-start;
+		flex-wrap: wrap;
+	}
+
+	.TodoRow {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+}
