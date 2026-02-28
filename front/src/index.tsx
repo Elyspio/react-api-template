@@ -1,46 +1,41 @@
-import "reflect-metadata";
-import React from "react";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createRoot } from "react-dom/client";
-import "./index.scss";
+import { AuthProvider } from "react-oidc-context";
 import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
 import store, { useAppSelector } from "./store";
-import Application from "./view/components/Application";
-import { StyledEngineProvider, Theme, ThemeProvider } from "@mui/material/styles";
 import { themes } from "./config/theme";
+import { AppRouter } from "./view/router/AppRouter";
+import { oidcConfig } from "./core/auth/oidc";
+import "./index.scss";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.min.css";
-import { Provider as DiProvider } from "inversify-react";
-import { container } from "./core/di";
+import "react-toastify/dist/ReactToastify.css";
+import "./types/global"
 
-declare module "@mui/styles/defaultTheme" {
-	interface DefaultTheme extends Theme {}
-}
+const browserBaseName = import.meta.env.BASE_URL === "/" ? "/" : import.meta.env.BASE_URL?.replace(/\/$/, "");
 
-function Wrapper() {
-	const { theme, current } = useAppSelector((state) => ({ theme: state.theme.current === "dark" ? themes.dark : themes.light, current: state.theme.current }));
+function ThemedApp() {
+	const current = useAppSelector((state) => state.theme.current);
 
 	return (
-		<StyledEngineProvider injectFirst>
-			<ThemeProvider theme={theme}>
-				<Application />
-				<ToastContainer theme={current} position={"top-right"} />
-			</ThemeProvider>
-		</StyledEngineProvider>
+		<ThemeProvider theme={themes[current]}>
+			<CssBaseline />
+			<BrowserRouter basename={browserBaseName}>
+				<AppRouter />
+			</BrowserRouter>
+			<ToastContainer theme={current} position="top-right" />
+		</ThemeProvider>
 	);
 }
 
 function App() {
 	return (
-		<DiProvider container={container}>
-			<Provider store={store}>
-				<Wrapper />
-			</Provider>
-		</DiProvider>
+		<Provider store={store}>
+			<AuthProvider {...oidcConfig}>
+				<ThemedApp />
+			</AuthProvider>
+		</Provider>
 	);
 }
 
 createRoot(document.getElementById("root")!).render(<App />);
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA

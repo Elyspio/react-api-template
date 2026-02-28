@@ -1,11 +1,11 @@
-import React, { ReactNode } from "react";
+import { type MouseEvent, type ReactNode } from "react";
 import { IconButton, Typography } from "@mui/material";
 
 export type ActionComponentProps = {
-	icon: React.ReactNode;
-	children?: React.ReactNode;
+	icon: ReactNode;
+	children?: ReactNode;
 	className?: string;
-	onClick: (e: React.MouseEvent<HTMLDivElement>) => void;
+	onClick: (e: MouseEvent<HTMLDivElement>) => void;
 };
 
 export const ActionComponent = ({ children, icon, onClick, className }: ActionComponentProps) => {
@@ -20,4 +20,4 @@ export const ActionComponent = ({ children, icon, onClick, className }: ActionCo
 };
 
 export type ActionDescriptionProps = { children: ReactNode };
-export const ActionDescription = (props: ActionDescriptionProps) => <Typography className={"MuiButton-label ActionDescription"}>{props.children}</Typography>;
+export const ActionDescription = (props: ActionDescriptionProps) => <Typography className={"ActionDescription"}>{props.children}</Typography>;

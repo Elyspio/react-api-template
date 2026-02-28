@@ -12,7 +12,7 @@ public class MongoAdapterModule : IDotnetModule
 		var baseNamespace = nsp[..nsp.LastIndexOf(".", StringComparison.Ordinal)];
 		services.Scan(scan => scan
 			.FromAssemblyOf<MongoAdapterModule>()
-			.AddClasses(classes => classes.InNamespaces(baseNamespace + ".Repositories"))
+			.AddClasses(classes => classes.InNamespaces(baseNamespace + ".Repositories"), false)
 			.AsImplementedInterfaces()
 			.WithSingletonLifetime()
 		);

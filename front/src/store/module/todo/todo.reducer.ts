@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Todo } from "@apis/backend/generated";
+import { Todo } from "@apis/backend/types";
 import { addTodo, checkTodo, deleteTodo, getTodos } from "./todo.actions";
 
 export type TodoState = {

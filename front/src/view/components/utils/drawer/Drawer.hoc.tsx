@@ -1,53 +1,46 @@
-import React from "react";
-import { ActionComponent, ActionComponentProps, ActionDescription, ActionDescriptionProps } from "./actions/Action";
-import { Box, Grid, Paper, Typography } from "@mui/material";
-import { Drawer } from "./Drawer";
-import "./actions/Actions.scss";
+import { Box, Chip, Paper, Stack, Typography } from "@mui/material";
+import type { ReactNode } from "react";
+import { Drawer, type Action } from "./Drawer";
 
 export type WithDrawerProps = {
-	component: React.ReactNode;
-	actions: {
-		component: ActionComponentProps;
-		description: ActionDescriptionProps;
-	}[];
+	component: ReactNode;
+	actions: Action[];
 	title: string;
+	subtitle?: string;
 };
 
-function Actions(props: { elements: WithDrawerProps["actions"] }) {
-	return (
-		<Box className={"Actions"}>
-			{props.elements.map((action) => (
-				<ActionComponent key={action.description.children?.toString()} {...action.component}>
-					<ActionDescription children={action.description.children} />
-				</ActionComponent>
-			))}
-		</Box>
-	);
-}
-
-export function withDrawer({ component, title, actions }: WithDrawerProps) {
+export function withDrawer({ component, title, subtitle, actions }: WithDrawerProps) {
 	return (
 		<Box className={"Drawer-hoc"}>
-			<Paper elevation={1} color={"red"}>
-				<Grid className={"header"} alignItems={"center"} justifyContent={"center"} container>
-					<Grid item>
-						<Typography variant={"h4"} align={"center"}>
-							{title}
-						</Typography>
-					</Grid>
-				</Grid>
-			</Paper>
+			<Box className={"header-wrapper"}>
+				<Paper className={"header"} elevation={0}>
+					<Stack className={"header-content"} direction={{ xs: "column", md: "row" }} alignItems={{ xs: "flex-start", md: "center" }} justifyContent="space-between">
+						<Box>
+							<Typography variant={"overline"} className={"header-kicker"}>
+								Team workspace
+							</Typography>
+							<Typography variant={"h3"}>{title}</Typography>
+							{subtitle && (
+								<Typography variant={"body1"} color={"text.secondary"}>
+									{subtitle}
+								</Typography>
+							)}
+						</Box>
+						<Chip label={`${actions.length} quick actions`} color={"primary"} variant={"outlined"} />
+					</Stack>
+				</Paper>
+			</Box>
 
-			<Drawer position={"right"} actionsComponent={<Actions elements={actions} />}>
+			<Drawer position={"right"} actions={actions}>
 				<div className="content">{component}</div>
 			</Drawer>
 		</Box>
 	);
 }
 
-export function createDrawerAction(name: string, config: ActionComponentProps): WithDrawerProps["actions"][number] {
+export function createDrawerAction(name: string, config: Omit<Action, "text">): Action {
 	return {
-		description: { children: name },
-		component: config,
+		text: name,
+		...config,
 	};
 }

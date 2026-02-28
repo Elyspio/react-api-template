@@ -1,10 +1,62 @@
 .Application {
-	width: 100vw;
+	width: 100%;
+	min-height: 100vh;
 	display: flex;
 	flex-direction: column;
-	align-content: center;
-	height: 100vh;
-	overflow-x: hidden;
+	position: relative;
+	isolation: isolate;
+	overflow: hidden;
+
+	&::before {
+		content: "";
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		pointer-events: none;
+		background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+		background-size: 48px 48px;
+		mask-image: radial-gradient(circle at 50% 20%, black, transparent 88%);
+	}
+
+	> * {
+		position: relative;
+		z-index: 1;
+	}
 }
 
+.Application-shell {
+	display: flex !important;
+	flex-direction: column;
+	gap: 1rem;
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+}
+
+.Application-header {
+	border-radius: 22px !important;
+	padding: 1.25rem 1.5rem;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.Application-kicker {
+	letter-spacing: 0.12em;
+	opacity: 0.76;
+}
+
+.Application-actionsChip {
+	align-self: flex-start;
+}
+
+@media (max-width: 900px) {
+	.Application-shell {
+		padding-top: 0.85rem;
+		padding-bottom: 0.85rem;
+	}
+
+	.Application-header {
+		padding: 1rem 1rem;
+	}
+}
 

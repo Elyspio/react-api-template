@@ -1,0 +1,16 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/Adapters/">
+    <Project Path="Db/Example.Api.Adapters.Mongo.csproj" />
+    <Project Path="Rest/Example.Api.Adapters.Rest.csproj" />
+  </Folder>
+  <Project Path="Abstractions/Example.Api.Abstractions.csproj" />
+  <Project Path="AppHost/AppHost.csproj" />
+  <Project Path="Core/Example.Api.Core.csproj" />
+  <Project Path="Example.Api.ServiceDefaults/Example.Api.ServiceDefaults.csproj" />
+  <Project Path="Web/Example.Api.Web.csproj" />
+</Solution>

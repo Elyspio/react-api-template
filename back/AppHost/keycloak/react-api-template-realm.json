@@ -1,0 +1,57 @@
+{
+	"realm": "react-api-template",
+	"enabled": true,
+	"displayName": "React API Template",
+	"sslRequired": "none",
+	"registrationAllowed": false,
+	"rememberMe": true,
+	"loginWithEmailAllowed": true,
+	"duplicateEmailsAllowed": false,
+	"resetPasswordAllowed": true,
+	"clients": [
+		{
+			"clientId": "react-api-template-front",
+			"name": "React API Template Front",
+			"enabled": true,
+			"protocol": "openid-connect",
+			"publicClient": true,
+			"standardFlowEnabled": true,
+			"implicitFlowEnabled": false,
+			"directAccessGrantsEnabled": true,
+			"serviceAccountsEnabled": false,
+			"redirectUris": [
+				"*"
+			],
+			"webOrigins": [
+				"*"
+			],
+			"defaultClientScopes": [
+				"profile",
+				"email",
+				"roles",
+				"web-origins"
+			],
+			"attributes": {
+				"pkce.code.challenge.method": "S256",
+				"post.logout.redirect.uris": "*"
+			}
+		}
+	],
+	"users": [
+		{
+			"username": "demo",
+			"enabled": true,
+			"emailVerified": true,
+			"firstName": "Demo",
+			"lastName": "User",
+			"email": "demo@example.local",
+			"credentials": [
+				{
+					"type": "password",
+					"value": "demo",
+					"temporary": false
+				}
+			]
+		}
+	]
+}

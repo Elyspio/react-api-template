@@ -3,7 +3,7 @@ using Example.Api.Adapters.Mongo.Injections;
 using Example.Api.Adapters.Rest.Injections;
 using Example.Api.Core.Injections;
 using Example.Api.Web.Technical.Extensions;
-using ServiceDefaults;
+using Example.Api.ServiceDefaults;
 
 namespace Example.Api.Web.Start;
 
@@ -38,8 +38,7 @@ public sealed class AppBuilder
 			.AddAppSwagger()
 			.AddAppOpenTelemetry(builder.Configuration);
 
-
-		if (builder.Environment.IsDevelopment()) builder.Services.SetupDevelopmentCors();
+		builder.Services.SetupCors(builder.Configuration);
 
 		Application = builder.Build();
 	}

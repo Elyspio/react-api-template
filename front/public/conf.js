@@ -1,7 +1,14 @@
-window.config = {
+window.example ??= {};
+window.example.config = {
 	endpoints: {
-		core: "http://localhost",
-		authentication: "http://localhost/authentication",
+		core: "http://localhost:4000",
 	},
-	loginPageUrl: "http://localhost/authentication",
+	oidc: {
+		authority: "http://localhost:8081/realms/react-api-template",
+		clientId: "react-api-template-front",
+		scope: "openid profile email",
+		redirectPath: "/auth/callback",
+		postLogoutRedirectPath: "/",
+		silentRedirectPath: "/auth/silent-callback",
+	},
 };

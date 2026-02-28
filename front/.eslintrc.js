@@ -1,2 +1,9 @@
-// eslint-disable-next-line no-undef
-module.exports = require("@elyspio/vite-eslint-config/.eslintrc.js");
+module.exports = {
+	root: true,
+	env: {
+		browser: true,
+		es2022: true,
+		node: true,
+	},
+	ignorePatterns: ["dist", "node_modules"],
+};

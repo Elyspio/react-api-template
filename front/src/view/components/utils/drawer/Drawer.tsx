@@ -1,102 +1,162 @@
-import React, { ReactNode } from "react";
-import { Theme } from "@mui/material/styles";
-import MuiDrawer from "@mui/material/Drawer";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import ListItem from "@mui/material/ListItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
+import {
+	Box,
+	Divider,
+	Drawer as MuiDrawer,
+	IconButton,
+	List,
+	ListItemButton,
+	ListItemIcon,
+	ListItemText,
+	Tooltip,
+	type SxProps,
+	type Theme,
+} from "@mui/material";
+import { type MouseEvent, type ReactNode, useMemo, useState } from "react";
 import "./Drawer.scss";
-import clsx from "clsx";
-import { makeStyles } from "@mui/styles";
 
 export interface Action {
-	text: React.ReactNode;
-	icon: React.ReactNode;
-	onClick?: (e: React.MouseEvent) => void;
+	text: ReactNode;
+	icon: ReactNode;
+	onClick?: (e: MouseEvent) => void;
 }
 
 type Props = {
 	children: ReactNode[] | ReactNode;
 	position: "left" | "right";
 	actions?: Action[];
-	actionsComponent?: ReactNode;
 };
 
-const drawerWidth = 210;
-const baseWidth = 46;
+const drawerWidth = 248;
+const baseWidth = 72;
 
-const useStyles = makeStyles((theme: Theme) => ({
-	drawer: {
-		width: drawerWidth,
-		flexShrink: 0,
-		whiteSpace: "nowrap",
-	},
-	drawerOpen: {
-		width: drawerWidth,
-		transition: theme.transitions.create("width", {
-			easing: theme.transitions.easing.sharp,
-			duration: theme.transitions.duration.enteringScreen,
-		}),
-	},
-	drawerClose: {
-		transition: theme.transitions.create("width", {
-			easing: theme.transitions.easing.sharp,
-			duration: theme.transitions.duration.leavingScreen,
-		}),
-		overflowX: "hidden",
-		width: baseWidth,
-	},
-	mainSmaller: {
-		width: `calc(100% - ${drawerWidth}px) !important`,
-		transition: theme.transitions.create("width", {
-			easing: theme.transitions.easing.sharp,
-			duration: theme.transitions.duration.enteringScreen,
-		}),
-	},
-	main: {
-		width: `calc(100% - ${baseWidth}px)`,
-		transition: theme.transitions.create("width", {
-			easing: theme.transitions.easing.sharp,
-			duration: theme.transitions.duration.enteringScreen,
-		}),
-	},
-}));
+const getActions = (actions: Action[], open: boolean) => {
+	const groupedActions: Action[][] = [];
+	let currentGroup: Action[] = [];
 
-const getActions = (actions: Action[]) => {
-	const separatorIndexes = actions.map((action, index) => (action.text === null ? index : null)).filter((index) => index !== null) as number[];
+	for (const action of actions) {
+		if (action.text === null) {
+			if (currentGroup.length > 0) {
+				groupedActions.push(currentGroup);
+				currentGroup = [];
+			}
+			continue;
+		}
 
-	const comp = separatorIndexes.map((value, index, array) => actions.slice(value, array[index + 1]));
+		currentGroup.push(action);
+	}
 
-	const actionComponents = (comp.length > 0 ? comp : [actions]).map((actions, i) => (
-		<List className={"toolbar"} key={i}>
-			{actions.map((action, i) => (
-				<ListItem button key={i} onClick={(e) => action.onClick && action.onClick(e)}>
-					<ListItemIcon>{action.icon}</ListItemIcon>
-					{action.text}
-				</ListItem>
-			))}
-		</List>
+	if (currentGroup.length > 0) {
+		groupedActions.push(currentGroup);
+	}
+
+	const actionComponents = (groupedActions.length > 0 ? groupedActions : [actions]).map((group, i) => (
+		<Box key={i} mb={1}>
+			<List className={"toolbar"}>
+				{group.map((action, index) => (
+					<Tooltip key={index} title={open ? "" : action.text} placement="left">
+						<ListItemButton
+							onClick={(e) => action.onClick && action.onClick(e)}
+							sx={{
+								mb: 0.35,
+								minHeight: 46,
+								px: open ? 1.25 : 1,
+								borderRadius: 2.5,
+								justifyContent: open ? "initial" : "center",
+							}}
+						>
+							<ListItemIcon
+								sx={{
+									minWidth: 0,
+									mr: open ? 1.4 : 0,
+									justifyContent: "center",
+								}}
+							>
+								{action.icon}
+							</ListItemIcon>
+							<ListItemText
+								primary={action.text}
+								sx={{
+									opacity: open ? 1 : 0,
+									width: open ? "auto" : 0,
+									overflow: "hidden",
+									transition: (theme) =>
+										theme.transitions.create(["opacity", "width"], {
+											duration: theme.transitions.duration.shorter,
+										}),
+									"& .MuiTypography-root": {
+										fontSize: "0.95rem",
+										fontWeight: 500,
+										whiteSpace: "nowrap",
+									},
+								}}
+							/>
+						</ListItemButton>
+					</Tooltip>
+				))}
+			</List>
+			{i + 1 < groupedActions.length && <Divider sx={{ mx: 0.5 }} />}
+		</Box>
 	));
 
-	return (
-		<>
-			{actionComponents.map((components, index) => (
-				<React.Fragment key={index}>
-					{components} {index + 1 < actionComponents.length}
-				</React.Fragment>
-			))}
-		</>
-	);
+	return <>{actionComponents}</>;
+};
+
+const getDrawerSx = (open: boolean): SxProps<Theme> => {
+	const width = open ? drawerWidth : baseWidth;
+
+	return {
+		width,
+		height: "100%",
+		flexShrink: 0,
+		whiteSpace: "nowrap",
+		position: "relative",
+		overflow: "hidden",
+		transition: (theme) =>
+			theme.transitions.create("width", {
+				easing: theme.transitions.easing.sharp,
+				duration: open ? theme.transitions.duration.enteringScreen : theme.transitions.duration.leavingScreen,
+			}),
+		"& .MuiDrawer-paper": {
+			width,
+			height: "100%",
+			position: "absolute",
+			top: 0,
+			right: 0,
+			overflowX: "hidden",
+			overflowY: "auto",
+			boxSizing: "border-box",
+			paddingInline: "0.5rem",
+			paddingBlockEnd: "0.8rem",
+			transition: (theme) =>
+				theme.transitions.create("width", {
+					easing: theme.transitions.easing.sharp,
+					duration: open ? theme.transitions.duration.enteringScreen : theme.transitions.duration.leavingScreen,
+				}),
+		},
+	};
+};
+
+const getMainSx = (): SxProps<Theme> => {
+	return {
+		height: "100%",
+		minWidth: 0,
+		flexGrow: 1,
+		transition: (theme) =>
+			theme.transitions.create("margin", {
+				easing: theme.transitions.easing.sharp,
+				duration: theme.transitions.duration.enteringScreen,
+			}),
+	};
 };
 
 export function Drawer(props: Props) {
-	const [open, setOpen] = React.useState(false);
-	const classes = useStyles();
+	const [open, setOpen] = useState(false);
+	const drawerSx = useMemo(() => getDrawerSx(open), [open]);
+	const mainSx = useMemo(() => getMainSx(), []);
 
-	const handleDrawerOpen = (e: React.MouseEvent) => {
+	const handleDrawerOpen = (e: MouseEvent) => {
 		setOpen(true);
 		e.stopPropagation();
 	};
@@ -105,36 +165,25 @@ export function Drawer(props: Props) {
 		setOpen(false);
 	};
 
+	const drawer = (
+		<MuiDrawer anchor={props.position} variant="permanent" className={"toolbar"} sx={drawerSx}>
+			<div onClick={handleDrawerClose} className={"drawer-btn"}>
+				<IconButton onClick={open ? handleDrawerClose : handleDrawerOpen} size="medium">
+					{open ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+				</IconButton>
+			</div>
+			<Divider />
+			<div className="actions">{props.actions && getActions(props.actions, open)}</div>
+		</MuiDrawer>
+	);
+
 	return (
 		<div className={"Drawer"}>
-			<MuiDrawer
-				anchor={props.position}
-				variant="permanent"
-				className={
-					clsx(classes.drawer, {
-						[classes.drawerOpen]: open,
-						[classes.drawerClose]: !open,
-					}) + " toolbar"
-				}
-				classes={{
-					paper: clsx({
-						[classes.drawerOpen]: open,
-						[classes.drawerClose]: !open,
-					}),
-				}}
-			>
-				<div onClick={handleDrawerClose} className={"drawer-btn"}>
-					<IconButton onClick={open ? handleDrawerClose : handleDrawerOpen} size="medium">
-						{open ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-					</IconButton>
-				</div>
-				<Divider />
-				<div className="actions">
-					{props.actionsComponent}
-					{props.actions && getActions(props.actions)}
-				</div>
-			</MuiDrawer>
-			<main className={clsx({ [classes.mainSmaller]: open, [classes.main]: !open })}>{props.children}</main>
+			{props.position === "left" && drawer}
+			<Box component="main" sx={mainSx}>
+				{props.children}
+			</Box>
+			{props.position === "right" && drawer}
 		</div>
 	);
 }

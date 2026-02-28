@@ -2,6 +2,7 @@
 using Example.Api.Abstractions.Common.Helpers.Json;
 using Example.Api.Web.Technical.Filters;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -69,19 +70,37 @@ public static class ApiExtentions
 	}
 
 	/// <summary>
-	///     Setup CORS for local development
+    ///     Setup CORS
 	/// </summary>
 	/// <param name="services"></param>
+ /// <param name="configuration"></param>
 	/// <returns></returns>
-	public static IServiceCollection SetupDevelopmentCors(this IServiceCollection services)
+ public static IServiceCollection SetupCors(this IServiceCollection services, IConfiguration configuration)
 	{
+     var allowedOrigins = configuration.GetSection("Cors:AllowedOrigins")
+			.Get<string[]>()?
+			.Where(origin => !string.IsNullOrWhiteSpace(origin))
+			.Select(origin => origin.Trim())
+			.Distinct(StringComparer.OrdinalIgnoreCase)
+			.ToArray() ?? [];
+
 		services.AddCors(options =>
 			{
 				options.AddDefaultPolicy(b =>
 					{
-						b.AllowAnyOrigin();
-						b.AllowAnyHeader();
-						b.AllowAnyMethod();
+                     if (allowedOrigins.Length > 0)
+						{
+							b.WithOrigins(allowedOrigins);
+							b.AllowAnyHeader();
+							b.AllowAnyMethod();
+							b.AllowCredentials();
+						}
+						else
+						{
+							b.AllowAnyOrigin();
+							b.AllowAnyHeader();
+							b.AllowAnyMethod();
+						}
 					}
 				);
 			}

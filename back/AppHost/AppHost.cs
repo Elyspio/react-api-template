@@ -1,23 +1,54 @@
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+
 var builder = DistributedApplication.CreateBuilder(args);
+var appHostDirectory = builder.AppHostDirectory;
+
+builder.Services.AddLogging(o => o.AddSimpleConsole(x => x.SingleLine = true));
 
 // MongoDB resource with data persistence
-var mongo = builder.AddMongoDB("mongodb")
-                   .WithDataVolume()
-                   .WithLifetime(ContainerLifetime.Persistent);
+var mongo = builder.AddMongoDB("Mongo-Databases")
+    .WithDataVolume()
+    .WithLifetime(ContainerLifetime.Persistent);
 
-var mongodb = mongo.AddDatabase("example-db");
+var mongodb = mongo.AddDatabase("MongoDB");
 
-// NPM Frontend (React app) - path is relative to AppHost project
-var frontend = builder.AddNpmApp("frontend", "../../front")
-                      .WithHttpEndpoint(port: 3000, env: "PORT")
-                      .WithExternalHttpEndpoints()
-                      .PublishAsDockerFile();
+const string keycloakRealm = "react-api-template";
+const string keycloakClientId = "react-api-template-front";
+
+var keycloakImportPath = Path.Combine(appHostDirectory, "keycloak");
+var frontendPath = Path.GetFullPath(Path.Combine(appHostDirectory, "..", "..", "front"));
+
+var keycloak = builder.AddContainer("keycloak", "quay.io/keycloak/keycloak", "26.2")
+    .WithLifetime(ContainerLifetime.Persistent)
+    .WithHttpEndpoint(port: 8081, targetPort: 8080, name: "http")
+    .WithBindMount(keycloakImportPath, "/opt/keycloak/data/import", isReadOnly: true)
+    .WithEnvironment("KC_BOOTSTRAP_ADMIN_USERNAME", "admin")
+    .WithEnvironment("KC_BOOTSTRAP_ADMIN_PASSWORD", "admin")
+    .WithArgs("start-dev", "--import-realm");
+
+// NPM Frontend (React app)
+var frontend = builder.AddViteApp("frontend", frontendPath)
+    .WithYarn()
+    .WithHttpsEndpoint(name: "https");
+
+
 
 // .NET API with MongoDB reference
 var api = builder.AddProject<Projects.Example_Api_Web>("api")
-                 .WithReference(mongodb);
+    .WithHttpsEndpoint(name: "https")
+    .WithEnvironment("Cors__AllowedOrigins__0", frontend.GetEndpoint("https"))
+    .WithReference(mongodb);
 
-// Allow frontend to call API
-frontend.WithEnvironment("REACT_APP_API_URL", api.GetEndpoint("http"));
+// Allow frontend to call API and OIDC provider
+frontend
+    .WithEnvironment("VITE_API_BASE_URL", api.GetEndpoint("https"))
+    .WithEnvironment("VITE_OIDC_AUTHORITY", keycloak.GetEndpoint("http"))
+    .WithEnvironment("VITE_OIDC_REALM", keycloakRealm)
+    .WithEnvironment("VITE_OIDC_CLIENT_ID", keycloakClientId)
+    .WithEnvironment("VITE_OIDC_SCOPE", "openid profile email")
+    .WithEnvironment("VITE_OIDC_REDIRECT_PATH", "/auth/callback")
+    .WithEnvironment("VITE_OIDC_POST_LOGOUT_REDIRECT_PATH", "/")
+    .WithEnvironment("VITE_OIDC_SILENT_REDIRECT_PATH", "/auth/silent-callback");
 
-builder.Build().Run();
+builder.Build().Run();  

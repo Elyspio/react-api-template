@@ -1,47 +1,43 @@
-import { inject, injectable } from "inversify";
 import { BackendApi } from "@apis/backend";
-import { TodoClient } from "@apis/backend/generated";
-import { BaseService } from "./common/technical/base.service";
+import { Todo } from "@apis/backend/types";
 
 interface ITodoServiceSub {
-	get: TodoClient["getAll"];
-	add: TodoClient["add"];
-	remove: TodoClient["delete"];
-	check: TodoClient["check"];
+	get: () => Promise<Todo[]>;
+	add: (label: string) => Promise<Todo>;
+	remove: (id: Todo["id"]) => Promise<void>;
+	check: (id: Todo["id"]) => Promise<Todo>;
 }
 
-@injectable()
-export class TodoService extends BaseService {
-	@inject(BackendApi)
-	private backendApiClient!: BackendApi;
+export class TodoService {
+	constructor(private readonly backendApiClient: BackendApi) {}
 
 	public common: ITodoServiceSub = {
-		get: async (cancelToken) => {
-			return await this.backendApiClient.todo.common.getAll(cancelToken);
+		get: async () => {
+			return this.backendApiClient.todo.common.getAll();
 		},
 		add: async (label) => {
-			return await this.backendApiClient.todo.common.add(label);
+			return this.backendApiClient.todo.common.add(label);
 		},
 		check: async (id) => {
-			return await this.backendApiClient.todo.common.check(id);
+			return this.backendApiClient.todo.common.check(id);
 		},
 		remove: async (id) => {
-			await this.backendApiClient.todo.common.delete(id);
+			return this.backendApiClient.todo.common.delete(id);
 		},
 	};
 
 	public user: ITodoServiceSub = {
-		get: async (cancelToken) => {
-			return await this.backendApiClient.todo.user.getAllForUser(cancelToken);
+		get: async () => {
+			return this.backendApiClient.todo.user.getAll();
 		},
 		add: async (label) => {
-			return await this.backendApiClient.todo.user.addForUser(label);
+			return this.backendApiClient.todo.user.add(label);
 		},
 		check: async (id) => {
-			return await this.backendApiClient.todo.user.checkForUser(id);
+			return this.backendApiClient.todo.user.check(id);
 		},
 		remove: async (id) => {
-			await this.backendApiClient.todo.user.deleteForUser(id);
+			return this.backendApiClient.todo.user.delete(id);
 		},
 	};
 }

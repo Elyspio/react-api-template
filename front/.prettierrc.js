@@ -1,3 +1,5 @@
-const config = require("@elyspio/vite-eslint-config/.eslintrc.js");
-
-module.exports = config.rules["prettier/prettier"][1];
+module.exports = {
+	useTabs: true,
+	trailingComma: "es5",
+	printWidth: 160,
+};

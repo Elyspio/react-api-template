@@ -1,106 +1,146 @@
-import React, { useCallback, useEffect, useMemo } from "react";
+import Add from "@mui/icons-material/Add";
+import DoneAllOutlined from "@mui/icons-material/DoneAllOutlined";
+import PlaylistAddCheckRounded from "@mui/icons-material/PlaylistAddCheckRounded";
 import {
+	Box,
 	Button,
+	Card,
+	CardContent,
+	Chip,
 	Dialog,
 	DialogActions,
 	DialogContent,
 	DialogContentText,
 	DialogTitle,
-	Grid,
-	Paper,
-	Table,
-	TableBody,
-	TableCell,
-	TableContainer,
-	TableHead,
-	TableRow,
+	Divider,
+	LinearProgress,
+	Stack,
 	TextField,
 	Typography,
 } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
 import { TodoState } from "@store/module/todo/todo.reducer";
 import { useAppDispatch, useAppSelector } from "@store";
-import { bindActionCreators } from "redux";
-import { addTodo, checkTodo, deleteTodo, getTodos } from "@store/module/todo/todo.actions";
+import { addTodo, getTodos } from "@store/module/todo/todo.actions";
 import { useModal } from "@hooks/useModal";
-import IconButton from "@mui/material/IconButton";
-import Add from "@mui/icons-material/Add";
 import { TodoItem } from "./TodoItem";
+import { useAuth } from "react-oidc-context";
+import { useCallback, useEffect } from "react";
+import { useState } from "react";
+import "./Todo.scss";
 
 type TodoProps = {
 	mode: keyof TodoState["todos"];
 };
 
 export function Todo({ mode }: TodoProps) {
-	const { todos, logged } = useAppSelector((state) => ({
-		todos: [...state.todo.todos[mode]].sort((a, b) => a.label.localeCompare(b.label)),
-		logged: state.authentication.logged,
-	}));
+	const todos = useAppSelector((state) => [...state.todo.todos[mode]].sort((a, b) => a.label.localeCompare(b.label)));
 
 	const dispatch = useAppDispatch();
-	const actions = useMemo(() => bindActionCreators({ addTodo, deleteTodo, checkTodo, getTodos }, dispatch), [dispatch]);
+	const auth = useAuth();
+	const logged = auth.isAuthenticated;
 
-	const [label, setLabel] = React.useState("");
+	const [label, setLabel] = useState("");
 
 	const { open, setOpen, setClose } = useModal(false);
+	const boardTitle = mode === "public" ? "Shared backlog" : "My focus list";
+	const boardDescription = mode === "public" ? "Coordinate collective priorities visible to everyone." : "Keep personal objectives on track and ready to execute.";
+	const completedCount = todos.filter((todo) => todo.checked).length;
+	const progress = todos.length > 0 ? Math.round((completedCount / todos.length) * 100) : 0;
+	const canAdd = label.trim().length > 0;
 
 	const add = useCallback(async () => {
+		if (!canAdd) {
+			return;
+		}
+
 		setClose();
-		await actions.addTodo({ label, mode });
-	}, [mode, actions, label, setClose]);
+		await dispatch(addTodo({ label: label.trim(), mode }));
+		setLabel("");
+	}, [canAdd, dispatch, mode, label, setClose]);
 
 	useEffect(() => {
-		actions.getTodos(mode);
-	}, [actions, mode]);
-
-	const { palette } = useTheme();
+		void dispatch(getTodos(mode));
+	}, [dispatch, mode]);
 
 	return (
-		<Grid container direction={"column"} alignItems={"center"} justifyContent={"center"} p={3}>
-			<Grid container item my={3} alignItems={"center"} justifyContent={"space-between"}>
-				<Grid item>
-					<Typography variant={"overline"}>{mode}</Typography>
-				</Grid>
-				{logged && (
-					<Grid item>
-						<IconButton color={"success"} onClick={setOpen}>
-							<Add />
-						</IconButton>
-					</Grid>
-				)}
-			</Grid>
+		<Card className={"TodoPanel"} elevation={0}>
+			<CardContent className={"TodoPanel-content"}>
+				<Box className={"TodoPanel-header"}>
+					<Box className={"TodoPanel-headline"}>
+						<Typography variant={"overline"} className={"TodoPanel-kicker"}>
+							{mode === "public" ? "Public board" : "Personal board"}
+						</Typography>
+						<Typography variant={"h5"}>{boardTitle}</Typography>
+						<Typography color={"text.secondary"}>{boardDescription}</Typography>
+					</Box>
 
-			<Grid item width={"100%"}>
-				<Paper sx={{ backgroundColor: palette.background.default }}>
-					<TableContainer>
-						<Table sx={{}} aria-label="simple table">
-							<TableHead>
-								<TableRow>
-									<TableCell>Label</TableCell>
-									<TableCell align="right">Done</TableCell>
-								</TableRow>
-							</TableHead>
-							<TableBody>
-								{todos.map((row) => (
-									<TodoItem key={row.id} mode={mode} data={row} />
-								))}
-							</TableBody>
-						</Table>
-					</TableContainer>
-				</Paper>
-			</Grid>
+					<Stack className={"TodoPanel-metrics"} direction={{ xs: "row", md: "column" }} spacing={1}>
+						<Chip icon={<PlaylistAddCheckRounded fontSize={"small"} />} label={`${todos.length} tasks`} variant={"outlined"} />
+						<Chip
+							icon={<DoneAllOutlined fontSize={"small"} />}
+							label={`${completedCount} done`}
+							variant={"outlined"}
+							color={todos.length > 0 && completedCount === todos.length ? "success" : "default"}
+						/>
+						{logged && (
+							<Button variant={"contained"} startIcon={<Add />} onClick={setOpen}>
+								Add task
+							</Button>
+						)}
+					</Stack>
+				</Box>
+
+				<LinearProgress className={"TodoPanel-progress"} variant={"determinate"} value={progress} />
+				<Divider />
+
+				<Box className={"TodoPanel-list"}>
+					{todos.length === 0 ? (
+						<Box className={"TodoPanel-empty"}>
+							<Typography variant={"body1"}>No tasks yet.</Typography>
+							<Typography variant={"body2"} color={"text.secondary"}>
+								{logged ? "Use Add task to create your first item." : "Sign in to create tasks."}
+							</Typography>
+						</Box>
+					) : (
+						todos.map((row, index) => <TodoItem key={row.id} mode={mode} data={row} isLast={index + 1 === todos.length} />)
+					)}
+				</Box>
+			</CardContent>
 
 			<Dialog open={open} onClose={setClose}>
 				<DialogTitle>Add a todo</DialogTitle>
 				<DialogContent>
-					<DialogContentText>Enter a label for the new todo</DialogContentText>
-					<TextField autoFocus margin="dense" id="todo-label" label="Label" fullWidth variant="standard" value={label} onChange={(e) => setLabel(e.target.value)} />
+					<DialogContentText>Enter a clear label for the new task</DialogContentText>
+					<TextField
+						autoFocus
+						margin="dense"
+						id="todo-label"
+						label="Label"
+						fullWidth
+						variant="filled"
+						value={label}
+						onChange={(e) => setLabel(e.target.value)}
+						onKeyDown={(e) => {
+							if (e.key === "Enter" && canAdd) {
+								void add();
+							}
+						}}
+					/>
 				</DialogContent>
 				<DialogActions>
-					<Button onClick={setClose}>Cancel</Button>
-					<Button onClick={add}>Add</Button>
+					<Button
+						onClick={(e) => {
+							setClose(e);
+							setLabel("");
+						}}
+					>
+						Cancel
+					</Button>
+					<Button onClick={add} disabled={!canAdd} variant={"contained"}>
+						Add
+					</Button>
 				</DialogActions>
 			</Dialog>
-		</Grid>
+		</Card>
 	);
 }

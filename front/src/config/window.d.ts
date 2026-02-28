@@ -1,9 +1,15 @@
 export type Config = {
 	endpoints: {
 		core: string;
-		authentication: string;
 	};
-	loginPageUrl: "http://localhost";
+	oidc: {
+		authority: string;
+		clientId: string;
+		scope: string;
+		redirectPath: string;
+		postLogoutRedirectPath: string;
+		silentRedirectPath?: string;
+	};
 };
 
 declare global {

@@ -1,12 +1,8 @@
 {
 	"extends": "@elyspio/vite-eslint-config/tsconfig.json",
 	"compilerOptions": {
-		"baseUrl": ".",
-		"noEmit": true
+		"module": "esnext",
+		"moduleResolution": "bundler"
 	},
-	"include": [
-		"vite.config.ts",
-		".eslintrc.js",
-		"src"
-	]
+	"include": ["src", "scripts"]
 }

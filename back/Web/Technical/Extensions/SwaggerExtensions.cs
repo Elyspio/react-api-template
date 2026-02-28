@@ -1,6 +1,4 @@
-﻿using Example.Api.Web.Technical.Filters.Swagger;
-
-namespace Example.Api.Web.Technical.Extensions;
+﻿namespace Example.Api.Web.Technical.Extensions;
 
 /// <summary>
 ///     Swagger Extensions methods for <see cref="IServiceCollection" />
@@ -21,9 +19,6 @@ public static class SwaggerExtentions
 		services.AddSwaggerGen(options =>
 		{
 			options.SupportNonNullableReferenceTypes();
-			options.OperationFilter<SwaggerSetNullableOperationFilter>();
-			options.OperationFilter<SwaggerRemoveVersionFilter>();
-			options.SchemaFilter<NullableSchemaFilter>();
 
 			options.UseAllOfToExtendReferenceSchemas();
 			options.UseAllOfForInheritance();

@@ -2,19 +2,15 @@
 using Example.Api.Abstractions.Common.Technical.Tracing;
 using Example.Api.Abstractions.Interfaces.Services;
 using Example.Api.Abstractions.Models.Transports;
-using Example.Api.Adapters.Rest.AuthenticationApi;
-using Example.Api.Web.Technical.Extensions;
-using Example.Api.Web.Technical.Filters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Example.Api.Web.Controllers;
 
 [Route("api/todo/user")]
 [ApiController]
-[Authorize(AuthenticationRoles.User)]
 public class TodoUserController(ITodoService todoService, ILogger<TodoUserController> logger) : TracingController(logger)
 {
-	private string Username => Request.GetUsername();
+	private string Username => Request.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "preferred_username")?.Value;
 
 
 	[HttpDelete("{id:guid}")]

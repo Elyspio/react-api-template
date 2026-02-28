@@ -1,5 +1,5 @@
 ﻿using Example.Api.Web.Technical.Extensions;
-using ServiceDefaults;
+using Example.Api.ServiceDefaults;
 
 namespace Example.Api.Web.Start;
 

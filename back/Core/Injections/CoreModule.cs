@@ -12,7 +12,7 @@ public class CoreModule : IDotnetModule
 		var baseNamespace = nsp[..nsp.LastIndexOf(".", StringComparison.Ordinal)];
 		services.Scan(scan => scan
 			.FromAssemblyOf<CoreModule>()
-			.AddClasses(classes => classes.InNamespaces(baseNamespace + ".Services"))
+			.AddClasses(classes => classes.InNamespaces(baseNamespace + ".Services"), false)
 			.AsImplementedInterfaces()
 			.WithSingletonLifetime()
 		);

@@ -19,3 +19,13 @@ deploy/environments/prod/.env
 deploy/environments/prod/config/front/conf.js
 deploy/environments/prod/config/back/appsettings.docker.json
 front/dist
+front/src/core/apis/backend/generated/.openapi-generator
+front/src/core/apis/backend/generated/docs
+front/src/core/apis/backend/generated/.gitignore
+front/src/core/apis/backend/generated/.gitkeep
+front/src/core/apis/backend/generated/.npmignore
+front/src/core/apis/backend/generated/.openapi-generator-ignore
+front/src/core/apis/backend/generated/git_push.sh
+front/openapitools.json
+.aspire
+front/src/core/apis/generated/docs

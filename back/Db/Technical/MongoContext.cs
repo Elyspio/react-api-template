@@ -27,7 +27,7 @@ public sealed class MongoContext
 	/// <param name="configuration"></param>
 	public MongoContext(IConfiguration configuration)
 	{
-		var connectionString = configuration["Database"];
+		var connectionString = configuration.GetConnectionString("MongoDB");
 
 		ArgumentException.ThrowIfNullOrWhiteSpace(connectionString);
 
