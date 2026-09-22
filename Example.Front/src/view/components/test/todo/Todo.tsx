@@ -139,7 +139,7 @@ export function Todo({ mode }: TodoProps) {
 				</DialogContent>
 				<DialogActions>
 					<Button
-						onClick={(e) => {
+						onClick={() => {
 							setClose();
 							setLabel("");
 						}}
