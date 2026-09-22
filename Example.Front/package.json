@@ -1,16 +1,16 @@
 {
 	"name": "frontend",
 	"version": "0.1.0",
-	"type": "module",
 	"private": true,
+	"type": "module",
 	"scripts": {
-		"dev": "vite",
-		"build": "tsc && vite build",
-		"refresh-api": "tsx scripts/refresh-api.ts",
-		"docker": "node ../deploy/build/build.js",
-		"check:types": "tsc --noEmit",
-		"check:lint": "eslint src --fix",
-		"format": "prettier --write src"
+		"dev": "vp dev",
+		"build": "vp build",
+		"preview": "vp preview",
+		"check": "vp check",
+		"lint": "vp lint",
+		"fmt": "vp fmt",
+		"refresh-api": "node scripts/refresh-api.ts"
 	},
 	"dependencies": {
 		"@emotion/react": "^11.14.0",
@@ -30,10 +30,17 @@
 		"reflect-metadata": "^0.2.2"
 	},
 	"devDependencies": {
-		"@elyspio/vite-eslint-config": "3.1.28",
-		"@types/node": "^25.3.2",
+		"@elyspio/vite-eslint-config": "^8.0.0-rc.0",
+		"@types/node": "^26.6.2",
 		"@types/react": "^19.2.14",
 		"@types/react-dom": "^19.2.3",
-		"typescript": "^5.9.3"
-	}
+		"sass": "^1.105.0",
+		"typescript": "^7.0.2",
+		"vite": "catalog:",
+		"vite-plus": "catalog:"
+	},
+	"engines": {
+		"node": ">=26.0.0"
+	},
+	"packageManager": "pnpm@12.5.1"
 }

@@ -29,7 +29,7 @@ var keycloak = builder.AddContainer("keycloak", "quay.io/keycloak/keycloak", "26
 
 // NPM Frontend (React app)
 var frontend = builder.AddViteApp("frontend", frontendPath)
-    .WithYarn()
+    .WithPnpm()
     .WithHttpsEndpoint(name: "https", port: 3000);
 
 
