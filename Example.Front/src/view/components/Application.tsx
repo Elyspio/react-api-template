@@ -30,18 +30,35 @@ function Application() {
 		>
 			<Container maxWidth={"xl"} className={"Application-shell"}>
 				<Paper className={"Application-header"} elevation={0}>
-					<Stack direction={{ xs: "column", md: "row" }} alignItems={{ xs: "flex-start", md: "center" }} justifyContent="space-between" gap={2}>
+					<Stack
+						direction={{ xs: "column", md: "row" }}
+						sx={{
+							alignItems: { xs: "flex-start", md: "center" },
+							justifyContent: "space-between",
+							gap: 2,
+						}}
+					>
 						<Box>
 							<Typography variant={"overline"} className={"Application-kicker"}>
 								Team workspace
 							</Typography>
 							<Typography variant={"h3"}>Todo Studio</Typography>
-							<Typography color={"text.secondary"}>
+							<Typography
+								sx={{
+									color: "text.secondary",
+								}}
+							>
 								{auth.isAuthenticated ? `Connected as ${userName ?? "user"}` : "Organize tasks with a clean and focused workspace."}
 							</Typography>
 						</Box>
 
-						<Stack direction={{ xs: "column", sm: "row" }} spacing={1} width={{ xs: "100%", md: "auto" }}>
+						<Stack
+							direction={{ xs: "column", sm: "row" }}
+							spacing={1}
+							sx={{
+								width: { xs: "100%", md: "auto" },
+							}}
+						>
 							<Button
 								variant={"outlined"}
 								startIcon={theme === "dark" ? <LightMode /> : <DarkMode />}

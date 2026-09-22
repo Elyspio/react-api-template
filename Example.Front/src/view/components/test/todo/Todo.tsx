@@ -70,7 +70,13 @@ export function Todo({ mode }: TodoProps) {
 							{mode === "public" ? "Public board" : "Personal board"}
 						</Typography>
 						<Typography variant={"h5"}>{boardTitle}</Typography>
-						<Typography color={"text.secondary"}>{boardDescription}</Typography>
+						<Typography
+							sx={{
+								color: "text.secondary",
+							}}
+						>
+							{boardDescription}
+						</Typography>
 					</Box>
 
 					<Stack className={"TodoPanel-metrics"} direction={{ xs: "row", md: "column" }} spacing={1}>
@@ -96,7 +102,12 @@ export function Todo({ mode }: TodoProps) {
 					{todos.length === 0 ? (
 						<Box className={"TodoPanel-empty"}>
 							<Typography variant={"body1"}>No tasks yet.</Typography>
-							<Typography variant={"body2"} color={"text.secondary"}>
+							<Typography
+								variant={"body2"}
+								sx={{
+									color: "text.secondary",
+								}}
+							>
 								{logged ? "Use Add task to create your first item." : "Sign in to create tasks."}
 							</Typography>
 						</Box>

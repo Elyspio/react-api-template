@@ -17,7 +17,12 @@ export const Todos = () => {
 					Task board
 				</Typography>
 				<Typography variant={"h4"}>Keep priorities visible and moving</Typography>
-				<Typography color={"text.secondary"} maxWidth={700}>
+				<Typography
+					sx={{
+						color: "text.secondary",
+						maxWidth: 700,
+					}}
+				>
 					Use the public board for shared items and your personal board for focused execution.
 				</Typography>
 				<Stack direction={{ xs: "column", sm: "row" }} spacing={1}>
@@ -26,7 +31,13 @@ export const Todos = () => {
 				</Stack>
 			</Stack>
 
-			<Grid container spacing={{ xs: 2, md: 2.5 }} alignItems={"stretch"}>
+			<Grid
+				container
+				spacing={{ xs: 2, md: 2.5 }}
+				sx={{
+					alignItems: "stretch",
+				}}
+			>
 				<Grid size={logged ? { xs: 12, xl: 6 } : 12}>
 					<Todo mode={"public"} />
 				</Grid>

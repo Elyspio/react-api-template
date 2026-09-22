@@ -7,7 +7,7 @@ This repository is designed to bootstrap a production-minded app quickly, with a
 ## Highlights
 
 - React 19 + Vite+ + TypeScript frontend (Oxlint / Oxfmt through `vp`)
-- Material UI 7 design system with theme switching
+- Material UI 9 design system with theme switching
 - .NET 10 Web API (Swagger/OpenAPI enabled)
 - MongoDB data layer
 - OIDC login flow (Keycloak in local orchestrated setup)
