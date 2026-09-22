@@ -1,4 +1,4 @@
-<Project Sdk="Aspire.AppHost.Sdk/13.1.2">
+<Project Sdk="Aspire.AppHost.Sdk/13.5.4">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -7,11 +7,14 @@
     <Nullable>enable</Nullable>
     <UserSecretsId>f1722d60-c1e7-41d8-9fbd-c22f23f009d3</UserSecretsId>
     <IsAspireHost>true</IsAspireHost>
+    <!-- Aspire 13.5 warns while DCP and the dashboard still come from NuGet packages rather than the
+         Aspire CLI bundle. Keeping the packages lets `dotnet build` / `dotnet run` work without the CLI installed. -->
+    <NoWarn>$(NoWarn);ASPIRE010</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspire.Hosting.MongoDB" Version="13.1.2" />
-    <PackageReference Include="Aspire.Hosting.JavaScript" Version="13.1.2" />
+    <PackageReference Include="Aspire.Hosting.MongoDB" Version="13.5.4" />
+    <PackageReference Include="Aspire.Hosting.JavaScript" Version="13.5.4" />
   </ItemGroup>
 
   <ItemGroup>

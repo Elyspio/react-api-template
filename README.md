@@ -178,7 +178,8 @@ Runtime overrides are mounted from:
 
 ## Requirements
 
-- .NET SDK 10 (preview-compatible, project targets `net10.0`)
+- .NET SDK 10.0.400+ (pinned by `global.json`, projects target `net10.0`)
+- Aspire CLI 13.5 for `aspire run` (the AppHost uses `Aspire.AppHost.Sdk` 13.5.4)
 - Node.js 26+ and pnpm 12 (exact version pinned by `packageManager` in `Example.Front/package.json`)
 - Docker (recommended for Aspire resources and production image workflows)
 
