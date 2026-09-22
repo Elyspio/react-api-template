@@ -1,7 +1,7 @@
 import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import { PropsWithChildren, useEffect } from "react";
 import { useAuth } from "react-oidc-context";
-import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router";
 import { setAccessToken } from "@/core/auth/token.store";
 import Application from "@/view/components/Application";
 
