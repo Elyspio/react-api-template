@@ -7,6 +7,7 @@ public interface ITodoRepository : ICrudRepository<TodoEntity, TodoBase>
 {
 	Task<TodoEntity> Add(string label, string user);
 	Task<List<TodoEntity>> GetAll(string user);
-	Task<TodoEntity> Check(Guid id, string user);
+	/// <summary>Toggles the todo of the user; null when the user has no such todo.</summary>
+	Task<TodoEntity?> Check(Guid id, string user);
 	Task Delete(Guid id, string user);
 }

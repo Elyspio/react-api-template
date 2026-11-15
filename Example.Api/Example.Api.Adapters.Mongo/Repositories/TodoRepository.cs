@@ -39,11 +39,12 @@ internal class TodoRepository(IConfiguration configuration, ILogger<BaseReposito
 		return await EntityCollection.AsQueryable().Where(x => x.User == user).ToListAsync();
 	}
 
-	public async Task<TodoEntity> Check(Guid id, string user)
+	public async Task<TodoEntity?> Check(Guid id, string user)
 	{
 		using var trace = Logger.Trace($"{Log.F(id)} {Log.F(user)}");
 
-		var entity = await EntityCollection.AsQueryable().FirstAsync(todo => todo.Id == id.AsObjectId());
+		var entity = await EntityCollection.AsQueryable().FirstOrDefaultAsync(todo => todo.User == user && todo.Id == id.AsObjectId());
+		if (entity is null) return null;
 
 		entity.Checked = !entity.Checked;
 

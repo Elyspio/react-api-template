@@ -1,7 +1,8 @@
-﻿using Elyspio.Utils.Telemetry;
+﻿using Elyspio.Utils.Results;
+using Elyspio.Utils.Telemetry;
 using Example.Api.Abstractions.Common.Assemblers;
 using Example.Api.Abstractions.Common.Extensions;
-using Example.Api.Abstractions.Exceptions;
+using Example.Api.Abstractions.Errors;
 using Example.Api.Abstractions.Interfaces.Business;
 using Example.Api.Abstractions.Interfaces.Repositories;
 using Example.Api.Abstractions.Interfaces.Services.Base;
@@ -48,13 +49,13 @@ internal abstract class CrudService<TData, TBase, TEntity>(ILogger<CrudService<T
 		await repository.Delete(id.AsObjectId());
 	}
 
-	public async Task<TData> GetById(Guid id)
+	public async Task<Result<TData>> GetById(Guid id)
 	{
 		using var trace = logger.Trace();
 
 		var entity = await repository.GetById(id.AsObjectId());
 
-		if (entity is null) throw new HttpException.NotFound<TEntity>(id);
+		if (entity is null) return trace.Fail(new EntityNotFound(typeof(TEntity).Name, id));
 
 		return baseAssembler.Convert(entity);
 	}

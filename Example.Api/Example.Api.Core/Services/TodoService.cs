@@ -1,4 +1,6 @@
-﻿using Elyspio.Utils.Telemetry;
+﻿using Elyspio.Utils.Results;
+using Example.Api.Abstractions.Errors;
+using Elyspio.Utils.Telemetry;
 using Example.Api.Abstractions.Interfaces.Repositories;
 using Example.Api.Abstractions.Interfaces.Services;
 using Example.Api.Abstractions.Models.Transports;
@@ -52,24 +54,19 @@ public class TodoService(ITodoRepository todoRepository, ILogger<TodoService> lo
 		return data;
 	}
 
-	public async Task<Todo> Check(Guid id)
+	public Task<Result<Todo>> Check(Guid id)
 	{
-		using var trace = logger.Trace($"{Log.F(id)}");
-
-		var entity = await todoRepository.Check(id, defaultUser);
-		var data = todoAssembler.Convert(entity);
-
-		return data;
+		return CheckForUser(id, defaultUser);
 	}
 
-	public async Task<Todo> CheckForUser(Guid id, string user)
+	public async Task<Result<Todo>> CheckForUser(Guid id, string user)
 	{
 		using var trace = logger.Trace($"{Log.F(user)} {Log.F(id)}");
 
 		var entity = await todoRepository.Check(id, user);
-		var data = todoAssembler.Convert(entity);
+		if (entity is null) return trace.Fail(new EntityNotFound(nameof(Todo), id));
 
-		return data;
+		return todoAssembler.Convert(entity);
 	}
 
 	public async Task Delete(Guid id)

@@ -1,4 +1,5 @@
-﻿using Elyspio.Utils.Telemetry;
+﻿using Elyspio.Utils.Results.AspNetCore;
+using Elyspio.Utils.Telemetry;
 using Example.Api.Abstractions.Interfaces.Services;
 using Example.Api.Abstractions.Models.Transports;
 using Microsoft.AspNetCore.Authorization;
@@ -21,10 +22,11 @@ public class TodoController(ITodoService todoService, ILogger<TodoController> lo
 
     [HttpPut("{id:guid}/toggle")]
     [ProducesResponseType(typeof(Todo), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Check(Guid id)
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<Todo>> Check(Guid id)
     {
         using var trace = logger.Trace($"{Log.F(id)}");
-        return Ok(await todoService.Check(id));
+        return (await todoService.Check(id)).ToActionResult();
     }
 
 

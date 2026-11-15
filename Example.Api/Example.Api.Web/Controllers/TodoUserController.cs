@@ -1,4 +1,5 @@
-﻿using Elyspio.Utils.Telemetry;
+﻿using Elyspio.Utils.Results.AspNetCore;
+using Elyspio.Utils.Telemetry;
 using Example.Api.Abstractions.Interfaces.Services;
 using Example.Api.Abstractions.Models.Transports;
 using Microsoft.AspNetCore.Mvc;
@@ -42,9 +43,10 @@ public class TodoUserController(ITodoService todoService, ILogger<TodoUserContro
 
 	[HttpPut("{id:guid}/toggle")]
 	[ProducesResponseType(typeof(Todo), StatusCodes.Status200OK)]
-	public async Task<IActionResult> CheckForUser(Guid id)
+	[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+	public async Task<ActionResult<Todo>> CheckForUser(Guid id)
 	{
 		using var trace = logger.Trace($"{Log.F(id)} {Log.F(Username)}");
-		return Ok(await todoService.CheckForUser(id, Username));
+		return (await todoService.CheckForUser(id, Username)).ToActionResult();
 	}
 }

@@ -11,7 +11,7 @@ This repository is designed to bootstrap a production-minded app quickly, with a
 - .NET 11 Web API (Swagger/OpenAPI enabled)
 - MongoDB data layer
 - OIDC login flow (Keycloak in local orchestrated setup)
-- OpenTelemetry hooks via Aspire service defaults
+- OpenTelemetry (traces, metrics, logs over OTLP) through `Elyspio.Utils.Telemetry`, configured by the standard `OTEL_*` variables; business errors returned as `Elyspio.Utils.Results` values and mapped to ProblemDetails
 - Generated TypeScript API client from backend Swagger
 
 ## Stack
