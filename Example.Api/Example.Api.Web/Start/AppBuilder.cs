@@ -1,4 +1,5 @@
-﻿using Elyspio.Utils.Telemetry.Technical.Extensions;
+﻿using Elyspio.Utils.Telemetry;
+using Elyspio.Utils.Telemetry.MongoDB.Extensions;
 using Example.Api.Abstractions.Interfaces.Injections;
 using Example.Api.Adapters.Mongo.Injections;
 using Example.Api.Adapters.Rest.Injections;
@@ -6,7 +7,6 @@ using Example.Api.Core.Injections;
 using Example.Api.Web.Technical.Extensions;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Serilog;
 
 namespace Example.Api.Web.Start;
 
@@ -23,16 +23,13 @@ public sealed class AppBuilder
 	{
 		var builder = WebApplication.CreateBuilder(args);
 
-		// Add Aspire service defaults (OpenTelemetry, health checks, service discovery)
-
 		builder.Configuration.AddJsonFile("appsettings.docker.json", true, true);
 
-		builder.AddLogging();
+		// Serilog console, plus traces, metrics and logs over OTLP when OTEL_EXPORTER_OTLP_ENDPOINT is set (Aspire sets it)
+		builder.AddElyspioTelemetry(options => options.Tracing = tracing => tracing.AddAppMongoInstrumentation());
 
 		builder.AddServiceDefaults();
 
-		builder.Services.AddAppOpenTelemetry(builder.Configuration);
-		
 		builder.Services.AddModule<CoreModule>(builder.Configuration);
 		builder.Services.AddModule<MongoAdapterModule>(builder.Configuration);
 		builder.Services.AddModule<RestAdapterModule>(builder.Configuration);
@@ -40,15 +37,12 @@ public sealed class AppBuilder
 		builder.Services
 			.AddAppControllers()
 			.AddAppSignalR()
-			.AddAppSwagger()
-			.AddAppOpenTelemetry(builder.Configuration);
+			.AddAppSwagger();
 
 		builder.Services.SetupCors(builder.Configuration);
 
 		Application = builder.Build();
 	}
-
-
 
 	/// <summary>
 	///     Built application
@@ -58,28 +52,12 @@ public sealed class AppBuilder
 
 public static class Extensions
 {
-	
-	public static IServiceCollection AddLogging(this WebApplicationBuilder builder)
-	{
-		builder.Logging.AddOpenTelemetry(logging =>
-		{
-			logging.IncludeFormattedMessage = true;
-			logging.IncludeScopes = true;
-		});
-		
-		builder.Host.UseSerilogWithTelemetry();
-
-		return builder.Services;
-	}
-	
 	public static IHostApplicationBuilder AddServiceDefaults(this IHostApplicationBuilder builder)
 	{
 		builder.AddDefaultHealthChecks();
 
-
 		return builder;
 	}
-
 
 	public static IHostApplicationBuilder AddDefaultHealthChecks(this IHostApplicationBuilder builder)
 	{

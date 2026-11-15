@@ -1,6 +1,5 @@
 ﻿using System.Text.Json.Serialization;
 using Example.Api.Abstractions.Common.Helpers.Json;
-using Example.Api.Web.Technical.Filters;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -29,11 +28,13 @@ public static class ApiExtentions
 
 		services.ConfigureHttpJsonOptions(options => options.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
+		// Unexpected exceptions become a 500 ProblemDetails without their details (see UseExceptionHandler)
+		services.AddProblemDetails();
+
 		services.AddControllers(o =>
 				{
 					o.Conventions.Add(new ControllerDocumentationConvention());
 					o.OutputFormatters.RemoveType<StringOutputFormatter>();
-					o.Filters.Add<HttpExceptionFilter>();
 				}
 			)
 			.AddNewtonsoftJson(x =>

@@ -14,6 +14,8 @@ public static class AppRuntime
 	/// <returns></returns>
 	public static WebApplication Initialize(this WebApplication app)
 	{
+		app.UseExceptionHandler();
+
 		// Map Aspire default endpoints (health checks)
 		app.MapDefaultEndpoints();
 
