@@ -8,7 +8,7 @@ This repository is designed to bootstrap a production-minded app quickly, with a
 
 - React 19 + Vite+ + TypeScript frontend (Oxlint / Oxfmt through `vp`)
 - Material UI 9 design system with theme switching
-- .NET 10 Web API (Swagger/OpenAPI enabled)
+- .NET 11 Web API (Swagger/OpenAPI enabled)
 - MongoDB data layer
 - OIDC login flow (Keycloak in local orchestrated setup)
 - OpenTelemetry hooks via Aspire service defaults
@@ -19,7 +19,7 @@ This repository is designed to bootstrap a production-minded app quickly, with a
 | Layer | Tech |
 |---|---|
 | Frontend | React, Vite+ (Vite, Oxlint, Oxfmt), TypeScript, Redux Toolkit, MUI, react-oidc-context |
-| Backend | ASP.NET Core (.NET 10), Swagger/Swashbuckle, Serilog |
+| Backend | ASP.NET Core (.NET 11), Swagger/Swashbuckle, Serilog |
 | Data | MongoDB |
 | Auth | OIDC (Keycloak realm provided for local dev) |
 | Orchestration | .NET Aspire AppHost |
@@ -178,7 +178,7 @@ Runtime overrides are mounted from:
 
 ## Requirements
 
-- .NET SDK 10.0.400+ (pinned by `global.json`, projects target `net10.0`)
+- .NET SDK 11.0.100+ (pinned by `global.json`, projects target `net11.0`)
 - Aspire CLI 13.5 for `aspire run` (the AppHost uses `Aspire.AppHost.Sdk` 13.5.4)
 - Node.js 26+ and pnpm 12 (exact version pinned by `packageManager` in `Example.Front/package.json`)
 - Docker (recommended for Aspire resources and production image workflows)
