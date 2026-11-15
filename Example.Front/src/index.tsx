@@ -2,7 +2,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createRoot } from "react-dom/client";
 import { AuthProvider } from "react-oidc-context";
 import { Provider } from "react-redux";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router";
 import store, { useAppSelector } from "./store";
 import { themes } from "./config/theme";
 import { AppRouter } from "./view/router/AppRouter";

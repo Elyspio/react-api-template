@@ -1,7 +1,7 @@
 import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import { PropsWithChildren, useEffect } from "react";
 import { useAuth } from "react-oidc-context";
-import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router";
 import { setAccessToken } from "@/core/auth/token.store";
 import Application from "@/view/components/Application";
 
@@ -11,7 +11,16 @@ type LoadingStateProps = {
 
 function LoadingState({ message }: LoadingStateProps) {
 	return (
-		<Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" gap={2} minHeight="100vh">
+		<Box
+			sx={{
+				display: "flex",
+				flexDirection: "column",
+				alignItems: "center",
+				justifyContent: "center",
+				gap: 2,
+				minHeight: "100vh",
+			}}
+		>
 			<CircularProgress />
 			<Typography>{message}</Typography>
 		</Box>
@@ -25,7 +34,16 @@ type ErrorStateProps = {
 
 function ErrorState({ message, onRetry }: ErrorStateProps) {
 	return (
-		<Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" gap={2} minHeight="100vh">
+		<Box
+			sx={{
+				display: "flex",
+				flexDirection: "column",
+				alignItems: "center",
+				justifyContent: "center",
+				gap: 2,
+				minHeight: "100vh",
+			}}
+		>
 			<Typography color="error">{message}</Typography>
 			{onRetry && (
 				<Button onClick={onRetry} variant="contained">

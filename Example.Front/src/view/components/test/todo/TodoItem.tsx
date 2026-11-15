@@ -46,12 +46,23 @@ export function TodoItem({ data, mode, isLast = false }: TodoItemProps) {
 			<Box className={`TodoRow${data.checked ? " TodoRow-checked" : ""}${isLast ? " TodoRow-last" : ""}`} onContextMenu={onContextMenu}>
 				<Box className={"TodoRow-main"}>
 					<Typography className={"TodoRow-label"}>{data.label}</Typography>
-					<Typography className={"TodoRow-meta"} color={"text.secondary"}>
+					<Typography
+						className={"TodoRow-meta"}
+						sx={{
+							color: "text.secondary",
+						}}
+					>
 						{mode === "public" ? (data.user ? `Author: ${data.user}` : "Shared item") : "Private item"}
 					</Typography>
 				</Box>
 
-				<Stack direction={"row"} spacing={0.4} alignItems={"center"}>
+				<Stack
+					direction={"row"}
+					spacing={0.4}
+					sx={{
+						alignItems: "center",
+					}}
+				>
 					{data.checked && <Chip size={"small"} color={"success"} label={"Done"} variant={"outlined"} />}
 					<Switch onChange={onSwitchClick} checked={data.checked} />
 					<IconButton size={"small"} onClick={openActions} aria-label={"Open task actions"}>
