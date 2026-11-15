@@ -1,5 +1,5 @@
-﻿using Example.Api.Abstractions.Common.Helpers;
-using Example.Api.Abstractions.Common.Technical.Tracing;
+﻿using Elyspio.Utils.Results.AspNetCore;
+using Elyspio.Utils.Telemetry;
 using Example.Api.Abstractions.Interfaces.Services;
 using Example.Api.Abstractions.Models.Transports;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +8,7 @@ namespace Example.Api.Web.Controllers;
 
 [Route("api/todo/user")]
 [ApiController]
-public class TodoUserController(ITodoService todoService, ILogger<TodoUserController> logger) : TracingController(logger)
+public class TodoUserController(ITodoService todoService, ILogger<TodoUserController> logger) : ControllerBase
 {
 	private string Username => Request.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "preferred_username")?.Value;
 
@@ -17,7 +17,7 @@ public class TodoUserController(ITodoService todoService, ILogger<TodoUserContro
 	[ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
 	public async Task<IActionResult> DeleteForUser(Guid id)
 	{
-		using var _ = LogController($"{Log.F(id)} {Log.F(Username)}");
+		using var trace = logger.Trace($"{Log.F(id)} {Log.F(Username)}");
 		await todoService.DeleteForUser(id, Username);
 		return NoContent();
 	}
@@ -26,7 +26,7 @@ public class TodoUserController(ITodoService todoService, ILogger<TodoUserContro
 	[ProducesResponseType(typeof(Todo), StatusCodes.Status201Created)]
 	public async Task<IActionResult> AddForUser([FromBody] string label)
 	{
-		using var _ = LogController($"{Log.F(label)} {Log.F(Username)}");
+		using var trace = logger.Trace($"{Log.F(label)} {Log.F(Username)}");
 		var todo = await todoService.AddForUser(label, Username);
 		return Created($"/{todo.Id}", todo);
 	}
@@ -36,16 +36,17 @@ public class TodoUserController(ITodoService todoService, ILogger<TodoUserContro
 	[ProducesResponseType(typeof(List<Todo>), StatusCodes.Status200OK)]
 	public async Task<IActionResult> GetAllForUser()
 	{
-		using var _ = LogController($"{Log.F(Username)}");
+		using var trace = logger.Trace($"{Log.F(Username)}");
 		return Ok(await todoService.GetAllForUser(Username));
 	}
 
 
 	[HttpPut("{id:guid}/toggle")]
 	[ProducesResponseType(typeof(Todo), StatusCodes.Status200OK)]
-	public async Task<IActionResult> CheckForUser(Guid id)
+	[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+	public async Task<ActionResult<Todo>> CheckForUser(Guid id)
 	{
-		using var _ = LogController($"{Log.F(id)} {Log.F(Username)}");
-		return Ok(await todoService.CheckForUser(id, Username));
+		using var trace = logger.Trace($"{Log.F(id)} {Log.F(Username)}");
+		return (await todoService.CheckForUser(id, Username)).ToActionResult();
 	}
 }

@@ -1,4 +1,5 @@
-﻿using Example.Api.Abstractions.Interfaces.Business;
+﻿using Elyspio.Utils.Results;
+using Example.Api.Abstractions.Interfaces.Business;
 
 namespace Example.Api.Abstractions.Interfaces.Services.Base;
 
@@ -42,5 +43,5 @@ public interface ICrudService<TData, in TBase> where TData : ITransport
 	/// </summary>
 	/// <param name="id">The identifier of the connection.</param>
 	/// <returns>The TData with the specified id.</returns>
-	public Task<TData> GetById(Guid id);
+	public Task<Result<TData>> GetById(Guid id);
 }
