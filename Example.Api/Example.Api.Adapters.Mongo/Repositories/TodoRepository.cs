@@ -1,5 +1,5 @@
-﻿using Example.Api.Abstractions.Common.Extensions;
-using Example.Api.Abstractions.Common.Helpers;
+﻿using Elyspio.Utils.Telemetry;
+using Example.Api.Abstractions.Common.Extensions;
 using Example.Api.Abstractions.Interfaces.Repositories;
 using Example.Api.Abstractions.Models.Base;
 using Example.Api.Abstractions.Models.Entities;
@@ -17,7 +17,7 @@ internal class TodoRepository(IConfiguration configuration, ILogger<BaseReposito
 {
 	public async Task<TodoEntity> Add(string label, string user)
 	{
-		using var logger = LogAdapter($"{Log.F(user)} {Log.F(label)}", autoExit: false);
+		using var trace = Logger.Trace($"{Log.F(user)} {Log.F(label)}");
 
 		var entity = new TodoEntity
 		{
@@ -27,21 +27,21 @@ internal class TodoRepository(IConfiguration configuration, ILogger<BaseReposito
 		};
 		await EntityCollection.InsertOneAsync(entity);
 
-		logger.Exit($"{Log.F(entity.Id)}");
+		trace.Exit($"{Log.F(entity.Id)}");
 
 		return entity;
 	}
 
 	public async Task<List<TodoEntity>> GetAll(string user)
 	{
-		using var logger = LogAdapter($"{Log.F(user)}");
+		using var trace = Logger.Trace($"{Log.F(user)}");
 
 		return await EntityCollection.AsQueryable().Where(x => x.User == user).ToListAsync();
 	}
 
 	public async Task<TodoEntity> Check(Guid id, string user)
 	{
-		using var logger = LogAdapter($"{Log.F(id)} {Log.F(user)}");
+		using var trace = Logger.Trace($"{Log.F(id)} {Log.F(user)}");
 
 		var entity = await EntityCollection.AsQueryable().FirstAsync(todo => todo.Id == id.AsObjectId());
 
@@ -54,14 +54,14 @@ internal class TodoRepository(IConfiguration configuration, ILogger<BaseReposito
 
 	public async Task Delete(Guid id, string user)
 	{
-		using var logger = LogAdapter($"{Log.F(id)} {Log.F(user)}");
+		using var trace = Logger.Trace($"{Log.F(id)} {Log.F(user)}");
 
 		await EntityCollection.FindOneAndDeleteAsync(todo => todo.User == user && todo.Id == id.AsObjectId());
 	}
 
 	public async Task<bool> Own(ObjectId id, string user)
 	{
-		using var logger = LogAdapter($"{Log.F(id)} {Log.F(user)}");
+		using var trace = Logger.Trace($"{Log.F(id)} {Log.F(user)}");
 
 		var todo = await GetById(id);
 

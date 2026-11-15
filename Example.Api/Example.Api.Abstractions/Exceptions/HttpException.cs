@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using Elyspio.Utils.Telemetry;
 using Example.Api.Abstractions.Common.Helpers;
 
 namespace Example.Api.Abstractions.Exceptions;
