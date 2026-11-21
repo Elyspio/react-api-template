@@ -1,14 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-	<PropertyGroup>
-		<TargetFramework>net11.0</TargetFramework>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
-		<EnablePreviewFeatures>True</EnablePreviewFeatures>
-	</PropertyGroup>
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<ItemGroup>
-		<PackageReference Include="MongoDB.Driver" Version="3.14.0" />
+		<PackageReference Include="Aspire.MongoDB.Driver" />
+		<PackageReference Include="Elyspio.Utils.Telemetry.MongoDB" />
 	</ItemGroup>
 
 	<ItemGroup>

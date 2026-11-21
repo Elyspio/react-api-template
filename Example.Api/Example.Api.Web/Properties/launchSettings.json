@@ -4,7 +4,7 @@
 		"Web": {
 			"commandName": "Project",
 			"launchBrowser": false,
-			"launchUrl": "swagger",
+			"launchUrl": "scalar",
 			"environmentVariables": {
 				"ASPNETCORE_ENVIRONMENT": "Development",
 				"ASPNETCORE_URLS": "http://+:4000"

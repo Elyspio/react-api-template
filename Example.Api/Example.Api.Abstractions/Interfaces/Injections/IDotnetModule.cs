@@ -1,29 +1,29 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Example.Api.Abstractions.Interfaces.Injections;
 
+/// <summary>
+///     Registers the services of one layer (core, adapter...) in the host.
+/// </summary>
 public interface IDotnetModule
 {
 	/// <summary>
-	///     Chargement des enregistrements dans les services .Net Core.
+	///     Registers the services of the module.
 	/// </summary>
-	/// <param name="services">Collection des services de l'application</param>
-	/// <param name="configuration">Configuration de l'application</param>
-	void Load(IServiceCollection services, IConfiguration configuration);
+	/// <param name="builder">Application builder: services, configuration and environment</param>
+	void Load(IHostApplicationBuilder builder);
 }
 
-public static class IDotnetModuleExtensions
+public static class DotnetModuleExtensions
 {
 	/// <summary>
-	///     Register an entire module .Net Core services.
+	///     Registers an entire module.
 	/// </summary>
 	/// <typeparam name="TModule">Module type</typeparam>
-	/// <param name="services">Application services</param>
-	/// <param name="configuration">Application configuration</param>
-	public static void AddModule<TModule>(this IServiceCollection services, IConfiguration configuration) where TModule : IDotnetModule, new()
+	/// <param name="builder">Application builder</param>
+	public static IHostApplicationBuilder AddModule<TModule>(this IHostApplicationBuilder builder) where TModule : IDotnetModule, new()
 	{
-		var module = Activator.CreateInstance<TModule>();
-		module.Load(services, configuration);
+		new TModule().Load(builder);
+		return builder;
 	}
 }

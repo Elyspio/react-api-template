@@ -2,7 +2,8 @@ import { Chip, Container, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import "./Test.scss";
 import { useAuth } from "react-oidc-context";
-import { Todo } from "./todo/Todo";
+import { JokeOfTheDay } from "./joke/JokeOfTheDay";
+import { PublicBoard, UserBoard } from "./todo/Todo";
 
 export const Todos = () => {
 	const auth = useAuth();
@@ -31,6 +32,8 @@ export const Todos = () => {
 				</Stack>
 			</Stack>
 
+			<JokeOfTheDay />
+
 			<Grid
 				container
 				spacing={{ xs: 2, md: 2.5 }}
@@ -39,11 +42,11 @@ export const Todos = () => {
 				}}
 			>
 				<Grid size={logged ? { xs: 12, xl: 6 } : 12}>
-					<Todo mode={"public"} />
+					<PublicBoard />
 				</Grid>
 				{logged && (
 					<Grid size={{ xs: 12, xl: 6 }}>
-						<Todo mode={"user"} />
+						<UserBoard />
 					</Grid>
 				)}
 			</Grid>

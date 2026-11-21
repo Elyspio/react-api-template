@@ -1,21 +1,11 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-	<PropertyGroup>
-		<TargetFramework>net11.0</TargetFramework>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<EnablePreviewFeatures>True</EnablePreviewFeatures>
-		<Nullable>enable</Nullable>
-	</PropertyGroup>
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<ItemGroup>
-		<PackageReference Include="Elyspio.Utils.Telemetry" Version="3.0.0" />
-		<PackageReference Include="Elyspio.Utils.Telemetry.MongoDB" Version="3.0.0" />
-		<PackageReference Include="MongoDB.Bson" Version="3.14.0" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.23.0" />
-		<PackageReference Include="Scrutor" Version="7.0.0" />
-		<PackageReference Include="Mapster" Version="10.0.14" />
+		<PackageReference Include="Elyspio.Utils.Results" />
+		<PackageReference Include="Elyspio.Utils.Telemetry" />
+		<PackageReference Include="Mapster" />
+		<PackageReference Include="MongoDB.Bson" />
+		<PackageReference Include="Scrutor" />
 	</ItemGroup>
-
 
 </Project>
