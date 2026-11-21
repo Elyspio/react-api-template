@@ -1,0 +1,59 @@
+<Project>
+
+	<PropertyGroup>
+		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+		<AspireVersion>17.0.0</AspireVersion>
+		<AspireKeycloakVersion>17.0.0-preview.1.26567.5</AspireKeycloakVersion>
+		<FusionCacheVersion>2.10.0</FusionCacheVersion>
+		<MicrosoftExtensionsVersion>11.0.0</MicrosoftExtensionsVersion>
+	</PropertyGroup>
+
+	<!-- Aspire -->
+	<ItemGroup>
+		<PackageVersion Include="Aspire.Hosting.AppHost" Version="$(AspireVersion)" />
+		<PackageVersion Include="Aspire.Hosting.Dotnet" Version="$(AspireVersion)" />
+		<PackageVersion Include="Aspire.Hosting.JavaScript" Version="$(AspireVersion)" />
+		<PackageVersion Include="Aspire.Hosting.Keycloak" Version="$(AspireKeycloakVersion)" />
+		<PackageVersion Include="Aspire.Hosting.MongoDB" Version="$(AspireVersion)" />
+		<PackageVersion Include="Aspire.Hosting.Redis" Version="$(AspireVersion)" />
+		<PackageVersion Include="Aspire.Keycloak.Authentication" Version="$(AspireKeycloakVersion)" />
+		<PackageVersion Include="Aspire.MongoDB.Driver" Version="$(AspireVersion)" />
+		<PackageVersion Include="Aspire.StackExchange.Redis" Version="$(AspireVersion)" />
+	</ItemGroup>
+
+	<!-- Elyspio -->
+	<ItemGroup>
+		<PackageVersion Include="Elyspio.Utils.Results" Version="1.0.0" />
+		<PackageVersion Include="Elyspio.Utils.Results.AspNetCore" Version="1.0.0" />
+		<PackageVersion Include="Elyspio.Utils.Telemetry" Version="3.0.0" />
+		<PackageVersion Include="Elyspio.Utils.Telemetry.MongoDB" Version="3.0.0" />
+		<PackageVersion Include="Elyspio.Utils.Telemetry.Redis" Version="3.0.0" />
+	</ItemGroup>
+
+	<!-- Runtime -->
+	<ItemGroup>
+		<PackageVersion Include="Mapster" Version="10.0.14" />
+		<PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="$(MicrosoftExtensionsVersion)" />
+		<PackageVersion Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="$(MicrosoftExtensionsVersion)" />
+		<PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="$(MicrosoftExtensionsVersion)" />
+		<PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="$(MicrosoftExtensionsVersion)" />
+		<PackageVersion Include="MongoDB.Bson" Version="3.14.1" />
+		<PackageVersion Include="MongoDB.Driver" Version="3.14.1" />
+		<PackageVersion Include="Scalar.AspNetCore" Version="3.1.1" />
+		<PackageVersion Include="Scrutor" Version="7.0.0" />
+		<PackageVersion Include="ZiggyCreatures.FusionCache" Version="$(FusionCacheVersion)" />
+		<PackageVersion Include="ZiggyCreatures.FusionCache.Backplane.StackExchangeRedis" Version="$(FusionCacheVersion)" />
+		<PackageVersion Include="ZiggyCreatures.FusionCache.OpenTelemetry" Version="$(FusionCacheVersion)" />
+		<PackageVersion Include="ZiggyCreatures.FusionCache.Serialization.SystemTextJson" Version="$(FusionCacheVersion)" />
+	</ItemGroup>
+
+	<!-- Tests -->
+	<ItemGroup>
+		<PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="$(MicrosoftExtensionsVersion)" />
+		<PackageVersion Include="Shouldly" Version="4.3.0" />
+		<PackageVersion Include="Testcontainers.MongoDb" Version="4.17.0" />
+		<PackageVersion Include="Testcontainers.Redis" Version="4.17.0" />
+		<PackageVersion Include="xunit.v3.mtp-v2" Version="4.0.3" />
+	</ItemGroup>
+
+</Project>

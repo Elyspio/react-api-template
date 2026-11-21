@@ -1,10 +1,4 @@
 ﻿using System.Text.Json.Serialization;
-using Example.Api.Abstractions.Common.Helpers.Json;
-using Microsoft.AspNetCore.Mvc.Formatters;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace Example.Api.Web.Technical.Extensions;
 
@@ -14,38 +8,19 @@ namespace Example.Api.Web.Technical.Extensions;
 public static class ApiExtentions
 {
 	/// <summary>
-	///     Setup Controllers configuration
+	///     JSON (System.Text.Json) and ProblemDetails of the HTTP API
 	/// </summary>
-	/// <param name="services"></param>
-	/// <returns></returns>
-	public static IServiceCollection AddAppControllers(this IServiceCollection services)
+	public static IServiceCollection AddAppApi(this IServiceCollection services)
 	{
-		services.AddEndpointsApiExplorer();
+		services.ConfigureHttpJsonOptions(options =>
+		{
+			options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+			options.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+		});
 
-		// services.AddSingleton<CustomAuthorizeFilter>();
-
-		services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-		services.ConfigureHttpJsonOptions(options => options.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
-
-		// Unexpected exceptions become a 500 ProblemDetails without their details (see UseExceptionHandler)
+		// Unexpected exceptions become a 500 ProblemDetails without their details (see UseExceptionHandler);
+		// expected failures are Results mapped by ToHttpResult.
 		services.AddProblemDetails();
-
-		services.AddControllers(o =>
-				{
-					o.Conventions.Add(new ControllerDocumentationConvention());
-					o.OutputFormatters.RemoveType<StringOutputFormatter>();
-				}
-			)
-			.AddNewtonsoftJson(x =>
-			{
-				x.SerializerSettings.Formatting = Formatting.None;
-				x.SerializerSettings.ContractResolver = new JsonContractResolver();
-
-				// x.SerializerSettings.ContractResolver = new JsonContractResolver();
-				x.SerializerSettings.Converters.Add(new StringEnumConverter());
-				x.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-			});
 
 		return services;
 	}
@@ -53,8 +28,6 @@ public static class ApiExtentions
 	/// <summary>
 	///     Setup SignalR configuration
 	/// </summary>
-	/// <param name="services"></param>
-	/// <returns></returns>
 	public static IServiceCollection AddAppSignalR(this IServiceCollection services)
 	{
 		services.AddSignalR(options => { options.EnableDetailedErrors = true; })
@@ -71,14 +44,11 @@ public static class ApiExtentions
 	}
 
 	/// <summary>
-    ///     Setup CORS
+	///     Setup CORS: the origins of <c>Cors:AllowedOrigins</c> (with credentials), any origin otherwise
 	/// </summary>
-	/// <param name="services"></param>
- /// <param name="configuration"></param>
-	/// <returns></returns>
- public static IServiceCollection SetupCors(this IServiceCollection services, IConfiguration configuration)
+	public static IServiceCollection SetupCors(this IServiceCollection services, IConfiguration configuration)
 	{
-     var allowedOrigins = configuration.GetSection("Cors:AllowedOrigins")
+		var allowedOrigins = configuration.GetSection("Cors:AllowedOrigins")
 			.Get<string[]>()?
 			.Where(origin => !string.IsNullOrWhiteSpace(origin))
 			.Select(origin => origin.Trim())
@@ -89,7 +59,7 @@ public static class ApiExtentions
 			{
 				options.AddDefaultPolicy(b =>
 					{
-                     if (allowedOrigins.Length > 0)
+						if (allowedOrigins.Length > 0)
 						{
 							b.WithOrigins(allowedOrigins);
 							b.AllowAnyHeader();

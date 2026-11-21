@@ -1,16 +1,17 @@
-﻿using Elyspio.Utils.Results;
+using Elyspio.Utils.Results;
 using Example.Api.Abstractions.Models.Transports;
 
 namespace Example.Api.Abstractions.Interfaces.Services;
 
+/// <summary>
+///     Todos of a user. Public todos belong to the <see cref="PublicUser" /> user.
+/// </summary>
 public interface ITodoService
 {
-	Task<Todo> Add(string label);
-	Task<Todo> AddForUser(string label, string user);
-	Task<List<Todo>> GetAllForUser(string user);
-	Task<List<Todo>> GetAll();
-	Task<Result<Todo>> Check(Guid id);
-	Task<Result<Todo>> CheckForUser(Guid id, string user);
-	Task Delete(Guid id);
-	Task DeleteForUser(Guid id, string user);
+	const string PublicUser = "public";
+
+	Task<List<Todo>> GetAll(string user);
+	Task<Result<Todo>> Add(string label, string user);
+	Task<Result<Todo>> Check(Guid id, string user);
+	Task<Result<Unit>> Delete(Guid id, string user);
 }

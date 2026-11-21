@@ -1,6 +1,6 @@
-﻿using Elyspio.Utils.Results;
-using Example.Api.Abstractions.Errors;
+using Elyspio.Utils.Results;
 using Elyspio.Utils.Telemetry;
+using Example.Api.Abstractions.Errors;
 using Example.Api.Abstractions.Interfaces.Repositories;
 using Example.Api.Abstractions.Interfaces.Services;
 using Example.Api.Abstractions.Models.Transports;
@@ -11,55 +11,31 @@ namespace Example.Api.Core.Services;
 
 public class TodoService(ITodoRepository todoRepository, ILogger<TodoService> logger) : ITodoService
 {
-	private const string defaultUser = "public";
 	private readonly TodoAssembler todoAssembler = new();
 
-	public async Task<Todo> Add(string label)
-	{
-		using var trace = logger.Trace($"{Log.F(label)}");
-
-		var entity = await todoRepository.Add(label, defaultUser);
-		var data = todoAssembler.Convert(entity);
-
-		return data;
-	}
-
-	public async Task<Todo> AddForUser(string label, string user)
-	{
-		using var trace = logger.Trace($"{Log.F(user)} {Log.F(label)}");
-
-		var entity = await todoRepository.Add(label, user);
-		var data = todoAssembler.Convert(entity);
-
-		return data;
-	}
-
-	public async Task<List<Todo>> GetAllForUser(string user)
+	public async Task<List<Todo>> GetAll(string user)
 	{
 		using var trace = logger.Trace($"{Log.F(user)}");
 
 		var entities = await todoRepository.GetAll(user);
-		var data = todoAssembler.Convert(entities);
 
-		return data;
+		return todoAssembler.Convert(entities);
 	}
 
-	public async Task<List<Todo>> GetAll()
+	public async Task<Result<Todo>> Add(string label, string user)
 	{
-		using var trace = logger.Trace();
+		using var trace = logger.Trace($"{Log.F(user)} {Log.F(label)}");
 
-		var entities = await todoRepository.GetAll(defaultUser);
-		var data = todoAssembler.Convert(entities);
+		label = label.Trim();
+		if (label.Length == 0) return trace.Fail(new InvalidTodoLabel("The label is required."));
+		if (label.Length > InvalidTodoLabel.MaxLength) return trace.Fail(new InvalidTodoLabel($"The label must not exceed {InvalidTodoLabel.MaxLength} characters."));
 
-		return data;
+		var entity = await todoRepository.Add(label, user);
+
+		return todoAssembler.Convert(entity);
 	}
 
-	public Task<Result<Todo>> Check(Guid id)
-	{
-		return CheckForUser(id, defaultUser);
-	}
-
-	public async Task<Result<Todo>> CheckForUser(Guid id, string user)
+	public async Task<Result<Todo>> Check(Guid id, string user)
 	{
 		using var trace = logger.Trace($"{Log.F(user)} {Log.F(id)}");
 
@@ -69,17 +45,13 @@ public class TodoService(ITodoRepository todoRepository, ILogger<TodoService> lo
 		return todoAssembler.Convert(entity);
 	}
 
-	public async Task Delete(Guid id)
+	public async Task<Result<Unit>> Delete(Guid id, string user)
 	{
-		using var trace = logger.Trace($"{Log.F(id)}");
+		using var trace = logger.Trace($"{Log.F(user)} {Log.F(id)}");
 
-		await todoRepository.Delete(id, defaultUser);
-	}
+		var deleted = await todoRepository.Delete(id, user);
+		if (!deleted) return trace.Fail(new EntityNotFound(nameof(Todo), id));
 
-	public async Task DeleteForUser(Guid id, string user)
-	{
-		using var trace = logger.Trace($"{Log.F(id)}");
-
-		await todoRepository.Delete(id, user);
+		return Unit.Value;
 	}
 }

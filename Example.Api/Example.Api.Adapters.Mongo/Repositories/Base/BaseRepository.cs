@@ -1,5 +1,3 @@
-﻿using Example.Api.Adapters.Mongo.Technical;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 
@@ -12,17 +10,17 @@ namespace Example.Api.Adapters.Mongo.Repositories.Base;
 public abstract class BaseRepository<T>
 {
 	private readonly string _collectionName;
-	private readonly MongoContext _context;
+	private readonly IMongoDatabase _database;
 
 	/// <summary>
 	///     Default constructor
 	/// </summary>
-	/// <param name="configuration"></param>
+	/// <param name="database">Database of the MongoDB connection string (registered by Aspire)</param>
 	/// <param name="logger"></param>
-	protected BaseRepository(IConfiguration configuration, ILogger<BaseRepository<T>> logger)
+	protected BaseRepository(IMongoDatabase database, ILogger<BaseRepository<T>> logger)
 	{
 		Logger = logger;
-		_context = new MongoContext(configuration);
+		_database = database;
 		_collectionName = typeof(T).Name[..^"Entity".Length];
 	}
 
@@ -34,7 +32,7 @@ public abstract class BaseRepository<T>
 	/// <summary>
 	///     Implementation of the collection
 	/// </summary>
-	protected IMongoCollection<T> EntityCollection => _context.MongoDatabase.GetCollection<T>(_collectionName);
+	protected IMongoCollection<T> EntityCollection => _database.GetCollection<T>(_collectionName);
 
 
 	/// <summary>
