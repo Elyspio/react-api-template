@@ -1,3 +1,4 @@
+using Microsoft.OpenApi;
 using Scalar.AspNetCore;
 
 namespace Example.Api.Web.Technical.Extensions;
@@ -12,7 +13,8 @@ public static class OpenApiExtensions
 	/// </summary>
 	public static IServiceCollection AddAppOpenApi(this IServiceCollection services)
 	{
-		services.AddOpenApi();
+		// OpenAPI 3.1: the version supported by the front generator (@hey-api/openapi-ts)
+		services.AddOpenApi(options => options.OpenApiVersion = OpenApiSpecVersion.OpenApi3_1);
 		return services;
 	}
 

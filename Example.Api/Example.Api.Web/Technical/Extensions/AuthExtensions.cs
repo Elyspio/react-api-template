@@ -16,12 +16,18 @@ public static class AuthExtensions
 		var realm = builder.Configuration["Keycloak:Realm"] ?? throw new InvalidOperationException("Keycloak:Realm is required");
 		var audience = builder.Configuration["Keycloak:Audience"] ?? throw new InvalidOperationException("Keycloak:Audience is required");
 
+		// The Keycloak backchannel (metadata, signing keys) calls https+http://keycloak: resolve it with service discovery
 		builder.Services.AddServiceDiscovery();
+		builder.Services.ConfigureHttpClientDefaults(http => http.AddServiceDiscovery());
 
 		builder.Services.AddAuthentication()
 			.AddKeycloakJwtBearer(KeycloakServiceName, realm, options =>
 			{
 				options.Audience = audience;
+				// The authority is a service discovery URL (https+http://keycloak/...), not the issuer of the tokens:
+				// the issuer is the public URL of Keycloak, i.e. the endpoint behind services:keycloak.
+				var keycloakUrl = builder.Configuration[$"services:{KeycloakServiceName}:https:0"] ?? builder.Configuration[$"services:{KeycloakServiceName}:http:0"];
+				if (keycloakUrl is not null) options.TokenValidationParameters.ValidIssuer = $"{keycloakUrl.TrimEnd('/')}/realms/{realm}";
 				// Keep the claims as Keycloak issues them (preferred_username, sub)
 				options.MapInboundClaims = false;
 				// Keycloak runs over http in development (Aspire container)

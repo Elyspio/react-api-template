@@ -16,6 +16,8 @@ public static class ApiExtentions
 		{
 			options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
 			options.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+			// Numbers are numbers: no "integer | string" in the OpenAPI schemas (the Web defaults read numbers from strings)
+			options.SerializerOptions.NumberHandling = JsonNumberHandling.Strict;
 		});
 
 		// Unexpected exceptions become a 500 ProblemDetails without their details (see UseExceptionHandler);
