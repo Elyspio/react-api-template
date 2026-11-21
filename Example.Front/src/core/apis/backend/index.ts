@@ -1,55 +1,19 @@
-import axios, { AxiosHeaders } from "axios";
 import { getAccessToken } from "@/core/auth/token.store";
-import { BackendApi as _BackendApi, Configuration, Todo } from "./generated";
+import { client } from "./generated/client.gen";
 
-type TodoClient = {
-	getAll: () => Promise<Todo[]>;
-	add: (label: string) => Promise<Todo>;
-	check: (id: string) => Promise<Todo>;
-	delete: (id: string) => Promise<void>;
-};
+/**
+ * Points the generated SDK at the API and authenticates its requests with the OIDC access token.
+ * Generated code lives in ./generated (`pnpm refresh-api`), never edit it by hand.
+ */
+client.setConfig({
+	baseUrl: import.meta.env.VITE_API_BASE_URL || window.example.config.endpoints.core,
+});
 
-export class BackendApi {
-	public readonly todo: { common: TodoClient; user: TodoClient };
+client.interceptors.request.use((request) => {
+	const accessToken = getAccessToken();
+	if (accessToken) request.headers.set("Authorization", `Bearer ${accessToken}`);
+	return request;
+});
 
-	constructor() {
-		const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || window.example.config.endpoints.core;
-		const instance = axios.create({ withCredentials: true });
-
-		instance.interceptors.request.use((value) => {
-			const accessToken = getAccessToken();
-			const headers = AxiosHeaders.from(value.headers);
-
-			if (accessToken) {
-				headers.set("Authorization", `Bearer ${accessToken}`);
-			} else {
-				headers.delete("Authorization");
-			}
-
-			value.headers = headers;
-			return value;
-		});
-
-		const configuration = new Configuration({ basePath: apiBaseUrl });
-		const todoApi = new _BackendApi(configuration, apiBaseUrl, instance);
-
-		this.todo = {
-			common: {
-				getAll: async () => (await todoApi.getAll()).data,
-				add: async (label: string) => (await todoApi.add(label)).data,
-				check: async (id: string) => (await todoApi.check(id)).data,
-				delete: async (id: string) => {
-					await todoApi._delete(id);
-				},
-			},
-			user: {
-				getAll: async () => (await todoApi.getAllForUser()).data,
-				add: async (label: string) => (await todoApi.addForUser(label)).data,
-				check: async (id: string) => (await todoApi.checkForUser(id)).data,
-				delete: async (id: string) => {
-					await todoApi.deleteForUser(id);
-				},
-			},
-		};
-	}
-}
+export * from "./generated";
+export * from "./generated/@tanstack/react-query.gen";

@@ -1,15 +1,13 @@
 import { DarkMode, LightMode, Login, Logout } from "@mui/icons-material";
-import { Box, Button, Chip, Container, Paper, Stack, Typography } from "@mui/material";
+import { Box, Button, Chip, Container, Paper, Stack, Typography, useColorScheme } from "@mui/material";
 import { useAuth } from "react-oidc-context";
 import "./Application.scss";
 import { Todos } from "./test/Todos";
-import { useAppDispatch, useAppSelector } from "@store";
-import { toggleTheme } from "@store/module/theme/theme.action";
 
 function Application() {
-	const dispatch = useAppDispatch();
 	const auth = useAuth();
-	const theme = useAppSelector((state) => state.theme.current);
+	const { mode, systemMode, setMode } = useColorScheme();
+	const scheme = mode === "system" ? systemMode : mode;
 
 	const getProfileValue = (key: string) => {
 		const value = auth.user?.profile?.[key];
@@ -23,9 +21,11 @@ function Application() {
 			className={"Application"}
 			sx={(activeTheme) => ({
 				background:
-					activeTheme.palette.mode === "dark"
-						? "radial-gradient(circle at 6% 18%, rgba(0, 198, 255, 0.22), transparent 34%), radial-gradient(circle at 84% 12%, rgba(253, 186, 116, 0.18), transparent 36%), linear-gradient(145deg, #070d1a 0%, #0b1628 50%, #111f37 100%)"
-						: "radial-gradient(circle at 8% 18%, rgba(14, 165, 233, 0.2), transparent 34%), radial-gradient(circle at 84% 12%, rgba(249, 115, 22, 0.16), transparent 36%), linear-gradient(145deg, #f0f7ff 0%, #e8f1fb 54%, #dde8f5 100%)",
+					"radial-gradient(circle at 8% 18%, rgba(14, 165, 233, 0.2), transparent 34%), radial-gradient(circle at 84% 12%, rgba(249, 115, 22, 0.16), transparent 36%), linear-gradient(145deg, #f0f7ff 0%, #e8f1fb 54%, #dde8f5 100%)",
+				...activeTheme.applyStyles("dark", {
+					background:
+						"radial-gradient(circle at 6% 18%, rgba(0, 198, 255, 0.22), transparent 34%), radial-gradient(circle at 84% 12%, rgba(253, 186, 116, 0.18), transparent 36%), linear-gradient(145deg, #070d1a 0%, #0b1628 50%, #111f37 100%)",
+				}),
 			})}
 		>
 			<Container maxWidth={"xl"} className={"Application-shell"}>
@@ -59,14 +59,8 @@ function Application() {
 								width: { xs: "100%", md: "auto" },
 							}}
 						>
-							<Button
-								variant={"outlined"}
-								startIcon={theme === "dark" ? <LightMode /> : <DarkMode />}
-								onClick={() => {
-									dispatch(toggleTheme());
-								}}
-							>
-								{theme === "dark" ? "Light mode" : "Dark mode"}
+							<Button variant={"outlined"} startIcon={scheme === "dark" ? <LightMode /> : <DarkMode />} onClick={() => setMode(scheme === "dark" ? "light" : "dark")}>
+								{scheme === "dark" ? "Light mode" : "Dark mode"}
 							</Button>
 							{auth.isAuthenticated ? (
 								<Button

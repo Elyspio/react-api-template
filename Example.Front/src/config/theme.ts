@@ -1,6 +1,5 @@
 import * as colors from "@mui/material/colors";
-import { Components, createTheme, type Theme } from "@mui/material/styles";
-import { CssVarsTheme } from "@mui/material";
+import { createTheme, type Components, type Theme } from "@mui/material/styles";
 
 const typography = {
 	fontFamily: "'Space Grotesk', 'DM Sans', 'Segoe UI', sans-serif",
@@ -11,32 +10,33 @@ const typography = {
 	h5: { fontWeight: 600, letterSpacing: "-0.01em" },
 	h6: { fontWeight: 600, letterSpacing: "-0.01em" },
 	button: { fontWeight: 600, textTransform: "none", letterSpacing: "0.01em" },
-};
+} as const;
 
-const components: Components<Omit<Theme, "palette" | "components"> & CssVarsTheme> = {
+// Overrides read the palette through the CSS variables: they follow the active color scheme without re-rendering
+const components: Components<Theme> = {
 	MuiPaper: {
 		styleOverrides: {
-			root: ({ theme }: { theme: Theme }) => ({
+			root: ({ theme }) => ({
 				backgroundImage: "none !important",
-				border: `1px solid ${theme.palette.divider}`,
+				border: `1px solid ${(theme.vars ?? theme).palette.divider}`,
 				backdropFilter: "blur(9px)",
 			}),
 		},
 	},
 	MuiCard: {
 		styleOverrides: {
-			root: ({ theme }: { theme: Theme }) => ({
+			root: ({ theme }) => ({
 				borderRadius: 20,
-				border: `1px solid ${theme.palette.divider}`,
-				backgroundColor: theme.palette.background.paper,
+				border: `1px solid ${(theme.vars ?? theme).palette.divider}`,
+				backgroundColor: (theme.vars ?? theme).palette.background.paper,
 			}),
 		},
 	},
 	MuiDrawer: {
 		styleOverrides: {
-			paper: ({ theme }: { theme: Theme }) => ({
-				backgroundColor: theme.palette.background.paper,
-				borderLeft: `1px solid ${theme.palette.divider}`,
+			paper: ({ theme }) => ({
+				backgroundColor: (theme.vars ?? theme).palette.background.paper,
+				borderLeft: `1px solid ${(theme.vars ?? theme).palette.divider}`,
 			}),
 		},
 	},
@@ -64,72 +64,64 @@ const components: Components<Omit<Theme, "palette" | "components"> & CssVarsThem
 	},
 };
 
-const darkTheme = createTheme({
+/**
+ * One theme, two color schemes (MUI CSS variables). The active scheme is chosen with useColorScheme() and persisted by MUI.
+ */
+export const theme = createTheme({
+	cssVariables: { colorSchemeSelector: "class" },
 	shape: {
 		borderRadius: 16,
 	},
 	typography,
-	palette: {
-		mode: "dark",
-		primary: {
-			...colors.cyan,
-			main: colors.cyan["300"],
+	colorSchemes: {
+		dark: {
+			palette: {
+				primary: {
+					...colors.cyan,
+					main: colors.cyan["300"],
+				},
+				secondary: {
+					...colors.orange,
+					main: colors.orange["300"],
+				},
+				background: {
+					paper: "#0f1a2e",
+					default: "#070d1a",
+				},
+				text: {
+					primary: "#edf4ff",
+					secondary: "rgba(210, 228, 255, 0.75)",
+				},
+				divider: "rgba(152, 180, 223, 0.23)",
+			},
 		},
-		secondary: {
-			...colors.orange,
-			main: colors.orange["300"],
+		light: {
+			palette: {
+				primary: {
+					...colors.teal,
+					main: colors.teal["700"],
+				},
+				secondary: {
+					...colors.orange,
+					main: colors.orange["700"],
+				},
+				background: {
+					paper: "#ffffff",
+					default: "#eaf1f8",
+				},
+				text: {
+					primary: "#0f243d",
+					secondary: "rgba(15, 36, 61, 0.72)",
+				},
+				divider: "rgba(19, 58, 102, 0.14)",
+			},
 		},
-		background: {
-			paper: "#0f1a2e",
-			default: "#070d1a",
-		},
-		text: {
-			primary: "#edf4ff",
-			secondary: "rgba(210, 228, 255, 0.75)",
-		},
-		divider: "rgba(152, 180, 223, 0.23)",
 	},
 	components,
 });
 
-const lightTheme = createTheme({
-	shape: {
-		borderRadius: 16,
-	},
-	typography,
-	palette: {
-		mode: "light",
-		primary: {
-			...colors.teal,
-			main: colors.teal["700"],
-		},
-		secondary: {
-			...colors.orange,
-			main: colors.orange["700"],
-		},
-		background: {
-			paper: "#ffffff",
-			default: "#eaf1f8",
-		},
-		text: {
-			primary: "#0f243d",
-			secondary: "rgba(15, 36, 61, 0.72)",
-		},
-		divider: "rgba(19, 58, 102, 0.14)",
-	},
-	components,
-});
-
-export const themes = {
-	dark: darkTheme,
-	light: lightTheme,
+/** Color scheme forced by the URL (`?theme=light|dark`), applied once at startup. */
+export const getUrlColorScheme = () => {
+	const value = new URL(window.location.href).searchParams.get("theme");
+	return value === "light" || value === "dark" ? value : undefined;
 };
-
-export type Themes = "dark" | "light";
-
-export const getUrlTheme = (): Themes => {
-	const theme = new URL(window.location.toString()).searchParams.get("theme");
-	return theme === "light" || theme === "dark" ? theme : "dark";
-};
-
-export const getCurrentTheme = (theme: Themes): Theme => themes[theme];

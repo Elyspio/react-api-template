@@ -1,8 +1,10 @@
-import { generateApi } from "@elyspio/vite-eslint-config";
+import { generateHeyApi } from "@elyspio/vite-eslint-config";
 import path from "node:path";
 
-const apiUrl = "https://localhost:9851/swagger/v1/swagger.json";
+// OpenAPI document of the API: first argument, OPENAPI_URL, or the API started by the AppHost
+const input = process.argv[2] ?? process.env.OPENAPI_URL ?? "https://localhost:4000/openapi/v1.json";
 
-const outputFolder = path.resolve(import.meta.dirname, "..", "src", "core", "apis", "backend", "generated");
+const output = path.resolve(import.meta.dirname, "..", "src", "core", "apis", "backend", "generated");
 
-await generateApi(apiUrl, outputFolder, "Backend");
+// Typed SDK (fetch client) + TanStack Query options, query keys and mutations
+await generateHeyApi({ input, output });

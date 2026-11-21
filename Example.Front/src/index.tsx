@@ -1,40 +1,52 @@
-import { CssBaseline, ThemeProvider } from "@mui/material";
+import { CssBaseline, ThemeProvider, useColorScheme } from "@mui/material";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { AuthProvider } from "react-oidc-context";
-import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router";
-import store, { useAppSelector } from "./store";
-import { themes } from "./config/theme";
-import { AppRouter } from "./view/router/AppRouter";
-import { oidcConfig } from "./core/auth/oidc";
-import "./index.scss";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "@apis/backend";
+import { getUrlColorScheme, theme } from "./config/theme";
+import { oidcConfig } from "./core/auth/oidc";
+import { queryClient } from "./core/query/queryClient";
+import "./index.scss";
 import "./types/global";
+import { AppRouter } from "./view/router/AppRouter";
 
 const browserBaseName = import.meta.env.BASE_URL === "/" ? "/" : import.meta.env.BASE_URL?.replace(/\/$/, "");
 
-function ThemedApp() {
-	const current = useAppSelector((state) => state.theme.current);
+function Shell() {
+	const { mode, systemMode, setMode } = useColorScheme();
+
+	// ?theme=light|dark wins over the persisted choice
+	useEffect(() => {
+		const fromUrl = getUrlColorScheme();
+		if (fromUrl) setMode(fromUrl);
+	}, [setMode]);
 
 	return (
-		<ThemeProvider theme={themes[current]}>
-			<CssBaseline />
+		<>
 			<BrowserRouter basename={browserBaseName}>
 				<AppRouter />
 			</BrowserRouter>
-			<ToastContainer theme={current} position="top-right" />
-		</ThemeProvider>
+			<ToastContainer theme={mode === "system" ? systemMode : mode} position="top-right" />
+		</>
 	);
 }
 
 function App() {
 	return (
-		<Provider store={store}>
+		<QueryClientProvider client={queryClient}>
 			<AuthProvider {...oidcConfig}>
-				<ThemedApp />
+				<ThemeProvider theme={theme} defaultMode="dark">
+					<CssBaseline />
+					<Shell />
+				</ThemeProvider>
 			</AuthProvider>
-		</Provider>
+			<ReactQueryDevtools buttonPosition="bottom-left" />
+		</QueryClientProvider>
 	);
 }
 

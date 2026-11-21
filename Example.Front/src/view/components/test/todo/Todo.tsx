@@ -1,5 +1,6 @@
 import Add from "@mui/icons-material/Add";
 import DoneAllOutlined from "@mui/icons-material/DoneAllOutlined";
+import VisibilityOffOutlined from "@mui/icons-material/VisibilityOffOutlined";
 import PlaylistAddCheckRounded from "@mui/icons-material/PlaylistAddCheckRounded";
 import {
 	Box,
@@ -16,25 +17,38 @@ import {
 	LinearProgress,
 	Stack,
 	TextField,
+	ToggleButton,
 	Typography,
 } from "@mui/material";
-import { TodoState } from "@store/module/todo/todo.reducer";
-import { useAppDispatch, useAppSelector } from "@store";
-import { addTodo, getTodos } from "@store/module/todo/todo.actions";
+import { type Board, type BoardState, usePublicBoard, useUserBoard } from "@/core/todos/useBoard";
+import { usePreferences } from "@store/preferences.store";
 import { useModal } from "@hooks/useModal";
 import { TodoItem } from "./TodoItem";
 import { useAuth } from "react-oidc-context";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import "./Todo.scss";
 
-type TodoProps = {
-	mode: keyof TodoState["todos"];
+/** Shared backlog, visible to everyone. */
+export function PublicBoard() {
+	return <TodoBoard mode={"public"} board={usePublicBoard()} />;
+}
+
+/** Todos of the connected user. */
+export function UserBoard() {
+	return <TodoBoard mode={"user"} board={useUserBoard()} />;
+}
+
+type TodoBoardProps = {
+	mode: Board;
+	board: BoardState;
 };
 
-export function Todo({ mode }: TodoProps) {
-	const todos = useAppSelector((state) => [...state.todo.todos[mode]].sort((a, b) => a.label.localeCompare(b.label)));
+function TodoBoard({ mode, board }: TodoBoardProps) {
+	const todos = board.todos.data ?? [];
+	const hideCompleted = usePreferences((state) => state.hideCompleted[mode]);
+	const toggleHideCompleted = usePreferences((state) => state.toggleHideCompleted);
+	const visibleTodos = hideCompleted ? todos.filter((todo) => !todo.checked) : todos;
 
-	const dispatch = useAppDispatch();
 	const auth = useAuth();
 	const logged = auth.isAuthenticated;
 
@@ -52,14 +66,11 @@ export function Todo({ mode }: TodoProps) {
 			return;
 		}
 
+		// Errors (400 ProblemDetails) are toasted by the query client: keep the dialog open to fix the label
+		await board.add(label.trim());
 		setClose();
-		await dispatch(addTodo({ label: label.trim(), mode }));
 		setLabel("");
-	}, [canAdd, dispatch, mode, label, setClose]);
-
-	useEffect(() => {
-		void dispatch(getTodos(mode));
-	}, [dispatch, mode]);
+	}, [canAdd, board, label, setClose]);
 
 	return (
 		<Card className={"TodoPanel"} elevation={0}>
@@ -87,6 +98,16 @@ export function Todo({ mode }: TodoProps) {
 							variant={"outlined"}
 							color={todos.length > 0 && completedCount === todos.length ? "success" : "default"}
 						/>
+						<ToggleButton
+							value={"hide-completed"}
+							size={"small"}
+							selected={hideCompleted}
+							onChange={() => toggleHideCompleted(mode)}
+							aria-label={"Hide completed tasks"}
+						>
+							<VisibilityOffOutlined fontSize={"small"} sx={{ mr: 0.5 }} />
+							Hide done
+						</ToggleButton>
 						{logged && (
 							<Button variant={"contained"} startIcon={<Add />} onClick={setOpen}>
 								Add task
@@ -95,13 +116,13 @@ export function Todo({ mode }: TodoProps) {
 					</Stack>
 				</Box>
 
-				<LinearProgress className={"TodoPanel-progress"} variant={"determinate"} value={progress} />
+				<LinearProgress className={"TodoPanel-progress"} variant={board.todos.isFetching ? "indeterminate" : "determinate"} value={progress} />
 				<Divider />
 
 				<Box className={"TodoPanel-list"}>
-					{todos.length === 0 ? (
+					{visibleTodos.length === 0 ? (
 						<Box className={"TodoPanel-empty"}>
-							<Typography variant={"body1"}>No tasks yet.</Typography>
+							<Typography variant={"body1"}>{todos.length === 0 ? "No tasks yet." : "Every task is done."}</Typography>
 							<Typography
 								variant={"body2"}
 								sx={{
@@ -112,7 +133,9 @@ export function Todo({ mode }: TodoProps) {
 							</Typography>
 						</Box>
 					) : (
-						todos.map((row, index) => <TodoItem key={row.id} mode={mode} data={row} isLast={index + 1 === todos.length} />)
+						visibleTodos.map((row, index) => (
+							<TodoItem key={row.id} mode={mode} data={row} isLast={index + 1 === visibleTodos.length} onToggle={board.toggle} onRemove={board.remove} />
+						))
 					)}
 				</Box>
 			</CardContent>
@@ -146,7 +169,7 @@ export function Todo({ mode }: TodoProps) {
 					>
 						Cancel
 					</Button>
-					<Button onClick={add} disabled={!canAdd} variant={"contained"}>
+					<Button onClick={add} disabled={!canAdd || board.isAdding} variant={"contained"}>
 						Add
 					</Button>
 				</DialogActions>
