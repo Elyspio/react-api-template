@@ -1,4 +1,5 @@
-﻿using Example.Api.Web.Technical.Extensions;
+﻿using Example.Api.Web.Endpoints;
+using Example.Api.Web.Technical.Extensions;
 
 namespace Example.Api.Web.Start;
 
@@ -8,34 +9,28 @@ namespace Example.Api.Web.Start;
 public static class AppRuntime
 {
 	/// <summary>
-	///     Initialize runtime middlewares
+	///     Initialize runtime middlewares and endpoints
 	/// </summary>
-	/// <param name="app"></param>
-	/// <returns></returns>
 	public static WebApplication Initialize(this WebApplication app)
 	{
 		app.UseExceptionHandler();
 
-		// Map Aspire default endpoints (health checks)
+		// Health checks
 		app.MapDefaultEndpoints();
 
-		// Allow CORS
 		app.UseCors();
 
-		app.UseAppSwagger();
-
-		// Setup authentication
 		app.UseAuthentication();
 		app.UseAuthorization();
 
-		// Setup Controllers
-		app.MapControllers();
+		app.MapAppOpenApi();
+
+		app.MapTodoEndpoints();
+		app.MapJokeEndpoints();
 
 		if (!app.Environment.IsProduction()) return app;
 
-		// Start SPA serving
-		app.UseRouting();
-
+		// Serve the SPA (front built into wwwroot)
 		app.UseStaticFiles();
 
 		app.MapWhen(ctx => !ctx.Request.Path.StartsWithSegments("/api"), appBuilder =>

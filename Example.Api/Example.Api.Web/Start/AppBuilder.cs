@@ -1,5 +1,6 @@
 ﻿using Elyspio.Utils.Telemetry;
 using Elyspio.Utils.Telemetry.MongoDB.Extensions;
+using Elyspio.Utils.Telemetry.Redis.Extensions;
 using Example.Api.Abstractions.Interfaces.Injections;
 using Example.Api.Adapters.Mongo.Injections;
 using Example.Api.Adapters.Rest.Injections;
@@ -7,6 +8,8 @@ using Example.Api.Core.Injections;
 using Example.Api.Web.Technical.Extensions;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Trace;
 
 namespace Example.Api.Web.Start;
 
@@ -18,7 +21,6 @@ public sealed class AppBuilder
 	/// <summary>
 	///     Create builder from command args
 	/// </summary>
-	/// <param name="args"></param>
 	public AppBuilder(string[] args)
 	{
 		var builder = WebApplication.CreateBuilder(args);
@@ -26,20 +28,29 @@ public sealed class AppBuilder
 		builder.Configuration.AddJsonFile("appsettings.docker.json", true, true);
 
 		// Serilog console, plus traces, metrics and logs over OTLP when OTEL_EXPORTER_OTLP_ENDPOINT is set (Aspire sets it)
-		builder.AddElyspioTelemetry(options => options.Tracing = tracing => tracing.AddAppMongoInstrumentation());
+		builder.AddElyspioTelemetry(options =>
+		{
+			options.Tracing = tracing => tracing
+				.AddAppMongoInstrumentation()
+				.AddAppRedisInstrumentation()
+				.AddFusionCacheInstrumentation();
+			options.Metrics = metrics => metrics.AddFusionCacheInstrumentation();
+		});
 
-		builder.AddServiceDefaults();
+		builder.AddDefaultHealthChecks();
 
-		builder.Services.AddModule<CoreModule>(builder.Configuration);
-		builder.Services.AddModule<MongoAdapterModule>(builder.Configuration);
-		builder.Services.AddModule<RestAdapterModule>(builder.Configuration);
+		builder.AddModule<CoreModule>();
+		builder.AddModule<MongoAdapterModule>();
+		builder.AddModule<RestAdapterModule>();
+
+		builder.AddAppCache();
+		builder.AddAppAuthentication();
 
 		builder.Services
-			.AddAppControllers()
+			.AddAppApi()
 			.AddAppSignalR()
-			.AddAppSwagger();
-
-		builder.Services.SetupCors(builder.Configuration);
+			.AddAppOpenApi()
+			.SetupCors(builder.Configuration);
 
 		Application = builder.Build();
 	}
@@ -52,13 +63,6 @@ public sealed class AppBuilder
 
 public static class Extensions
 {
-	public static IHostApplicationBuilder AddServiceDefaults(this IHostApplicationBuilder builder)
-	{
-		builder.AddDefaultHealthChecks();
-
-		return builder;
-	}
-
 	public static IHostApplicationBuilder AddDefaultHealthChecks(this IHostApplicationBuilder builder)
 	{
 		builder.Services.AddHealthChecks()
@@ -69,12 +73,13 @@ public static class Extensions
 
 	public static WebApplication MapDefaultEndpoints(this WebApplication app)
 	{
-		// Configure health check endpoints
+		// Readiness: every check (MongoDB and Redis included)
 		app.MapHealthChecks("/health", new HealthCheckOptions
 		{
 			Predicate = _ => true
 		});
 
+		// Liveness: the process answers
 		app.MapHealthChecks("/alive", new HealthCheckOptions
 		{
 			Predicate = r => r.Tags.Contains("live")

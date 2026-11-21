@@ -1,32 +1,28 @@
 import MoreHorizRounded from "@mui/icons-material/MoreHorizRounded";
-import { Todo } from "@apis/backend/generated";
+import type { Todo } from "@apis/backend";
 import { Box, Chip, IconButton, Menu, MenuItem, Stack, Switch, Typography } from "@mui/material";
 import { useMenu } from "@hooks/useMenu";
-import { useAppDispatch } from "@store";
-import { checkTodo, deleteTodo } from "@store/module/todo/todo.actions";
-import { TodoState } from "@store/module/todo/todo.reducer";
+import type { Board } from "@/core/todos/useBoard";
 import { type MouseEvent, useCallback } from "react";
 
 // TodoItem Props
 interface TodoItemProps {
 	data: Todo;
-	mode: keyof TodoState["todos"];
+	mode: Board;
 	isLast?: boolean;
+	onToggle: (id: Todo["id"]) => void;
+	onRemove: (id: Todo["id"]) => void;
 }
 
-export function TodoItem({ data, mode, isLast = false }: TodoItemProps) {
+export function TodoItem({ data, mode, isLast = false, onToggle, onRemove }: TodoItemProps) {
 	const { open: menuOpen, closeMenu, onContextMenu, position } = useMenu();
 
-	const dispatch = useAppDispatch();
+	const onSwitchClick = useCallback(() => onToggle(data.id), [onToggle, data.id]);
 
-	const onSwitchClick = useCallback(async () => {
-		await dispatch(checkTodo({ mode, id: data.id }));
-	}, [dispatch, mode, data.id]);
-
-	const remove = useCallback(async () => {
+	const remove = useCallback(() => {
 		closeMenu();
-		await dispatch(deleteTodo({ id: data.id, mode }));
-	}, [dispatch, mode, data.id, closeMenu]);
+		onRemove(data.id);
+	}, [onRemove, data.id, closeMenu]);
 
 	const openActions = useCallback(
 		(event: MouseEvent<HTMLElement>) => {

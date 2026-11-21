@@ -1,8 +1,7 @@
-﻿using Elyspio.Utils.Telemetry;
+using Elyspio.Utils.Telemetry;
 using Example.Api.Abstractions.Interfaces.Business;
 using Example.Api.Abstractions.Interfaces.Repositories;
 using Mapster;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -11,7 +10,7 @@ using MongoDB.Driver.Linq;
 namespace Example.Api.Adapters.Mongo.Repositories.Base;
 
 /// <inheritdoc cref="ICrudRepository{TEntity,TBase}" />
-internal abstract class CrudRepository<TEntity, TBase>(IConfiguration configuration, ILogger<BaseRepository<TEntity>> logger) : BaseRepository<TEntity>(configuration, logger),
+internal abstract class CrudRepository<TEntity, TBase>(IMongoDatabase database, ILogger<BaseRepository<TEntity>> logger) : BaseRepository<TEntity>(database, logger),
 	ICrudRepository<TEntity, TBase> where TEntity : IEntity
 {
 	protected FilterDefinitionBuilder<TEntity> Filter = Builders<TEntity>.Filter;
