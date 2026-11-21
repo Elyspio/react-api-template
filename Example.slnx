@@ -11,5 +11,8 @@
     <Project Path="Example.Api/Example.Api.Adapters.Mongo/Example.Api.Adapters.Mongo.csproj" />
     <Project Path="Example.Api/Example.Api.Adapters.Rest/Example.Api.Adapters.Rest.csproj" />
   </Folder>
+  <Folder Name="/Api/Tests/">
+    <Project Path="Example.Api/Example.Api.Tests/Example.Api.Tests.csproj" />
+  </Folder>
   <Project Path="Example.AppHost/Example.AppHost.csproj" />
 </Solution>
